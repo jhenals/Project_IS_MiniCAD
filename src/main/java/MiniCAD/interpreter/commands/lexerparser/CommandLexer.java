@@ -23,38 +23,36 @@ public class CommandLexer {
         List<Token> tokens = new ArrayList<>();
         int tipoToken;
         while( (tipoToken = tokenizer.nextToken()) != StreamTokenizer.TT_EOF ) {
-            if( tokenizer.ttype== PATH_NAME_PREFIX){
-                token = new Token(TokenType.PATH, tokenizer.sval);
-            }else{
             switch (tipoToken) {
                 case StreamTokenizer.TT_WORD:
-                    if( tokenizer.sval.startsWith("id")){
-                        token = new Token( TokenType.OBJ_ID, tokenizer.sval);
-                    }else if(tokenizer.sval.equalsIgnoreCase("new")){
+                    //Parole riservate
+                    if (tokenizer.sval.startsWith("id")) {
+                        token = new Token(TokenType.OBJ_ID, tokenizer.sval);
+                    } else if (tokenizer.sval.equalsIgnoreCase("new")) {
                         token = new Token(TokenType.NEW, tokenizer.sval);
-                    }else if(tokenizer.sval.equalsIgnoreCase("del")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("del")) {
                         token = new Token(TokenType.DEL, tokenizer.sval);
-                    }else if(tokenizer.sval.equalsIgnoreCase("mv")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("mv")) {
                         token = new Token(TokenType.MV, tokenizer.sval);
-                    }else if(tokenizer.sval.equalsIgnoreCase("mvoff")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("mvoff")) {
                         token = new Token(TokenType.MVOFF, tokenizer.sval);
-                    }else if(tokenizer.sval.equalsIgnoreCase("scale")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("scale")) {
                         token = new Token(TokenType.SCALE, tokenizer.sval);
-                    }else if(tokenizer.sval.equalsIgnoreCase("ls")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("ls")) {
                         token = new Token(TokenType.LS, tokenizer.sval);
-                    }else if(tokenizer.sval.equalsIgnoreCase("all")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("all")) {
                         token = new Token(TokenType.ALL, tokenizer.sval);
-                    }else if(tokenizer.sval.equalsIgnoreCase("groups")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("groups")) {
                         token = new Token(TokenType.GROUPS, tokenizer.sval);
-                    }else if(tokenizer.sval.equalsIgnoreCase("grp")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("grp")) {
                         token = new Token(TokenType.GRP, tokenizer.sval);
-                    } else if(tokenizer.sval.equalsIgnoreCase("ungrp")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("ungrp")) {
                         token = new Token(TokenType.UNGRP, tokenizer.sval);
-                    } else if(tokenizer.sval.equalsIgnoreCase("area")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("area")) {
                         token = new Token(TokenType.AREA, tokenizer.sval);
-                    } else if(tokenizer.sval.equalsIgnoreCase("perimeter")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("perimeter")) {
                         token = new Token(TokenType.PERIMETER, tokenizer.sval);
-                    } else if(tokenizer.sval.equalsIgnoreCase("img")){
+                    } else if (tokenizer.sval.equalsIgnoreCase("img")) {
                         token = new Token(TokenType.IMG, tokenizer.sval);
                     }
                     break;
@@ -71,10 +69,13 @@ public class CommandLexer {
                     token = new Token(TokenType.VIRGOLA, ",");
                     break;
                 default:
-                    token = new Token(TokenType.CHAR_INVALIDO, tokenizer.sval);
-            }
+                    if( tokenizer.sval.matches("./[a-zA-Z0-9]+.[a-zA-Z0-9]+")){
+                        token = new Token(TokenType.PATH, tokenizer.sval);
+                    }else{
+                        token = new Token(TokenType.CHAR_INVALIDO, tokenizer.toString());
+                    }
+                }
             tokens.add(token);
-        }
         }
         return tokens;
     }
@@ -89,8 +90,7 @@ public class CommandLexer {
         tokenizer.eolIsSignificant(false);
         tokenizer.ordinaryChar('(');
         tokenizer.ordinaryChar(')');
-        tokenizer.ordinaryChar('.');
-        //tokenizer.wordChars('.', '.');
+        tokenizer.wordChars('.' , '.');
         tokenizer.wordChars('/', '/');
         tokenizer.wordChars('_', '_'); // Allow underscore in words
         tokenizer.quoteChar('"'); // Treat quotes as special characters
