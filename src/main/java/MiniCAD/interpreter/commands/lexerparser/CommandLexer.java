@@ -16,8 +16,6 @@ public class CommandLexer {
         configuraTokenizer( tokenizer );
     }
 
-    //TODO: token per PATH
-
     public List<Token> tokenizzare() throws IOException {
         List<Token> tokens = new ArrayList<>();
         int tipoToken;
