@@ -8,7 +8,6 @@ import java.util.List;
 
 public class CommandLexer {
 
-    private final int PATH_NAME_PREFIX = '.';
     private StreamTokenizer tokenizer;
     private Token token;
 
