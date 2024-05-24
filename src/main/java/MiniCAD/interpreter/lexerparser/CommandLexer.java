@@ -1,4 +1,4 @@
-package MiniCAD.interpreter.commands.lexerparser;
+package MiniCAD.interpreter.lexerparser;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -27,6 +27,8 @@ public class CommandLexer {
                         token = new Token(TokenType.OBJ_ID, tokenizer.sval);
                     } else if (tokenizer.sval.equalsIgnoreCase("new")) {
                         token = new Token(TokenType.NEW, tokenizer.sval);
+                    } else if (tokenizer.sval.equalsIgnoreCase("create")) {
+                        token = new Token(TokenType.NEW, tokenizer.sval);
                     } else if (tokenizer.sval.equalsIgnoreCase("del")) {
                         token = new Token(TokenType.DEL, tokenizer.sval);
                     } else if (tokenizer.sval.equalsIgnoreCase("mv")) {
@@ -51,6 +53,10 @@ public class CommandLexer {
                         token = new Token(TokenType.PERIMETER, tokenizer.sval);
                     } else if (tokenizer.sval.equalsIgnoreCase("img")) {
                         token = new Token(TokenType.IMG, tokenizer.sval);
+                    }else if (tokenizer.sval.equalsIgnoreCase("circle")) {
+                        token = new Token(TokenType.CIRCLE, tokenizer.sval);
+                    }else if (tokenizer.sval.equalsIgnoreCase("rectangle")) {
+                        token = new Token(TokenType.RECTANGLE, tokenizer.sval);
                     }
                     break;
                 case StreamTokenizer.TT_NUMBER:
