@@ -1,4 +1,4 @@
-package MiniCAD.interpreter.commands.lexerparser;
+package MiniCAD.interpreter.lexerparser;
 
 public class Token {
     private TokenType tipo;

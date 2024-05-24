@@ -1,9 +1,13 @@
-package MiniCAD.interpreter.commands.lexerparser;
+package MiniCAD.interpreter.lexerparser;
 
 public enum TokenType {
 
     //Parole Riservate
-    NEW, DEL, MV, MVOFF, SCALE, IMG, LS, ALL, GROUPS, GRP, UNGRP, AREA, PERIMETER,
+    NEW, DEL, MV, MVOFF, SCALE, LS, ALL, GROUPS, GRP, UNGRP, AREA, PERIMETER,
+
+    //Tipo Constraints
+    CIRCLE, RECTANGLE, IMG,
+
 
     //Simboli
     TONDA_APERTA, TONDA_CHIUSA, VIRGOLA, QUOTE,
