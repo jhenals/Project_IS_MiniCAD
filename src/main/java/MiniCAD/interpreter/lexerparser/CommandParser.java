@@ -16,82 +16,69 @@ public class CommandParser {
 
     public CommandParser( String command ) throws IOException {
         cLexer = new CommandLexer(new StringReader(command));
+        List<Token> listaToken = cLexer.tokenizzare();
+        this.tokens = listaToken.iterator();
+        avanza();
+        /*
         try {
+            //tokens = cLexer.tokenizzare().iterator();
             parseCommand();
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        avanza();
+         */
     }
 
-    private void parseCommand() throws ParseException {
+    public Command parseCommand() throws ParseException {
         if( tokenCorrente == null ){
-            throw new IllegalArgumentException("Unexpected end of input");
+            throw new IllegalArgumentException("Fine dell'input inattesa");
         }
-        switch (tokenCorrente.getTipo()){
-            case NEW:
-                parseCreate();
-                break;
-            case DEL :
-                parseRemove();
-                break;
-            case MV:
-            case MVOFF:
-                parseMove();
-                break;
-            case SCALE:
-                parseScale();
-                break;
-            case LS:
-                parseList();
-                break;
-            case GRP:
-                parseGroup();
-                break;
-            case UNGRP:
-                parseUngroup();
-                break;
-            case AREA:
-                parseArea();
-                break;
-            case PERIMETER:
-                parsePerimeter();
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown command: " + tokenCorrente.getValore());
-        }
+
+        return switch (tokenCorrente.getTipo()) {
+            case NEW -> parseCreate();
+            case DEL -> parseRemove();
+            case MV, MVOFF -> parseMove();
+            case SCALE -> parseScale();
+            case LS -> parseList();
+            case GRP -> parseGroup();
+            case UNGRP -> parseUngroup();
+            case AREA -> parseArea();
+            case PERIMETER -> parsePerimeter();
+            default -> throw new IllegalArgumentException("Unknown command: " + tokenCorrente.getValore());
+        };
     } //parseCommand
 
 
     private <T> Command parseCreate() throws ParseException {
         expect(TokenType.NEW);
-        TokenType tipo = tokenCorrente.getTipo();
+        TokenType tipoOggetto = tokenCorrente.getTipo();
         T param = null;
+        avanza();
         expect(TokenType.TONDA_APERTA);
-        switch (tipo) {
-            case CIRCLE:
-                param = (T) tokenCorrente; //Pos_float
-                break;
-            case RECTANGLE:
+
+        switch (tipoOggetto) {
+            case CIRCLE -> param = (T) tokenCorrente; //Pos_float
+            case RECTANGLE -> {
                 Token width = tokenCorrente;
+                avanza();
                 expect(TokenType.VIRGOLA);
                 Token height = tokenCorrente;
                 Posizione p = new Posizione(width, height);
                 param = (T) p;
-                break;
-            case IMG:
-                param = (T) tokenCorrente;
-                break;
+            }
+            case IMG -> param = (T) tokenCorrente;
         }
+        avanza();
         expect(TokenType.TONDA_CHIUSA);
-        TypeConstraint typeConstraint = new TypeConstraint<>(tipo,param );
+        TypeConstraint<T> typeConstraint = new TypeConstraint<>(tipoOggetto,param );
         expect(TokenType.TONDA_APERTA);
         Token x = tokenCorrente;
+        avanza();
         expect(TokenType.VIRGOLA);
         Token y = tokenCorrente;
         Posizione pos = new Posizione(x, y);
 
-        switch (tipo){
+        switch (tipoOggetto){
             case CIRCLE -> {
                 return new CreateCircleCommand(typeConstraint, pos);
             }
@@ -193,7 +180,7 @@ public class CommandParser {
 
     private void expect(TokenType tipo) throws ParseException {
         if( tokenCorrente == null || tokenCorrente.getTipo() != tipo ){
-            throw new ParseException("Expected token of type " + tipo + " but found " + tokenCorrente);
+            throw new ParseException("Token di tipo " + tipo + " previsto, ma trovato " + tokenCorrente);
         }
         avanza();
     }

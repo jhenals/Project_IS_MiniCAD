@@ -1,17 +1,17 @@
 package MiniCAD.interpreter.lexerparser;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StreamTokenizer;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommandLexer {
 
-    private StreamTokenizer tokenizer;
-    private Token token;
+    private final StreamTokenizer tokenizer;
+   private Token token;
 
-    public CommandLexer(Reader input) {
+    public CommandLexer(StringReader input) {
         tokenizer = new StreamTokenizer(input);
         configuraTokenizer( tokenizer );
     }
@@ -20,8 +20,9 @@ public class CommandLexer {
         List<Token> tokens = new ArrayList<>();
         int tipoToken;
         while( (tipoToken = tokenizer.nextToken()) != StreamTokenizer.TT_EOF ) {
+            //Token token;
             switch (tipoToken) {
-                case StreamTokenizer.TT_WORD:
+                case StreamTokenizer.TT_WORD -> {
                     //Parole riservate
                     if (tokenizer.sval.startsWith("id")) {
                         token = new Token(TokenType.OBJ_ID, tokenizer.sval);
@@ -53,31 +54,24 @@ public class CommandLexer {
                         token = new Token(TokenType.PERIMETER, tokenizer.sval);
                     } else if (tokenizer.sval.equalsIgnoreCase("img")) {
                         token = new Token(TokenType.IMG, tokenizer.sval);
-                    }else if (tokenizer.sval.equalsIgnoreCase("circle")) {
+                    } else if (tokenizer.sval.equalsIgnoreCase("circle")) {
                         token = new Token(TokenType.CIRCLE, tokenizer.sval);
-                    }else if (tokenizer.sval.equalsIgnoreCase("rectangle")) {
+                    } else if (tokenizer.sval.equalsIgnoreCase("rectangle")) {
                         token = new Token(TokenType.RECTANGLE, tokenizer.sval);
                     }
-                    break;
-                case StreamTokenizer.TT_NUMBER:
-                    token = new Token(TokenType.POS_FLOAT, tokenizer.nval);
-                    break;
-                case '(':
-                    token = new Token(TokenType.TONDA_APERTA, "(");
-                    break;
-                case ')':
-                    token = new Token(TokenType.TONDA_CHIUSA, ")");
-                    break;
-                case ',':
-                    token = new Token(TokenType.VIRGOLA, ",");
-                    break;
-                default:
-                    if( tokenizer.sval.matches("./[a-zA-Z0-9]+.[a-zA-Z0-9]+")){
+                }
+                case StreamTokenizer.TT_NUMBER -> token = new Token(TokenType.POS_FLOAT, tokenizer.nval);
+                case '(' -> token = new Token(TokenType.TONDA_APERTA, "(");
+                case ')' -> token = new Token(TokenType.TONDA_CHIUSA, ")");
+                case ',' -> token = new Token(TokenType.VIRGOLA, ",");
+                default -> {
+                    if (tokenizer.sval.matches("./[a-zA-Z0-9]+.[a-zA-Z0-9]+")) {
                         token = new Token(TokenType.PATH, tokenizer.sval);
-                    }else{
+                    } else {
                         token = new Token(TokenType.CHAR_INVALIDO, tokenizer.toString());
                     }
                 }
+            }
             tokens.add(token);
         }
         return tokens;
