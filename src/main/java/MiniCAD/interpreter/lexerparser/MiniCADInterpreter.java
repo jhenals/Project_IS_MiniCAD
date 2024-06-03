@@ -12,12 +12,16 @@ public class MiniCADInterpreter {
        // String commandInput = "new img (\"./pippo.png\") (6.1,4.6)";
        // String commandInput2 = "new circle (5.0) (3.1,4.5)";
         String commandInput3 = "new rectangle (3.1,4.5) (0.0,0.0)";
+        String commandInput = "mv id1 (5.9,8.2)";
 
-        CommandLexer cLexer = new CommandLexer( new StringReader(commandInput3) );
+        CommandLexer cLexer = new CommandLexer( new StringReader(commandInput) );
         List<Token> tokens = cLexer.tokenizzare();
+
         for (Token t: tokens ){
             System.out.println(t.toString());
         }
+
+
 
 
 
@@ -31,12 +35,9 @@ public class MiniCADInterpreter {
             CommandParser parser2 = new CommandParser(commandInput2);
             Command command2 = parser2.parseCommand();
             command2.interpreta(); // Esegui il comando
-
-
-
              */
 
-            CommandParser parser3 = new CommandParser(commandInput3);
+            CommandParser parser3 = new CommandParser(commandInput);
             Command command3= parser3.parseCommand();
             command3.interpreta();
 

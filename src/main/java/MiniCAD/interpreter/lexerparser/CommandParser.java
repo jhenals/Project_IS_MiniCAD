@@ -110,10 +110,13 @@ public class CommandParser {
         if( tokenCorrente.getTipo() == TokenType.OBJ_ID){
             objId = tokenCorrente;
         }
+        avanza();
         expect(TokenType.TONDA_APERTA);
         Token x = tokenCorrente;
+        avanza();
         expect(TokenType.VIRGOLA);
         Token y = tokenCorrente;
+        avanza();
         expect(TokenType.TONDA_CHIUSA);
         Posizione pos = new Posizione(x,y);
         if( commandType.getTipo() == TokenType.MV ){

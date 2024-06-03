@@ -29,7 +29,9 @@ public class MoveCommand implements  Command{
 
     @Override
     public void interpreta() {
-        //logica di move
+        System.out.println("Oggetto con id " + getObjectId().getValore() + " viene spostato " +
+                " alla posizione " + getPosizione() );
+        //TODO : esegue lo spostamento dell'oggetto
     }
 
     @Override

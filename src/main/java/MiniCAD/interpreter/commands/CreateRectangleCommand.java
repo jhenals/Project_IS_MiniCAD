@@ -13,7 +13,13 @@ public class CreateRectangleCommand extends CreateCommand{
     @Override
     public void interpreta() {
         id = GeneratoreId.generaId();
-        System.out.println(id);
+        System.out.println("Id del rettangolo : " +id);
+        System.out.println("------------");
+        System.out.println("CreateRectangleCommand{" +
+                "\n id='" + id + '\'' +
+                "\n typeConstraint=" + typeConstraint +
+                "\n in posizione=" + posizione +
+                '}');
     }
 
     @Override
@@ -21,7 +27,7 @@ public class CreateRectangleCommand extends CreateCommand{
         return "CreateRectangleCommand{" +
                 "id='" + id + '\'' +
                 ", typeConstraint=" + typeConstraint +
-                ", posizione=" + posizione +
+                ", in posizione=" + posizione +
                 '}';
     }
 }

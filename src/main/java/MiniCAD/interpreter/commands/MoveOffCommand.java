@@ -1,6 +1,10 @@
 package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.lexerparser.Token;
+import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
+import ObserverCommandFlyweight.is.shapes.model.ImageObject;
+
+import java.awt.geom.Point2D;
 
 public class MoveOffCommand implements  Command{
     private Token objectId;
@@ -27,9 +31,23 @@ public class MoveOffCommand implements  Command{
         this.posizione = posizione;
     }
 
+    /*
+    public Posizione nuovaPosizione(Posizione pos){
+        GraphicObject go = new ImageObject();
+        TODO: Posizione corrente dell'oggetto + nuova posizione fornita dall'utente
+
+
+    }
+
+     */
+
+    public Posizione getNuovaPosizione(Point2D np){
+     return null;
+    }
+
     @Override
     public void interpreta() {
-        //logica di moveoff
+        System.out.println("Ogetto con id "+ getObjectId().getValore() +" viene spostato ad una nuova posizione " + "getNuovaP"  );
     }
 
     @Override

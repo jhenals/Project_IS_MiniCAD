@@ -52,7 +52,7 @@ public class TypeConstraint<T> implements Command{
                 res="Circle with radius: " + parameter.toString();
                 break;
             case RECTANGLE:
-                res= "Rectangle.";
+                res= "Rettangolo con base e altezza rispettivamente pari a : "+ parameter.toString();
                 break;
             case IMG:
                 res="Image with path: \"./" + parameter.toString()+ "\".";

@@ -13,7 +13,7 @@ public class CreateImageCommand extends CreateCommand {
     @Override
     public void interpreta() {
         id = GeneratoreId.generaId();
-        System.out.println(id);
+        System.out.println("Id dell'immagine: " + id);
         //logic here
     }
 
@@ -22,7 +22,7 @@ public class CreateImageCommand extends CreateCommand {
         return "CreateImageCommand{" +
                 "id='" + id + '\'' +
                 ", typeConstraint=" + typeConstraint +
-                ", posizione=" + posizione +
+                ", in posizione=" + posizione +
                 '}';
     }
 }

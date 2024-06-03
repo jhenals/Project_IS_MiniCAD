@@ -62,7 +62,6 @@ public class CircleObject extends AbstractGraphicObject {
 
 	@Override
 	public String getType() {
-
 		return "Circle";
 	}
 
