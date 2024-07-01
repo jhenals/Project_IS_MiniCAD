@@ -33,6 +33,11 @@ public class ScaleCommand implements  Command{
     }
 
     @Override
+    public void undo() {
+
+    }
+
+    @Override
     public String toString() {
         return "ScaleCommand{" +
                 "objectId=" + objectId +

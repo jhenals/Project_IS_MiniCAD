@@ -29,5 +29,10 @@ public class PerimeterCommand implements  Command{
                 '}';
     }
 
+    @Override
+    public void undo() {
+
+    }
+
 
 }

@@ -23,6 +23,11 @@ public class CreateRectangleCommand extends CreateCommand{
     }
 
     @Override
+    public void undo() {
+
+    }
+
+    @Override
     public String toString() {
         return "CreateRectangleCommand{" +
                 "id='" + id + '\'' +

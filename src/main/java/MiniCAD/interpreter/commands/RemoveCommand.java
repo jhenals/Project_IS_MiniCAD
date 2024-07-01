@@ -13,6 +13,11 @@ public class RemoveCommand implements Command {
         //DELETE LOGIC here
     }
 
+    @Override
+    public void undo() {
+
+    }
+
 
     @Override
     public String toString() {

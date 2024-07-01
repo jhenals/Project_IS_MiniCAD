@@ -38,6 +38,12 @@ public class ListCommand implements Command{
 
     }
 
+
+    @Override
+    public void undo() {
+
+    }
+
     @Override
     public String toString() {
         return "ListCommand{" +

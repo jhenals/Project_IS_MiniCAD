@@ -35,6 +35,11 @@ public class MoveCommand implements  Command{
     }
 
     @Override
+    public void undo() {
+
+    }
+
+    @Override
     public String toString() {
         return "MoveCommand{" +
                 "objectId=" + objectId +

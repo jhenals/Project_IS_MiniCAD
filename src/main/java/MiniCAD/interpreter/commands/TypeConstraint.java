@@ -45,6 +45,11 @@ public class TypeConstraint<T> implements Command{
     }
 
     @Override
+    public void undo() {
+
+    }
+
+    @Override
     public String toString(){
         String res="";
         switch (tipo) {

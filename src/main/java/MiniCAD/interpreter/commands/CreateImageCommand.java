@@ -18,6 +18,11 @@ public class CreateImageCommand extends CreateCommand {
     }
 
     @Override
+    public void undo() {
+
+    }
+
+    @Override
     public String toString() {
         return "CreateImageCommand{" +
                 "id='" + id + '\'' +

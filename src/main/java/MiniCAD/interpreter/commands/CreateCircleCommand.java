@@ -28,4 +28,10 @@ public class CreateCircleCommand extends CreateCommand{
                 "posizione= " + posizione +
                 '}';
     }
+
+
+    @Override
+    public void undo() {
+
+    }
 }

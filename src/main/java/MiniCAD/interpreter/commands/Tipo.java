@@ -23,6 +23,11 @@ public class Tipo implements Command{
     }
 
     @Override
+    public void undo() {
+
+    }
+
+    @Override
     public String toString() {
         return "Tipo{" +
                 "oggetto=" + oggetto +

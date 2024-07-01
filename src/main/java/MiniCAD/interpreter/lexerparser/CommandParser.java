@@ -54,16 +54,17 @@ public class CommandParser {
         TokenType tipoOggetto = tokenCorrente.getTipo();
         T param = null;
         avanza();
-        expect(TokenType.TONDA_APERTA);
 
+        //Token Constraint: <typeconstr>::= circle (<posfloat>) | rectangle <pos> | img (<path>)
+        expect(TokenType.TONDA_APERTA);
         switch (tipoOggetto) {
-            case CIRCLE -> param = (T) tokenCorrente; //Pos_float
+            case CIRCLE -> param = (T) tokenCorrente; //Pos_float per raggio
             case RECTANGLE -> {
                 Token width = tokenCorrente;
                 avanza();
                 expect(TokenType.VIRGOLA);
                 Token height = tokenCorrente;
-                Posizione p = new Posizione(width, height);
+                Posizione p = new Posizione(width, height); //tipo Posizione ma in realtà rappresenta la base(width) e altezza(height)
                 param = (T) p;
             }
             case IMG -> param = (T) tokenCorrente;
@@ -71,6 +72,8 @@ public class CommandParser {
         avanza();
         expect(TokenType.TONDA_CHIUSA);
         TypeConstraint<T> typeConstraint = new TypeConstraint<>(tipoOggetto,param );
+
+        //Posizione : <pos>::=( <posfloat> , <posfloat> )
         expect(TokenType.TONDA_APERTA);
         Token x = tokenCorrente;
         avanza();

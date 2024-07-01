@@ -32,6 +32,11 @@ public class ListId implements  Command{
     }
 
     @Override
+    public void undo() {
+
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("List of ids: (");

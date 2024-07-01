@@ -28,6 +28,11 @@ public class UngroupCommand implements  Command{
     }
 
     @Override
+    public void undo() {
+
+    }
+
+    @Override
     public String toString() {
         return "UngroupCommand{" +
                 "groupId=" + groupId +

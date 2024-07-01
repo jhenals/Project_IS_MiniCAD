@@ -37,6 +37,11 @@ public class Posizione implements Command {
     }
 
     @Override
+    public void undo() {
+
+    }
+
+    @Override
     public String toString(){
         return "("+ param1.getValore() + ", "+ param2.getValore()+ ")";
     }
