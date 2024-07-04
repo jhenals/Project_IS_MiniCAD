@@ -1,5 +1,13 @@
 package MiniCAD.ui;
 
+import ObserverCommandFlyweight.is.command.HistoryCommandHandler;
+import ObserverCommandFlyweight.is.shapes.controller.GraphicObjectController;
+import ObserverCommandFlyweight.is.shapes.model.AbstractGraphicObject;
+import ObserverCommandFlyweight.is.shapes.model.CircleObject;
+import ObserverCommandFlyweight.is.shapes.model.ImageObject;
+import ObserverCommandFlyweight.is.shapes.model.RectangleObject;
+import ObserverCommandFlyweight.is.shapes.view.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -16,12 +24,10 @@ public class MiniCadApp extends JFrame{
     public MiniCadApp() {
         super("Mini-CAD Application");
 
-        //add(canvas, BorderLayout.CENTER);
         setLayout(new BorderLayout());
 
         createToolBar();
-        //createMenuBar();
-        createCanvaspanel();
+        //createCanvaspanel();
         createSideBar();
         setSize(1200, 700);
 
@@ -32,19 +38,93 @@ public class MiniCadApp extends JFrame{
     private void createSideBar() {
         JPanel sidebar = new JPanel();
         sidebar.setPreferredSize(new Dimension(400, getHeight()));
-        sidebar.setBorder(BorderFactory.createTitledBorder("Sidebar"));
+        sidebar.setBorder(BorderFactory.createTitledBorder("Commands"));
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
 
-        JLabel label = new JLabel("Options");
-        JButton button1 = new JButton("Option 1");
-        JButton button2 = new JButton("Option 2");
+        //JLabel label = new JLabel("Options");
+        JButton removeButton = new JButton("Remove");
 
-        sidebar.add(label);
-        sidebar.add(button1);
-        sidebar.add(button2);
+        //move offset
+        JTextField newXAxis = new JTextField();
+        newXAxis.setPreferredSize(new Dimension(50, 20));
+        JTextField newYAxis = new JTextField();
+        newYAxis.setPreferredSize(new Dimension(50, 20));
+        JButton sposta = new JButton("Move");
+
+        JPanel inputPanel = new JPanel();
+        inputPanel.add(new JLabel("X:"));
+        inputPanel.add(newXAxis);
+        inputPanel.add(new JLabel("Y:"));
+        inputPanel.add(newYAxis);
+        inputPanel.add(sposta);
+
+
+        //move and zoom : using graphic object controller
+
+        /*
+        final GraphicObjectController goc = new GraphicObjectController(handler);
+
+
+        gpanel.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                goc.setControlledObject(gpanel.getGraphicObjectAt(e.getPoint()));
+            }
+        });
+
+         */
+
+        //JLabel labelProperties = new JLabel("Properties");
+        JButton propertyButt = new JButton("Visualizza Proprietà");
+        JButton propertyCircleButt = new JButton("Visualizza i cerchi");
+        JButton propertyRectButt = new JButton("Visualizza i rettangoli");
+        JButton propertyImgButt = new JButton("Visualizza gli immagini");
+
+        //group and ungroup
+        JButton createGrp = new JButton("Group");
+        JButton UnGrp = new JButton("Ungroup");
+
+        //calcola area
+        JButton area = new JButton("Area");
+        JButton perimeter = new JButton("Perimeter");
+
+        JButton areaCircle = new JButton("Area of all circles");
+        JButton areaRect = new JButton("Area of all rectangles");
+
+        JButton areaAll = new JButton("Total area");
+        JLabel propertyPanelLabel = new JLabel("Properties:");
+        JTextArea propertiesArea = createPropertiesPanel();
+
+        //sidebar.add(label);
+        sidebar.add(removeButton);
+        sidebar.add(inputPanel, BorderLayout.SOUTH);
+        //sidebar.add(labelProperties);
+        sidebar.add(propertyButt);
+        sidebar.add(propertyCircleButt);
+        sidebar.add(propertyRectButt);
+        sidebar.add(propertyImgButt);
+        sidebar.add(createGrp);
+        sidebar.add(UnGrp);
+        sidebar.add(area);
+        sidebar.add(perimeter);
+        sidebar.add(areaCircle);
+        sidebar.add(areaRect);
+        sidebar.add(areaAll);
+        sidebar.add(propertyPanelLabel);
+        sidebar.add(new JScrollPane(propertiesArea), BorderLayout.CENTER);
 
         add(sidebar, BorderLayout.EAST);
 
+    }
+
+    private JTextArea createPropertiesPanel() {
+        JTextArea propertiesArea = new JTextArea();
+        propertiesArea.setBackground(Color.WHITE);
+        propertiesArea.setPreferredSize(new Dimension(600,600));
+        propertiesArea.setEditable(false);
+        return propertiesArea;
     }
 
     private void createCanvaspanel() {
@@ -56,19 +136,53 @@ public class MiniCadApp extends JFrame{
 
     private void createToolBar(){
         JToolBar toolbar = new JToolBar();
+        toolbar.setLayout(new BorderLayout());
 
         JButton undoButt = new JButton("Undo");
         JButton redoButt = new JButton("Redo");
-        JButton rectangle = new JButton("Rectangle");
-        JButton circle = new JButton("Circle");
-        JButton image = new JButton("Image");
+
+        final HistoryCommandHandler handler = new HistoryCommandHandler();
+
+        undoButt.addActionListener(evt -> handler.handle(HistoryCommandHandler.NonExecutableCommands.UNDO));
+        redoButt.addActionListener( evt -> handler.handle(HistoryCommandHandler.NonExecutableCommands.REDO));
+
+        JPanel undoRedoPanel = new JPanel();
+        undoRedoPanel.add(undoButt);
+        undoRedoPanel.add(redoButt);
 
 
-        toolbar.add(undoButt);
-        toolbar.add(redoButt);
-        toolbar.add(rectangle);
-        toolbar.add(circle);
-        toolbar.add(image);
+        JLabel createLabel = new JLabel("DRAW");
+
+        final GraphicObjectPanel gpanel = new GraphicObjectPanel();
+
+        gpanel.setPreferredSize(new Dimension(400, 400));
+
+        gpanel.installView(RectangleObject.class, new RectangleObjectView());
+        gpanel.installView(CircleObject.class, new CircleObjectView());
+        gpanel.installView(ImageObject.class, new ImageObjectView());
+
+        AbstractGraphicObject go = new RectangleObject(new Point(180, 80), 20, 50);
+        JButton rectangle = new JButton(new CreateObjectAction(go, gpanel, handler));
+        rectangle.setText(go.getType());
+
+        go= new CircleObject(new Point(200, 100), 10);
+        JButton circle = new JButton(new CreateObjectAction(go, gpanel, handler));
+        circle.setText(go.getType());
+
+        go = new ImageObject(new ImageIcon(MiniCadApp.class.getResource("NyaNya.gif")),
+                new Point(240, 187));
+        JButton image = new JButton(new CreateObjectAction(go, gpanel, handler));
+        image.setText(go.getType());
+
+
+        JPanel createPanel = new JPanel();
+        createPanel.add(createLabel);
+        createPanel.add(rectangle);
+        createPanel.add(circle);
+        createPanel.add(image);
+
+        toolbar.add(createPanel, BorderLayout.WEST);
+        toolbar.add(undoRedoPanel, BorderLayout.EAST);
 
         add(toolbar, BorderLayout.NORTH);
 
