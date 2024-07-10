@@ -19,7 +19,7 @@ public class CommandExecutor {
         String moveCommandInput1 = "mv id0 (5.9,8.2)";
         String moveCommandInput2 = "mvoff id1 (5.9,8.2)";
 
-        String scaleCommand = "scale id1 2.0";
+        String scaleCommandInput = "scale id1 2.0";
 
         String listCommandInput1 = "ls id1";
         String listCommandInput2 = "ls Circle";
@@ -44,12 +44,17 @@ public class CommandExecutor {
             Command createCommand2 = parser.parseCommand(createCommandInput2);
             createCommand2.interpreta();
 
+            /*
             Command listCommand1 = parser.parseCommand(listCommandInput1);
             listCommand1.interpreta();
 
             Command listCommand2 = parser.parseCommand(listCommandInput2);
             listCommand2.interpreta();
 
+             */
+
+            Command scaleCommand = parser.parseCommand(scaleCommandInput);
+            scaleCommand.interpreta();
 
 
             /*

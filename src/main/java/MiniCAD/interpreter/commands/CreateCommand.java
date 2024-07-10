@@ -42,7 +42,7 @@ public class CreateCommand implements Command {
             object = new ImageObject(new ImageIcon(path),
                     getPosizione());
         } else {
-            throw new IllegalArgumentException("Tipo di oggetto sconosciuto ");
+            throw new IllegalArgumentException("Tipo di oggetto sconosciuto.");
         }
 
         if( object != null) {
