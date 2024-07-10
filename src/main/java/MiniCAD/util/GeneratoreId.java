@@ -8,4 +8,5 @@ public class GeneratoreId {
     public static synchronized String generaId(){
         return "id" + counter++;
     }
+    public static synchronized String generaIdGruppo() { return "gid" + counter++;}
 }

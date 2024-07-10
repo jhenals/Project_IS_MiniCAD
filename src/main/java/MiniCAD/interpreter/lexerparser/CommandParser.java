@@ -2,7 +2,7 @@ package MiniCAD.interpreter.lexerparser;
 
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.interpreter.commands.*;
-import MiniCAD.interpreter.utils.*;
+import MiniCAD.interpreter.dataClasses.*;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -76,11 +76,10 @@ public class CommandParser {
 
     private Command parseRemove() throws ParseException {
         expect(TokenType.DEL);
-        if( tokenCorrente.getTipo() != TokenType.OBJ_ID ){
-            throw new ParseException("Token non è un id.");
+        if( tokenCorrente.getTipo() == TokenType.OBJ_ID  || tokenCorrente.getTipo() == TokenType.GRP_ID){
+            return new RemoveCommand(tokenCorrente);
         }
-        String objId = tokenCorrente.getValore().toString(); //Obj_id
-        return new RemoveCommand(objId);
+        throw new ParseException("Token non è un id.");
     }
 
 
@@ -110,19 +109,30 @@ public class CommandParser {
 
     private Command parseGroup() throws ParseException {
         expect(TokenType.GRP);
-        List<Token> objIds = new ArrayList<>();
-        while( tokenCorrente.getTipo() == TokenType.OBJ_ID ){
-            objIds.add(tokenCorrente);
-        }
-        ListId listId = new ListId(objIds);
+        ListId listId = parseListId();
         return new GroupCommand(listId);
+
+    }
+
+    private ListId parseListId() throws ParseException {
+        List<Token> objIds = new ArrayList<>();
+        while(tokenCorrente.getTipo().equals(TokenType.OBJ_ID ) || tokenCorrente.getTipo().equals(TokenType.GRP_ID )  ){
+            objIds.add(tokenCorrente);
+            avanza();
+            if( tokenCorrente != null ){
+                expect(TokenType.VIRGOLA);
+            }else{
+                break;
+            }
+        }
+        return new ListId(objIds);
 
     }
 
     private Command parseUngroup() throws ParseException {
         expect(TokenType.UNGRP);
         Token groupId = tokenCorrente;
-        if( groupId.getTipo() == TokenType.OBJ_ID ){
+        if( groupId.getTipo() == TokenType.GRP_ID ){
             return new UngroupCommand(groupId);
         }else{
             throw new ParseException("Si aspetta un tipo OBJ_ID ma trova un tipo + " + tokenCorrente.getTipo() );

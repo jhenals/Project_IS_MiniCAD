@@ -1,8 +1,8 @@
 package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.utils.Token;
-import MiniCAD.interpreter.utils.Posizione;
+import MiniCAD.interpreter.dataClasses.Token;
+import MiniCAD.interpreter.dataClasses.Posizione;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 import java.awt.geom.Point2D;
@@ -43,7 +43,7 @@ public class MoveCommand implements  Command{
     @Override
     public void interpreta() {
         ObjectManager objectManager = ObjectManager.getInstance();
-        GraphicObject object = objectManager.getObject(objectId.getValore().toString());
+        GraphicObject object = objectManager.getObjectbyId(objectId.getValore().toString());
 
         if( object != null ){
             if(offset){

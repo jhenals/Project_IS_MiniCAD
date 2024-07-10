@@ -1,6 +1,4 @@
-package MiniCAD.interpreter.utils;
-
-import MiniCAD.interpreter.commands.Command;
+package MiniCAD.interpreter.dataClasses;
 
 public class Posizione {
     private float param1;

@@ -1,13 +1,14 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.utils.Token;
-import MiniCAD.interpreter.utils.TokenType;
+import MiniCAD.interpreter.ObjectManager;
+import MiniCAD.interpreter.dataClasses.Token;
+import MiniCAD.interpreter.dataClasses.TokenType;
 
 public class UngroupCommand implements  Command{
     private Token groupId;
 
     public UngroupCommand(Token groupId) {
-        if( groupId.getTipo() == TokenType.OBJ_ID ){
+        if( groupId.getTipo() == TokenType.GRP_ID ){
             this.groupId = groupId;
         }else{
             throw new IllegalArgumentException("Parametro passato non è un tipo OBJ_ID");
@@ -24,7 +25,16 @@ public class UngroupCommand implements  Command{
 
     @Override
     public void interpreta() {
-        //TODO
+        ObjectManager objectManager = ObjectManager.getInstance();
+        String gid = groupId.getValore().toString();
+        if( objectManager.getAllGroupIds().contains(gid) ){
+            objectManager.unGroup(gid);
+            objectManager.removeObject(gid);
+            System.out.println("Gruppo con id=" + gid + " è stato rimosso.");
+        }else{
+            System.out.println("Gruppo con id=" + gid + " è inesistente.");
+        }
+
     }
 
 

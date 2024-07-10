@@ -1,7 +1,7 @@
 package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.utils.Token;
+import MiniCAD.interpreter.dataClasses.Token;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 public class ScaleCommand implements  Command{
@@ -32,15 +32,14 @@ public class ScaleCommand implements  Command{
     @Override
     public void interpreta() {
         ObjectManager objectManager = ObjectManager.getInstance();
-        GraphicObject object = objectManager.getObject(objectId.getValore().toString());
+        GraphicObject object = objectManager.getObjectbyId(objectId.getValore().toString());
         if( object != null ){
             object.scale(getScaleFactor());
+            System.out.println("Oggetto con id="+ objectId.getValore().toString() + " viene ridimensionato con un fattore di scale pari a " + getScaleFactor());
         }else{
             System.out.println("Oggetto con id="+objectId+" non trovato.");
         }
-        System.out.println("Oggetto con id="+ objectId.getValore().toString() + " viene ridimensionato con un fattore di scale pari a " + getScaleFactor());
     }
-
 
     @Override
     public String toString() {

@@ -1,11 +1,7 @@
 package MiniCAD.interpreter.commands;
 
 
-import MiniCAD.interpreter.utils.TokenType;
-import MiniCAD.interpreter.utils.TypeConstructor;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-import static org.junit.jupiter.api.Assertions.*;
+import MiniCAD.interpreter.dataClasses.TokenType;
 
 import java.util.stream.Stream;
 

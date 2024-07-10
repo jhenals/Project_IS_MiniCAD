@@ -1,7 +1,7 @@
 package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.utils.*;
+import MiniCAD.interpreter.dataClasses.*;
 import MiniCAD.util.GeneratoreId;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;

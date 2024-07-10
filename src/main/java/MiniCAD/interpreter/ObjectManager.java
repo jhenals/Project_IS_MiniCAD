@@ -1,5 +1,6 @@
 package MiniCAD.interpreter;
 
+import MiniCAD.interpreter.dataClasses.GroupObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 import java.util.*;
@@ -8,7 +9,7 @@ import java.util.*;
 public class ObjectManager {
     private static ObjectManager instance;
     private Map<String, GraphicObject> objects;
-    private Map<String, Map<String, GraphicObject>> groups ;
+    private Map<String, List<String>> groups ;
 
     private ObjectManager(){
         objects = new HashMap<>();
@@ -31,14 +32,18 @@ public class ObjectManager {
 
     public void removeObject(String id){
         objects.remove(id);
+        if (idExistsInAnyGroup(id)) {
+            for (List<String> group : groups.values()) {
+                group.remove(id);
+            }
+        }
     }
 
-
-    public GraphicObject getObject(String id){
+    public GraphicObject getObjectbyId(String id){
         return objects.get(id);
     }
 
-    public String getKeyByValue(GraphicObject go){
+    public String getIdByObject(GraphicObject go){
         for(Map.Entry<String, GraphicObject> entry : objects.entrySet() ){
             if( go.equals(entry.getValue()) ){
                 return entry.getKey();
@@ -55,26 +60,60 @@ public class ObjectManager {
         }
         return graphicObjectList;
     }
-
-    public List<GraphicObject>getAllObjects(){
+    public List<GraphicObject> getAllObjects(){
         return new ArrayList<>(objects.values());
     }
 
-    public List<String> getAllGroupsKeys(){
-        return new ArrayList<>(groups.keySet());
-    }
-    public Map<String, GraphicObject> getValuesOfGroup(String grpID){
-        return groups.get(grpID);
+    public void addGroup(String grpId, List<String> objectIds){
+        groups.put(grpId, new ArrayList<>(objectIds));
     }
 
-    public String groupsString(){
+    public void unGroup(String grpId){
+        groups.remove(grpId);
+    }
+
+    public List<String> getAllGroupIds(){
+        return new ArrayList<>(groups.keySet());
+    }
+    public List<String> getObjectIDsOfGroup(String grpID){
+        List<String> res = new ArrayList<>();
+        List<String> objIds = groups.get(grpID);
+            for( String id : objIds ){
+                res.add(id);
+            }
+        return res;
+    }
+    public Map<String, GraphicObject> getObjectsOfGroup(String grpId){
+        Map<String, GraphicObject> res = new HashMap<>();
+        List<String> group = groups.get(grpId);
+        if( !group.isEmpty() ){
+            for(String objId : group ){
+                GraphicObject obj = objects.get(objId);
+                if(obj != null )
+                    res.put(objId, obj);
+            }
+        }
+        return res;
+    }
+
+    public boolean idExistsInAnyGroup(String objId){
+        for (List<String> group : groups.values()) {
+            if (group.contains(objId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public String stampaGruppi(){
         StringBuilder sb = new StringBuilder();
         sb.append("Groups:\n");
         if(groups.isEmpty()){
             sb.append("EMPTY");
         }else{
-            for(Map.Entry<String, Map<String, GraphicObject>> entry : groups.entrySet()  ){
-                sb.append(" ").append(entry.getKey()).append(entry.getValue().keySet()).append("\n");
+            for(Map.Entry<String, List<String>> entry : groups.entrySet()  ){
+                sb.append(" ").append(entry.getKey()).append(":").append(entry.getValue().toString()).append("\n");
             }
         }
         return sb.toString();
@@ -92,14 +131,7 @@ public class ObjectManager {
             }
         }
         sb.append("-----------------------------------\n");
-        sb.append("Groups:\n");
-        if(groups.isEmpty()){
-            sb.append("EMPTY");
-        }else{
-            for(Map.Entry<String, Map<String, GraphicObject>> entry : groups.entrySet()  ){
-                sb.append(" ").append(entry.getKey()).append(entry.getValue().keySet()).append("\n");
-            }
-        }
+        sb.append(stampaGruppi());
 
         return sb.toString();
     }

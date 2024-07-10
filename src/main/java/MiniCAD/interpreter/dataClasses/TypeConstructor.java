@@ -1,4 +1,4 @@
-package MiniCAD.interpreter.utils;
+package MiniCAD.interpreter.dataClasses;
 
 public abstract class TypeConstructor {
     public static class CircleConstructor extends  TypeConstructor {

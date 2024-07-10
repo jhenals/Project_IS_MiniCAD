@@ -1,28 +1,61 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.utils.ListId;
+import MiniCAD.interpreter.ObjectManager;
+import MiniCAD.interpreter.dataClasses.GroupObject;
+import MiniCAD.interpreter.dataClasses.ListId;
+import MiniCAD.interpreter.dataClasses.Token;
+import MiniCAD.interpreter.dataClasses.TokenType;
+import MiniCAD.util.GeneratoreId;
+import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GroupCommand implements  Command{
-    private ListId objectIds ;
-    //Ciascuno di essi può essere l’identificativo di un oggetto o di un gruppo.
+    private ListId ids ;
 
-    public GroupCommand(ListId objectIds) {
-        this.objectIds = objectIds;
-
+    public GroupCommand(ListId listId) {
+        ids=listId;
     }
 
     public ListId getObjectIds() {
-        return objectIds;
+        return ids;
     }
 
     public void setObjectIds(ListId objectIds) {
-        this.objectIds = objectIds;
+        this.ids = ids;
     }
 
     @Override
     public void interpreta() {
-        //TODO
-        // Il comando visualizza l’identificativo generato per il gruppo creato.
+        ObjectManager objectManager = ObjectManager.getInstance();
+
+        String grpId = GeneratoreId.generaIdGruppo();
+        GroupObject groupObject = new GroupObject(grpId);
+        for( Token id : ids.getIds() ){
+            if( id.getTipo()== TokenType.OBJ_ID ){
+                groupObject.addObject(objectManager.getObjectbyId(id.getValore().toString()));
+            }else if( id.getTipo() == TokenType.GRP_ID){
+                groupObject.addGroup(id.getValore().toString());
+            }
+        }
+        List<String> objectIds = groupObject.getObjectIds();
+
+        objectManager.addGroup(grpId, objectIds);
+        objectManager.addObject(grpId, groupObject);
+        System.out.println("gruppo creato con id=" + grpId);
+        /*
+        StringBuilder sb = new StringBuilder();
+        System.out.println("Oggeti nel gruppo: ");
+        for(Map.Entry<String, GraphicObject> entry : objectManager.getObjectsOfGroup(grpId).entrySet()  ){
+            sb.append(" ").append(entry.getKey()).append(":").append(entry.getValue().getType()).append("\n");
+        }
+        System.out.println(sb.toString());
+
+         */
 
     }
 
@@ -30,7 +63,7 @@ public class GroupCommand implements  Command{
     @Override
     public String toString() {
         return "GroupCommand{" +
-                "objectIds=" + objectIds.toString() +
+                "objectIds=" + ids.toString() +
                 '}';
     }
 }

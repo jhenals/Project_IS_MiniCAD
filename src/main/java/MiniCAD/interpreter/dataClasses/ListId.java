@@ -1,20 +1,13 @@
-package MiniCAD.interpreter.utils;
+package MiniCAD.interpreter.dataClasses;
 
-import MiniCAD.interpreter.commands.Command;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListId {
-    List<Token> ids;
+    List<Token> ids = new ArrayList<>();
 
     public ListId(List<Token> ids) {
-        for ( Token t : ids )
-            this.ids.add(t);
-    }
-
-    public void aggiungoId(Token id){
-        if( id.getTipo() == TokenType.OBJ_ID )
-            ids.add(id);
+        this.ids = ids;
     }
 
     public List<Token> getIds() {

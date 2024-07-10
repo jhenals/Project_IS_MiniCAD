@@ -1,4 +1,4 @@
-package MiniCAD.interpreter.utils;
+package MiniCAD.interpreter.dataClasses;
 
 import MiniCAD.interpreter.commands.Command;
 
