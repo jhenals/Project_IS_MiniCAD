@@ -38,8 +38,13 @@ public class ObjectManager {
         return objects.get(id);
     }
 
-    public String getKey(GraphicObject go){
-        return getKey(go);
+    public String getKeyByValue(GraphicObject go){
+        for(Map.Entry<String, GraphicObject> entry : objects.entrySet() ){
+            if( go.equals(entry.getValue()) ){
+                return entry.getKey();
+            }
+        }
+        return null;
     }
     public List<GraphicObject> getObjectsByType(String type){
         List<GraphicObject> graphicObjectList = new ArrayList<>();
