@@ -1,6 +1,6 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.lexerparser.Token;
+import MiniCAD.interpreter.utils.Token;
 
 public class AreaCommand implements  Command {
     private Token param;
@@ -22,6 +22,7 @@ public class AreaCommand implements  Command {
     public void interpreta() {
         //TODO
     }
+
 
     @Override
     public String toString() {

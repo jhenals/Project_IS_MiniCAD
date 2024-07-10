@@ -35,10 +35,11 @@ public class MiniCADController extends JPanel {
         JPanel commandPanel = new JPanel();
         commandPanel.setPreferredSize(new Dimension(300, 400));
         commandPanel.setBorder(BorderFactory.createTitledBorder("Commands"));
+
         commandPanel.add(zoomMovePanel());
         commandPanel.add(moveOffPanel());
         commandPanel.add(commandButtonsPanel());
-        commandPanel.add(areaPerimPanel(), BorderLayout.SOUTH);
+        commandPanel.add(geomOperationsPanel());
 
         JPanel propViewerPanel = new JPanel();
         propViewerPanel.setBorder(BorderFactory.createTitledBorder("Properties"));
@@ -251,9 +252,11 @@ public class MiniCADController extends JPanel {
     }
 
 
-    private JPanel areaPerimPanel() {
-        JPanel areaPerim = new JPanel(new GridLayout(2,2));
-        areaPerim.setBorder(BorderFactory.createTitledBorder("Calculator"));
+    private JPanel geomOperationsPanel() {
+        JPanel areaPerim = new JPanel(new GridBagLayout());
+        GridBagConstraints c= new GridBagConstraints();
+
+        areaPerim.setBorder(BorderFactory.createTitledBorder("Operations"));
         JButton area = new JButton("Area");
         JButton perimeter = new JButton("Perimeter");
 
@@ -268,12 +271,6 @@ public class MiniCADController extends JPanel {
         JMenuItem perimRectItem = new JMenuItem("Perimeters of all rectangles");
         JMenuItem perimCircleItem = new JMenuItem("Perimeters of all circles");
         JMenuItem perimAllItem = new JMenuItem("Total Perimeters");
-        /*
-        lineItem.addActionListener(e -> currentAction = "Line");
-        rectItem.addActionListener(e -> currentAction = "Rectangle");
-        circleItem.addActionListener(e -> currentAction = "Circle");
-
-         */
 
         calculateAreasMenu.add(areaRectItem);
         calculateAreasMenu.add(areaCircleItem);
@@ -286,8 +283,26 @@ public class MiniCADController extends JPanel {
         areaMenuBar.add(calculateAreasMenu);
         perimMenuBar.add(calculatePerimsMenu);
 
-        areaPerim.add(area);
-        areaPerim.add(perimeter);
+         /*
+        lineItem.addActionListener(e -> currentAction = "Line");
+        rectItem.addActionListener(e -> currentAction = "Rectangle");
+        circleItem.addActionListener(e -> currentAction = "Circle");
+
+         */
+
+        c.gridx=0;
+        c.gridy=0;
+        areaPerim.add(area,c);
+
+        c.gridx=1;
+        c.gridy=0;
+        areaPerim.add(perimeter,c);
+
+        c.gridx=0;
+        c.gridy=1;
+        c.fill= GridBagConstraints.HORIZONTAL;
+        areaPerim.add(new JLabel("Extended Operations"),c );
+
         areaPerim.add(areaMenuBar);
         areaPerim.add(perimMenuBar);
 

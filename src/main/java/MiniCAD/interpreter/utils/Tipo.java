@@ -1,8 +1,8 @@
-package MiniCAD.interpreter.commands;
+package MiniCAD.interpreter.utils;
 
-import MiniCAD.interpreter.lexerparser.Token;
+import MiniCAD.interpreter.commands.Command;
 
-public class Tipo implements Command{
+public class Tipo implements Command {
     private Token oggetto;
 
     public Tipo(Token oggetto) {
@@ -22,10 +22,6 @@ public class Tipo implements Command{
 
     }
 
-    @Override
-    public void undo() {
-
-    }
 
     @Override
     public String toString() {

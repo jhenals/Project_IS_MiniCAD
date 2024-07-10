@@ -1,5 +1,8 @@
 package MiniCAD.interpreter.lexerparser;
 
+import MiniCAD.interpreter.utils.Token;
+import MiniCAD.interpreter.utils.TokenType;
+
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;

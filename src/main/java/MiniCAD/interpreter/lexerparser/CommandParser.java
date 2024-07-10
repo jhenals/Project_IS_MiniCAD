@@ -2,6 +2,7 @@ package MiniCAD.interpreter.lexerparser;
 
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.interpreter.commands.*;
+import MiniCAD.interpreter.utils.*;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -14,27 +15,17 @@ public class CommandParser {
     Iterator<Token> tokens;
     Token tokenCorrente;
 
-    public CommandParser( String command ) throws IOException {
+    public Command parseCommand(String command ) throws ParseException, IOException {
         cLexer = new CommandLexer(new StringReader(command));
         List<Token> listaToken = cLexer.tokenizzare();
         this.tokens = listaToken.iterator();
         avanza();
-        /*
-        try {
-            //tokens = cLexer.tokenizzare().iterator();
-            parseCommand();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-         */
-    }
 
-    public Command parseCommand() throws ParseException {
         if( tokenCorrente == null ){
             throw new IllegalArgumentException("Fine dell'input inattesa");
         }
-
-        return switch (tokenCorrente.getTipo()) {
+        TokenType commando = tokenCorrente.getTipo();
+        return switch (commando) {
             case NEW -> parseCreate();
             case DEL -> parseRemove();
             case MV, MVOFF -> parseMove();
@@ -44,56 +35,43 @@ public class CommandParser {
             case UNGRP -> parseUngroup();
             case AREA -> parseArea();
             case PERIMETER -> parsePerimeter();
-            default -> throw new IllegalArgumentException("Unknown command: " + tokenCorrente.getValore());
+            default -> throw new IllegalArgumentException("Tipo del comando sconosciuto: " + tokenCorrente.getValore());
         };
+
     } //parseCommand
 
 
-    private <T> Command parseCreate() throws ParseException {
+    private Command parseCreate() throws ParseException {
         expect(TokenType.NEW);
         TokenType tipoOggetto = tokenCorrente.getTipo();
-        T param = null;
         avanza();
 
         //Token Constraint: <typeconstr>::= circle (<posfloat>) | rectangle <pos> | img (<path>)
         expect(TokenType.TONDA_APERTA);
+        TypeConstructor typeConstructor = null;
         switch (tipoOggetto) {
-            case CIRCLE -> param = (T) tokenCorrente; //Pos_float per raggio
+            case CIRCLE ->{
+                float raggio = Float.parseFloat(tokenCorrente.getValore().toString()); //Pos_float per raggio
+                typeConstructor = new TypeConstructor.CircleConstructor(raggio);
+            }
             case RECTANGLE -> {
-                Token width = tokenCorrente;
+                float width = Float.parseFloat(tokenCorrente.getValore().toString());
                 avanza();
                 expect(TokenType.VIRGOLA);
-                Token height = tokenCorrente;
-                Posizione p = new Posizione(width, height); //tipo Posizione ma in realtà rappresenta la base(width) e altezza(height)
-                param = (T) p;
+                float height = Float.parseFloat(tokenCorrente.getValore().toString());;
+                Posizione p = new Posizione(width, height); // (base, altezza)
+                typeConstructor = new TypeConstructor.RectangleConstuctor(p);
             }
-            case IMG -> param = (T) tokenCorrente;
+            case IMG ->{
+                String path = (String) tokenCorrente.getValore();
+                typeConstructor = new TypeConstructor.ImageConstructor(path);
+            }
+            default -> throw  new ParseException("Tipo sconosciuto: "+ tipoOggetto.toString());
         }
         avanza();
         expect(TokenType.TONDA_CHIUSA);
-        TypeConstraint<T> typeConstraint = new TypeConstraint<>(tipoOggetto,param );
-
-        //Posizione : <pos>::=( <posfloat> , <posfloat> )
-        expect(TokenType.TONDA_APERTA);
-        Token x = tokenCorrente;
-        avanza();
-        expect(TokenType.VIRGOLA);
-        Token y = tokenCorrente;
-        Posizione pos = new Posizione(x, y);
-
-        switch (tipoOggetto){
-            case CIRCLE -> {
-                return new CreateCircleCommand(typeConstraint, pos);
-            }
-            case RECTANGLE -> {
-                return new CreateRectangleCommand(typeConstraint, pos);
-            }
-            case IMG -> {
-                return new CreateImageCommand(typeConstraint, pos);
-            }
-            default -> throw new RuntimeException("Errore nella creazione dell'oggetto");
-        }
-
+        Posizione p = parsePosition();
+        return new CreateCommand(typeConstructor, p);
     }
 
     private Command parseRemove() throws ParseException {
@@ -101,46 +79,26 @@ public class CommandParser {
         if( tokenCorrente.getTipo() != TokenType.OBJ_ID ){
             throw new ParseException("Token non è un id.");
         }
-        String id = tokenCorrente.getValore().toString();
-        return new RemoveCommand(id);
+        String objId = tokenCorrente.getValore().toString(); //Obj_id
+        return new RemoveCommand(objId);
     }
 
 
     private Command parseMove() throws ParseException {
-        Token commandType = tokenCorrente;
+        boolean offset = tokenCorrente.getTipo().equals(TokenType.MVOFF);
         avanza();
-        Token objId = null;
-        if( tokenCorrente.getTipo() == TokenType.OBJ_ID){
-            objId = tokenCorrente;
-        }
+        Token objId = tokenCorrente;
         avanza();
-        expect(TokenType.TONDA_APERTA);
-        Token x = tokenCorrente;
-        avanza();
-        expect(TokenType.VIRGOLA);
-        Token y = tokenCorrente;
-        avanza();
-        expect(TokenType.TONDA_CHIUSA);
-        Posizione pos = new Posizione(x,y);
-        if( commandType.getTipo() == TokenType.MV ){
-            return new MoveCommand(objId, pos);
-        }else if( commandType.getTipo() == TokenType.MVOFF ){
-            return new MoveOffCommand(objId, pos);
-        } else{
-            throw new ParseException("");
-        }
+        Posizione pos= parsePosition();
+        return new MoveCommand(objId, pos, offset);
     }
 
 
     private Command parseScale() throws ParseException {
         expect(TokenType.SCALE);
-        Token objectId = null;
-        if( tokenCorrente.getTipo() == TokenType.OBJ_ID)
-            objectId = tokenCorrente;
+        Token objectId = tokenCorrente;
         avanza();
-        Token dim= null;
-        if( tokenCorrente.getTipo() == TokenType.POS_FLOAT)
-            dim = tokenCorrente;
+        Token dim= tokenCorrente;
         return new ScaleCommand(objectId, dim);
     }
 
@@ -184,11 +142,25 @@ public class CommandParser {
         return new PerimeterCommand(param);
     }
 
-    private void expect(TokenType tipo) throws ParseException {
+    private Posizione parsePosition() throws ParseException {
+        //Posizione : <pos>::=( <posfloat> , <posfloat> )
+        expect(TokenType.TONDA_APERTA);
+        String x = tokenCorrente.getValore().toString();
+        avanza();
+        expect(TokenType.VIRGOLA);
+        String y = tokenCorrente.getValore().toString();
+        avanza();
+        expect(TokenType.TONDA_CHIUSA);
+        Posizione pos = new Posizione(x,y);
+        return pos;
+    }
+
+    private boolean expect(TokenType tipo) throws ParseException {
         if( tokenCorrente == null || tokenCorrente.getTipo() != tipo ){
-            throw new ParseException("Token di tipo " + tipo + " previsto, ma trovato " + tokenCorrente);
+            throw new ParseException("Si aspetta un Token di tipo " + tipo + ", ma trovato " + tokenCorrente);
         }
         avanza();
+        return true;
     }
 
     private void avanza() {

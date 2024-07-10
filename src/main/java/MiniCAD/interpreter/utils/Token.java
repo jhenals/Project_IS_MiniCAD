@@ -1,4 +1,6 @@
-package MiniCAD.interpreter.lexerparser;
+package MiniCAD.interpreter.utils;
+
+import MiniCAD.interpreter.utils.TokenType;
 
 public class Token {
     private TokenType tipo;

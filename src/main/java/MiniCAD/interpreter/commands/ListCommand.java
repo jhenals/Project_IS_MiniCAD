@@ -1,7 +1,14 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.lexerparser.Token;
-import MiniCAD.interpreter.lexerparser.TokenType;
+import MiniCAD.interpreter.ObjectManager;
+import MiniCAD.interpreter.utils.Token;
+import MiniCAD.interpreter.utils.TokenType;
+import MiniCAD.util.GeneratoreId;
+import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
+
+import java.security.Key;
+import java.util.List;
+import java.util.Map;
 
 public class ListCommand implements Command{
     private Token parametro;
@@ -21,28 +28,64 @@ public class ListCommand implements Command{
     //TODO
     @Override
     public void interpreta() {
-        if( parametro.getTipo() == TokenType.OBJ_ID){
-            //visualizza le proprietà dell’oggetto identificato da id1 o l’elenco degli oggetti parte del gruppo identificato da id1
-        } else if (parametro.getTipo() == TokenType.CIRCLE) {
-            //visualizza l’elenco degli oggetti di tipo circle
-        } else if (parametro.getTipo() == TokenType.RECTANGLE) {
-            //visualizza l’elenco degli oggetti di tipo rectangle
-        } else if (parametro.getTipo() == TokenType.IMG) {
-            //visualizza l’elenco degli oggetti di tipo img
-        } else if (parametro.getTipo() == TokenType.ALL) {
-            //visualizza l’elenco degli oggetti di tipo circle
-        } else if (parametro.getTipo() == TokenType.GROUPS) {
-            //visualizza l’elenco di tutti i gruppi di oggetti
-        } else {
+        ObjectManager objectManager = ObjectManager.getInstance();
+
+        switch( parametro.getTipo() ){
+            case OBJ_ID -> {
+                GraphicObject object = objectManager.getObject(parametro.getValore().toString());
+                System.out.println("Oggetto con id " + parametro.getValore().toString());
+                System.out.println("Tipo:" + object.getType());
+                System.out.println("Dimensione" + object.getDimension());
+                System.out.println("Posizione corrente" + object.getPosition());
+            }
+            case CIRCLE -> {
+                List<GraphicObject> circles= objectManager.getObjectsByType("Circle");
+                StringBuilder sb= new StringBuilder();
+                sb.append("Oggetti di tipo CERCHIO:\n");
+                for( GraphicObject go : circles ){
+                    sb.append(objectManager.getKey(go) + " in posizione:" + go.getPosition().toString());
+                }
+            }
+
+            case RECTANGLE -> {
+                List<GraphicObject> rectangles= objectManager.getObjectsByType("Rectangle");
+                StringBuilder sb= new StringBuilder();
+                sb.append("Oggetti di tipo RETTANGOLO:\n");
+                for( GraphicObject go : rectangles ){
+                    sb.append(objectManager.getKey(go) + " in posizione:" + go.getPosition().toString());
+                }
+            }
+
+            case IMG -> {
+                List<GraphicObject> images= objectManager.getObjectsByType("Image");
+                StringBuilder sb= new StringBuilder();
+                sb.append("Oggetti di tipo IMMAGINE:\n");
+                for( GraphicObject go : images ){
+                    sb.append(objectManager.getKey(go) + " in posizione:" + go.getPosition().toString());
+                }
+            }
+
+            case ALL -> {
+                List<GraphicObject> allObjects= objectManager.getAllObjects();
+                StringBuilder sb= new StringBuilder();
+                sb.append("Elenco di tutti gli oggetti:\n");
+                for( GraphicObject go : allObjects ){
+                    sb.append(objectManager.getKey(go) + " in posizione:" + go.getPosition().toString());
+                }
+            }
+
+            case GROUPS -> {
+                if( objectManager.getAllGroupsKeys().isEmpty()){
+                    System.out.println("EMPTY");
+                }else{
+                    objectManager.groupsString();
+                }
+            }
+
+
         }
-
     }
 
-
-    @Override
-    public void undo() {
-
-    }
 
     @Override
     public String toString() {

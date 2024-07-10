@@ -1,4 +1,4 @@
-package MiniCAD.interpreter.lexerparser;
+package MiniCAD.interpreter.utils;
 
 public enum TokenType {
 

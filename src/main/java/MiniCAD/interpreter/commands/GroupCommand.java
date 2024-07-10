@@ -1,9 +1,6 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.lexerparser.Token;
-
-import java.util.ArrayList;
-import java.util.List;
+import MiniCAD.interpreter.utils.ListId;
 
 public class GroupCommand implements  Command{
     private ListId objectIds ;
@@ -29,10 +26,6 @@ public class GroupCommand implements  Command{
 
     }
 
-    @Override
-    public void undo() {
-
-    }
 
     @Override
     public String toString() {

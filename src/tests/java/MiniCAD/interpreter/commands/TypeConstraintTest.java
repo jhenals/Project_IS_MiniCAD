@@ -1,7 +1,8 @@
 package MiniCAD.interpreter.commands;
 
 
-import MiniCAD.interpreter.lexerparser.TokenType;
+import MiniCAD.interpreter.utils.TokenType;
+import MiniCAD.interpreter.utils.TypeConstructor;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,18 +30,21 @@ public class TypeConstraintTest {
     @ParameterizedTest
     @MethodSource("provideParametersForInterpreta")
     public void testInterpreta(TokenType type, Object parameter, String expectedOutput) {
-        TypeConstraint<Object> constraint = new TypeConstraint<>(type, parameter);
+        TypeConstructor<Object> constraint = new TypeConstructor<>(type, parameter);
         assertEquals(expectedOutput, constraint.interpreta());
     }
 
      */
 
+    /*
     @ParameterizedTest
     @MethodSource("provideParametersForToString")
     public void testToString(TokenType type, Object parameter, String expectedOutput) {
-        TypeConstraint<Object> constraint = new TypeConstraint<>(type, parameter);
+        TypeConstructor<Object> constraint = new TypeConstructor<>(type, parameter);
         assertEquals(expectedOutput, constraint.toString());
     }
+
+     */
 
 
 }

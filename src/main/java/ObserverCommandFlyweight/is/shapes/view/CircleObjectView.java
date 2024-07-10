@@ -16,6 +16,5 @@ public class CircleObjectView implements GraphicObjectView {
 		double x = position.getX() - r;
 		double y = position.getY() - r;
 		g.draw(new Ellipse2D.Double(x, y, r * 2.0, r * 2.0));
-
 	}
 }

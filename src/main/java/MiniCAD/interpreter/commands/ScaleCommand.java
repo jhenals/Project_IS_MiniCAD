@@ -1,6 +1,6 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.lexerparser.Token;
+import MiniCAD.interpreter.utils.Token;
 
 public class ScaleCommand implements  Command{
     private Token objectId;
@@ -32,10 +32,6 @@ public class ScaleCommand implements  Command{
 
     }
 
-    @Override
-    public void undo() {
-
-    }
 
     @Override
     public String toString() {

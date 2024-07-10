@@ -1,11 +1,10 @@
-package MiniCAD.interpreter.commands;
+package MiniCAD.interpreter.utils;
 
-import MiniCAD.interpreter.lexerparser.Token;
-import MiniCAD.interpreter.lexerparser.TokenType;
+import MiniCAD.interpreter.commands.Command;
 
 import java.util.List;
 
-public class ListId implements  Command{
+public class ListId {
     List<Token> ids;
 
     public ListId(List<Token> ids) {
@@ -27,14 +26,6 @@ public class ListId implements  Command{
             this.ids.add(t);
     }
 
-    @Override
-    public void interpreta() {
-    }
-
-    @Override
-    public void undo() {
-
-    }
 
     @Override
     public String toString() {

@@ -1,7 +1,7 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.lexerparser.Token;
-import MiniCAD.interpreter.lexerparser.TokenType;
+import MiniCAD.interpreter.utils.Token;
+import MiniCAD.interpreter.utils.TokenType;
 
 public class UngroupCommand implements  Command{
     private Token groupId;
@@ -27,10 +27,6 @@ public class UngroupCommand implements  Command{
         //TODO
     }
 
-    @Override
-    public void undo() {
-
-    }
 
     @Override
     public String toString() {

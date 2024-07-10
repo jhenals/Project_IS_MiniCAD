@@ -1,6 +1,6 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.lexerparser.Token;
+import MiniCAD.interpreter.utils.Token;
 
 public class PerimeterCommand implements  Command{
     private Token param;
@@ -29,10 +29,6 @@ public class PerimeterCommand implements  Command{
                 '}';
     }
 
-    @Override
-    public void undo() {
-
-    }
 
 
 }

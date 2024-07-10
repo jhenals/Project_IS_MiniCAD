@@ -1,5 +1,7 @@
 package MiniCAD.interpreter.commands;
 
+import MiniCAD.interpreter.ObjectManager;
+
 public class RemoveCommand implements Command {
     private String id;
     public RemoveCommand(String id) {
@@ -8,15 +10,11 @@ public class RemoveCommand implements Command {
 
     @Override
     public void interpreta() {
-        System.out.println("Cancellato oggetto con id "+ id);
-
-        //DELETE LOGIC here
+        ObjectManager objectManager= ObjectManager.getInstance();
+        objectManager.removeObject(id);
+        System.out.println("Rimosso oggetto con id: "+ id);
     }
 
-    @Override
-    public void undo() {
-
-    }
 
 
     @Override
