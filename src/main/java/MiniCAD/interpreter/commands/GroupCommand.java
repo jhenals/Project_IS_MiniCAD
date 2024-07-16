@@ -30,7 +30,8 @@ public class GroupCommand implements  Command{
     }
 
     @Override
-    public void interpreta() {
+    public String interpreta() {
+        String res = "";
         ObjectManager objectManager = ObjectManager.getInstance();
 
         String grpId = GeneratoreId.generaIdGruppo();
@@ -46,7 +47,7 @@ public class GroupCommand implements  Command{
 
         objectManager.addGroup(grpId, objectIds);
         objectManager.addObject(grpId, groupObject);
-        System.out.println("gruppo creato con id=" + grpId);
+        return grpId;
         /*
         StringBuilder sb = new StringBuilder();
         System.out.println("Oggeti nel gruppo: ");

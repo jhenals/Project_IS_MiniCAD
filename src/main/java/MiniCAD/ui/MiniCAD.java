@@ -1,7 +1,6 @@
 package MiniCAD.ui;
 import MiniCAD.controllers.MiniCADController;
 import ObserverCommandFlyweight.is.command.HistoryCommandHandler;
-import ObserverCommandFlyweight.is.shapes.controller.GraphicObjectController;
 import ObserverCommandFlyweight.is.shapes.model.*;
 import ObserverCommandFlyweight.is.shapes.view.*;
 
@@ -36,7 +35,7 @@ public class MiniCAD {
         gpanel.installView(CircleObject.class, new CircleObjectView());
         gpanel.installView(ImageObject.class, new ImageObjectView());
 
-        AbstractGraphicObject go = new RectangleObject(new Point(180, 80), 20, 50);
+        AbstractGraphicObject go = new RectangleObject(new Point(0, 0), 20, 50);
 
         JButton rectButton = new JButton(new CreateObjectAction(go, gpanel, handler));
         rectButton.setText(go.getType());

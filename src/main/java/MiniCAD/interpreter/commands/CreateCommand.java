@@ -28,9 +28,10 @@ public class CreateCommand implements Command {
 
 
     @Override
-    public void interpreta() {
+    public String interpreta() {
+        String res= "";
         ObjectManager objectManager= ObjectManager.getInstance();
-        GraphicObject object = null;
+        GraphicObject object;
         if( typeConstructor instanceof TypeConstructor.CircleConstructor){
             object = new CircleObject( getPosizione(), ((TypeConstructor.CircleConstructor) typeConstructor).getRaggio());
         } else if ( typeConstructor instanceof TypeConstructor.RectangleConstuctor){
@@ -48,8 +49,9 @@ public class CreateCommand implements Command {
         if( object != null) {
             String objectId = GeneratoreId.generaId();
             objectManager.addObject(objectId, object);
-            System.out.println(objectId);
+            res =  objectId;
         }
+        return res;
     }
 
 }

@@ -28,29 +28,31 @@ public class AreaCommand implements  Command {
 
 
     @Override
-    public void interpreta() {
+    public String interpreta() {
+        String res = "";
         switch (param.getTipo()){
             case OBJ_ID -> {
                 Double area= calcolaAreaDellOggetto(param.getValore().toString());
-                System.out.println("Area dell'oggetto con id="+ param.getValore().toString() + ": "+ Util.formatDouble(area));
+                res = "Area dell'oggetto con id="+ param.getValore().toString() + ": "+ Util.formatDouble(area);
             }
             case GRP_ID -> {
                 Double area = calcolaAreaDelGruppo(param.getValore().toString());
-                System.out.println("Area del gruppo con id="+ param.getValore().toString()+ ": " +Util.formatDouble(area));
+                res =  "Area del gruppo con id="+ param.getValore().toString()+ ": " +Util.formatDouble(area);
             }
             case CIRCLE -> {
                 Double area= calcolaAreaDiTuttiCerchi();
-                System.out.println("Area totale di tutti i cerchi: "+Util.formatDouble(area));
+                res =  "Area totale di tutti i cerchi: "+Util.formatDouble(area);
             }
             case RECTANGLE -> {
                 Double area= calcolaAreaDiTuttiRettangoli();
-                System.out.println("Area totale di tutti i rettangoli: "+Util.formatDouble(area));
+                res = "Area totale di tutti i rettangoli: "+Util.formatDouble(area);
             }
             case ALL -> {
                 Double area= calcolaAreaTotaleDiTuttiOggetti();
-                System.out.println("Area totale di tutti gli oggetti: "+ Util.formatDouble(area));
+                res = "Area totale di tutti gli oggetti: "+ Util.formatDouble(area);
             }
         }
+        return res;
     }
 
     private Double calcolaAreaTotaleDiTuttiOggetti() {

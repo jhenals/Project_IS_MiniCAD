@@ -24,17 +24,18 @@ public class UngroupCommand implements  Command{
     }
 
     @Override
-    public void interpreta() {
+    public String interpreta() {
+        String res = "";
         ObjectManager objectManager = ObjectManager.getInstance();
         String gid = groupId.getValore().toString();
         if( objectManager.getAllGroupIds().contains(gid) ){
             objectManager.unGroup(gid);
             objectManager.removeObject(gid);
-            System.out.println("Gruppo con id=" + gid + " è stato rimosso.");
+            res = "Gruppo con id=" + gid + " è stato rimosso.";
         }else{
-            System.out.println("Gruppo con id=" + gid + " è inesistente.");
+            res = "Gruppo con id=" + gid + " è inesistente.";
         }
-
+        return res;
     }
 
 

@@ -11,22 +11,23 @@ public class RemoveCommand implements Command {
     }
 
     @Override
-    public void interpreta() {
+    public String interpreta() {
+        String res = "";
         ObjectManager objectManager= ObjectManager.getInstance();
         if( id.getTipo() == TokenType.OBJ_ID ){
             objectManager.removeObject(id.getValore().toString());
-            System.out.println("Rimosso oggetto con id: "+ id);
+            res = "Rimosso oggetto con id: "+ id;
         }else if( id.getTipo()== TokenType.GRP_ID){
             for( String objId : objectManager.getObjectIDsOfGroup(id.getValore().toString())){
                 objectManager.removeObject(objId);
             }
             objectManager.removeObject(id.getValore().toString());
             objectManager.unGroup(id.getValore().toString());
-            System.out.println("Rimosso oggetto con id: "+ id);
+            res ="Rimosso oggetto con id: "+ id;
         }else{
-            System.out.println("Oggetto con id= " + id.getValore().toString() + " non trovato.");
+            res = "Oggetto con id= " + id.getValore().toString() + " non trovato.";
         }
-
+        return res;
     }
 
 

@@ -41,7 +41,8 @@ public class MoveCommand implements  Command{
         return p;
     }
     @Override
-    public void interpreta() {
+    public String interpreta() {
+        String res = "";
         ObjectManager objectManager = ObjectManager.getInstance();
         GraphicObject object = objectManager.getObjectbyId(objectId.getValore().toString());
 
@@ -50,18 +51,18 @@ public class MoveCommand implements  Command{
                 Double newX = object.getPosition().getX() + Double.parseDouble(Float.toString(posizione.getParam1()));
                 Double newY = object.getPosition().getY() +  Double.parseDouble(Float.toString(posizione.getParam2()));
                 object.moveTo(newX, newY);
-                System.out.println( "Oggetto con id=" + getObjectId().getValore() + " viene spostato da " + getPosizione() + " a (" +
-                        String.format("%.2f", newX) + ";"+ String.format("%.2f", newY) + ")");
+                res = "Oggetto con id=" + getObjectId().getValore() + " viene spostato da " + getPosizione() + " a (" +
+                        String.format("%.2f", newX) + ";"+ String.format("%.2f", newY) + ")";
             }else{
                 object.moveTo(parsePosizione());
-                System.out.println("Oggetto con id " + getObjectId().getValore() + " viene spostato " +
-                        " alla posizione " + getPosizione() );
+                res = "Oggetto con id " + getObjectId().getValore() + " viene spostato " +
+                        " alla posizione " + getPosizione() ;
 
             }
         } else {
-            System.out.println("Oggetto con ID "+ objectId.getValore().toString() + " non trovato");
+            res= "Oggetto con ID "+ objectId.getValore().toString() + " non trovato";
         }
-
+        return res;
     }
 
 

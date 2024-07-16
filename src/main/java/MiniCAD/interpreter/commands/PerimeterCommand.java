@@ -26,29 +26,31 @@ public class PerimeterCommand implements  Command{
     }
 
     @Override
-    public void interpreta() {
+    public String interpreta() {
+        String res = "";
         switch (param.getTipo()){
             case OBJ_ID -> {
                 Double perim= calcolaPerimetroDellOggetto(param.getValore().toString());
-                System.out.println("Perimetro dell'oggetto con id="+ param.getValore().toString()+ ": "+ Util.formatDouble(perim));
+                res = "Perimetro dell'oggetto con id="+ param.getValore().toString()+ ": "+ Util.formatDouble(perim);
             }
             case GRP_ID -> {
                 Double perim= calcolaPerimetroDelGruppo(param.getValore().toString());
-                System.out.println("Perimetro del gruppo con id="+ param.getValore().toString()+ ": "+ Util.formatDouble(perim));
+                res = "Perimetro del gruppo con id="+ param.getValore().toString()+ ": "+ Util.formatDouble(perim);
             }
             case CIRCLE -> {
                 Double perim= calcolaPerimetroDiTuttiCerchi();
-                System.out.println("Circonferenza totale di tutti i cerchi: "+ Util.formatDouble(perim));
+                res = "Circonferenza totale di tutti i cerchi: "+ Util.formatDouble(perim);
             }
             case RECTANGLE -> {
                 Double perim= calcolaPerimetroDiTuttiRettangoli();
-                System.out.println("Perimetro totale di tutti i rettangoli: "+ Util.formatDouble(perim));
+                res = "Perimetro totale di tutti i rettangoli: "+ Util.formatDouble(perim);
             }
             case ALL -> {
                 Double perim= calcolaPerimetroTotaleDiTuttiOggetti();
-                System.out.println("Perimetro totale: "+ Util.formatDouble(perim));
+                res = "Perimetro totale: "+ Util.formatDouble(perim);
             }
         }
+        return res;
     }
 
     private Double calcolaPerimetroDelGruppo(String gid) {

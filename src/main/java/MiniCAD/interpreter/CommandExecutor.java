@@ -37,10 +37,7 @@ public class CommandExecutor {
         String areaCommandInput2 = "area all";
         String areaCommandInput3 = "area gid4";
 
-
         String perimeterCommandInput1 = "perimeter circle";
-
-
 
         try{
             CommandParser parser = new CommandParser();
@@ -54,37 +51,20 @@ public class CommandExecutor {
             Command createCommand3 = parser.parseCommand(createCommandInput3);
             createCommand3.interpreta();
 
-            /*
-            Command listCommand1 = parser.parseCommand(listCommandInput1);
-            listCommand1.interpreta();
-
-            Command listCommand2 = parser.parseCommand(listCommandInput2);
-            listCommand2.interpreta();
-
-            Command moveCommand = parser.parseCommand(moveCommandInpt);
-            moveCommand.interpreta();
-
-            Command scaleCommand = parser.parseCommand(scaleCommandInput2);
-            scaleCommand.interpreta();
-
-             */
-
             Command grpCommand1 = parser.parseCommand(grpCommandInput);
             grpCommand1.interpreta();
 
             Command grpCommand2 = parser.parseCommand(grpCommandInput2);
             grpCommand2.interpreta();
 
-
             /*
-            Command ungrpCommand = parser.parseCommand(ungrpCommandInput);
-            ungrpCommand.interpreta();
 
 
-            Command delCommand = parser.parseCommand(delCommandInput);
-            delCommand.interpreta();
+            Command listCommand2 = parser.parseCommand(listCommandInput2);
+            listCommand2.interpreta();
 
              */
+
 
             Command areaCommand1 = parser.parseCommand(areaCommandInput1);
             areaCommand1.interpreta();
@@ -99,9 +79,29 @@ public class CommandExecutor {
             perimCommand1.interpreta();
 
             /*
-            System.out.println(objMngr.toString());
+            Command ungrpCommand = parser.parseCommand(ungrpCommandInput);
+            ungrpCommand.interpreta();
+
+            Command delCommand = parser.parseCommand(delCommandInput);
+            delCommand.interpreta();
 
              */
+            Command moveCommand = parser.parseCommand(moveCommandInput1);
+            moveCommand.interpreta();
+
+            Command moveCommand2 = parser.parseCommand(moveCommandInput2);
+            moveCommand2.interpreta();
+
+            Command scaleCommand = parser.parseCommand(scaleCommandInput1);
+            scaleCommand.interpreta();
+
+            Command listCommand1 = parser.parseCommand(listCommandInput2);
+            listCommand1.interpreta();
+
+
+            System.out.println(objMngr.toString());
+
+
 
 
         } catch (IOException e) {
