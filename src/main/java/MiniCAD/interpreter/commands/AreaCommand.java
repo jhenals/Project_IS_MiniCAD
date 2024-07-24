@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class AreaCommand implements  Command {
     private Token param;
-    ObjectManager objectManager = ObjectManager.getInstance();
+    private ObjectManager objectManager = ObjectManager.getInstance();
 
 
     public AreaCommand(Token param) {
@@ -52,6 +52,7 @@ public class AreaCommand implements  Command {
                 res = "Area totale di tutti gli oggetti: "+ Util.formatDouble(area);
             }
         }
+        System.out.println(res);
         return res;
     }
 
@@ -106,7 +107,6 @@ public class AreaCommand implements  Command {
         }
         return a;
     }
-
 
     @Override
     public String toString() {

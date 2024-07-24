@@ -35,6 +35,7 @@ public class UngroupCommand implements  Command{
         }else{
             res = "Gruppo con id=" + gid + " è inesistente.";
         }
+        System.out.println(res);
         return res;
     }
 

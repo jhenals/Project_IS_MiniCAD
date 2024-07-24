@@ -13,6 +13,7 @@ public class CommandExecutor {
         String createCommandInput1 = "new circle (5.0) (3.1,4.5)";
         String createCommandInput2 = "new circle (3.0) (6.1,9.5)";
         String createCommandInput3 = "new img (“./pippo.png”) (6.1,4.6)";
+        String createCommandInput4 = "new rectangle (4.0,5.0) (3.1,4.5)";
 
         String delCommandInput ="del id1";
         String delCommandInput2 = "del gid4";
@@ -23,7 +24,7 @@ public class CommandExecutor {
         String scaleCommandInput1 = "scale id1 2.0";
         String scaleCommandInput2 = "scale gid4 2.0";
 
-        String listCommandInput1 = "ls id1";
+        String listCommandInput1 = "ls id0";
         String listCommandInput2 = "ls Circle";
         String listCommandInput3 = "ls all";
         String listCommandInput4 = "ls groups";
@@ -42,6 +43,14 @@ public class CommandExecutor {
         try{
             CommandParser parser = new CommandParser();
 
+            Command createRect = parser.parseCommand(createCommandInput4);
+            System.out.println(createRect.interpreta());
+
+            Command listResct = parser.parseCommand(listCommandInput1);
+            System.out.println(listResct.interpreta());
+
+
+            /*
             Command createCommand1 = parser.parseCommand(createCommandInput1);
             createCommand1.interpreta();
 
@@ -63,7 +72,7 @@ public class CommandExecutor {
             Command listCommand2 = parser.parseCommand(listCommandInput2);
             listCommand2.interpreta();
 
-             */
+
 
 
             Command areaCommand1 = parser.parseCommand(areaCommandInput1);
@@ -85,7 +94,7 @@ public class CommandExecutor {
             Command delCommand = parser.parseCommand(delCommandInput);
             delCommand.interpreta();
 
-             */
+
             Command moveCommand = parser.parseCommand(moveCommandInput1);
             moveCommand.interpreta();
 
@@ -97,6 +106,8 @@ public class CommandExecutor {
 
             Command listCommand1 = parser.parseCommand(listCommandInput2);
             listCommand1.interpreta();
+
+             */
 
 
             System.out.println(objMngr.toString());

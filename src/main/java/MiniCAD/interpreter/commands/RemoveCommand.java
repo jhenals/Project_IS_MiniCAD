@@ -23,10 +23,11 @@ public class RemoveCommand implements Command {
             }
             objectManager.removeObject(id.getValore().toString());
             objectManager.unGroup(id.getValore().toString());
-            res ="Rimosso oggetto con id: "+ id;
+            res ="Rimosso oggetto con id: "+ id.getValore().toString();
         }else{
             res = "Oggetto con id= " + id.getValore().toString() + " non trovato.";
         }
+        System.out.println(res);
         return res;
     }
 

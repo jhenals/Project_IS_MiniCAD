@@ -50,6 +50,7 @@ public class PerimeterCommand implements  Command{
                 res = "Perimetro totale: "+ Util.formatDouble(perim);
             }
         }
+        System.out.println(res);
         return res;
     }
 

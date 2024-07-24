@@ -36,10 +36,11 @@ public class ScaleCommand implements  Command{
         GraphicObject object = objectManager.getObjectbyId(objectId.getValore().toString());
         if( object != null ){
             object.scale(getScaleFactor());
-            res = "Oggetto con id="+ objectId.getValore().toString() + " viene ridimensionato con un fattore di scale pari a " + getScaleFactor();
+            res = "Oggetto con id="+ objectId.getValore().toString() + " viene ridimensionato con un fattore di scala pari a " + getScaleFactor()+". Nuova dimensione="+ object.getDimension().toString();
         }else{
             res = "Oggetto con id="+objectId+" non trovato.";
         }
+        System.out.println(res);
         return res;
     }
 

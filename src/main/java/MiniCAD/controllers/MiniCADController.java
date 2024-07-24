@@ -1,5 +1,9 @@
 package MiniCAD.controllers;
 
+import MiniCAD.exceptions.ParseException;
+import MiniCAD.interpreter.ObjectManager;
+import MiniCAD.interpreter.commands.Command;
+import MiniCAD.interpreter.lexerparser.CommandParser;
 import MiniCAD.util.NumericDocumentFilter;
 import ObserverCommandFlyweight.is.command.CommandHandler;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
@@ -7,9 +11,11 @@ import ObserverCommandFlyweight.is.shapes.specificcommand.MoveCommand;
 import ObserverCommandFlyweight.is.shapes.specificcommand.ZoomCommand;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.IOException;
 import java.io.Serial;
 
 public class MiniCADController extends JPanel {
@@ -20,6 +26,7 @@ public class MiniCADController extends JPanel {
     static final int offset = 10;
     static final double zoom_factor= 0.1;
 
+    private ObjectManager objectManager = ObjectManager.getInstance();
 
     public void setControlledObject(GraphicObject go) { subject = go; }
     public MiniCADController(CommandHandler cmdH) {
@@ -160,7 +167,6 @@ public class MiniCADController extends JPanel {
         return zoomMovePanel;
     }
 
-
     private JPanel moveOffPanel() {
 
         JTextField  newXAxisField = new JTextField();
@@ -198,6 +204,16 @@ public class MiniCADController extends JPanel {
         JButton ungroupButton = new JButton("Ungroup");
         JButton viewProperty = new JButton("View Property");
 
+        viewProperty.addActionListener(e -> {
+            try {
+                updatePropertiesViewer();
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         JMenuBar menuBar = new JMenuBar();
         JMenu advancePropertyMenu = new JMenu("Advance View");
         JMenuItem imgItem = new JMenuItem("View all images");
@@ -210,7 +226,6 @@ public class MiniCADController extends JPanel {
         lineItem.addActionListener(e -> currentAction = "Line");
         rectItem.addActionListener(e -> currentAction = "Rectangle");
         circleItem.addActionListener(e -> currentAction = "Circle");
-
          */
 
         advancePropertyMenu.add(imgItem);
@@ -251,10 +266,24 @@ public class MiniCADController extends JPanel {
         return cmdButtonsPanel;
     }
 
+    private void updatePropertiesViewer() throws ParseException, IOException {
+        if(subject != null ){
+            JTextArea propertiesArea = propertiesViewer();
+            propertiesArea.setText(getPropertiesAsString(subject));
+        }
+    }
+
+    private String getPropertiesAsString(GraphicObject subject) throws ParseException, IOException {
+        CommandParser parser = new CommandParser();
+        String objId = objectManager.getIdByObject(subject);
+        Command listPropCommand = parser.parseCommand("ls "+ objId);
+        return listPropCommand.interpreta();
+    }
+
 
     private JPanel geomOperationsPanel() {
-        JPanel areaPerim = new JPanel(new GridBagLayout());
-        GridBagConstraints c= new GridBagConstraints();
+        JPanel areaPerim = new JPanel();
+        areaPerim.setPreferredSize(new Dimension(280,115));
 
         areaPerim.setBorder(BorderFactory.createTitledBorder("Operations"));
         JButton area = new JButton("Area");
@@ -290,21 +319,15 @@ public class MiniCADController extends JPanel {
 
          */
 
-        c.gridx=0;
-        c.gridy=0;
-        areaPerim.add(area,c);
 
-        c.gridx=1;
-        c.gridy=0;
-        areaPerim.add(perimeter,c);
+        areaPerim.add(area);
+        areaPerim.add(perimeter);
 
-        c.gridx=0;
-        c.gridy=1;
-        c.fill= GridBagConstraints.HORIZONTAL;
-        areaPerim.add(new JLabel("Extended Operations"),c );
+        JPanel extOps = new JPanel();
+        extOps.add(areaMenuBar);
+        extOps.add(perimMenuBar);
 
-        areaPerim.add(areaMenuBar);
-        areaPerim.add(perimMenuBar);
+        areaPerim.add(extOps);
 
         return areaPerim;
     }

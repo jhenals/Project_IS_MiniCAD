@@ -1,5 +1,9 @@
 package MiniCAD.ui;
 import MiniCAD.controllers.MiniCADController;
+import MiniCAD.exceptions.ParseException;
+import MiniCAD.interpreter.ObjectManager;
+import MiniCAD.interpreter.commands.Command;
+import MiniCAD.interpreter.lexerparser.CommandParser;
 import ObserverCommandFlyweight.is.command.HistoryCommandHandler;
 import ObserverCommandFlyweight.is.shapes.model.*;
 import ObserverCommandFlyweight.is.shapes.view.*;
@@ -8,11 +12,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 
 public class MiniCAD {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException, IOException {
+        ObjectManager objectManager = ObjectManager.getInstance();
+        CommandParser parser = new CommandParser();
+
         JFrame f = new JFrame();
 
         JToolBar toolbar = new JToolBar();
@@ -46,16 +54,40 @@ public class MiniCAD {
         circButton.setText(go.getType());
         toolbar.add(circButton);
 
+        /*
         go = new CircleObject(new Point(200, 100), 100);
         JButton circButton2 = new JButton(new CreateObjectAction(go, gpanel, handler));
         circButton2.setText("big " + go.getType());
         toolbar.add(circButton2);
+
+          String com = "new rectangle ("+go.getDimension().getHeight()+","+go.getDimension().getWidth()+") ("+go.getPosition().getX()+","+go.getPosition().getY()+")";
+        switch (go.getType()){
+            case "Rectangle" ->{
+                com = "new rectangle ("+go.getDimension()+") ("+go.getPosition();
+            }
+            case  "Circle" ->{
+                CircleObject circ = (CircleObject) go;
+                com = "new circle ("+circ.getRadius()+") ("+ circ.getPosition()+")";
+            }
+            case "Image" ->{
+                ImageObject img = (ImageObject) go;
+                com = "new img (\"NyaNya.gif\") "+ img.getPosition();
+            }
+        }
+
+        Command createCommand = parser.parseCommand(com);
+        String objId = createCommand.interpreta();
+        objectManager.addObject(objId, go);
+
+         */
 
         go = new ImageObject(new ImageIcon(MiniCAD.class.getResource("NyaNya.gif")),
                 new Point(240, 187));
         JButton imgButton = new JButton(new CreateObjectAction(go, gpanel, handler));
         imgButton.setText(go.getType());
         toolbar.add(imgButton);
+
+
 
         final MiniCADController goc = new MiniCADController(handler);
 

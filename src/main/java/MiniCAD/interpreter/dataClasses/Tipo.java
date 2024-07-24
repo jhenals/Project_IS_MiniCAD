@@ -2,7 +2,7 @@ package MiniCAD.interpreter.dataClasses;
 
 import MiniCAD.interpreter.commands.Command;
 
-public class Tipo implements Command {
+public class Tipo{
     private Token oggetto;
 
     public Tipo(Token oggetto) {
@@ -15,11 +15,6 @@ public class Tipo implements Command {
 
     public void setOggetto(Token oggetto) {
         this.oggetto = oggetto;
-    }
-
-    @Override
-    public void interpreta() {
-
     }
 
 

@@ -6,13 +6,8 @@ import MiniCAD.interpreter.dataClasses.ListId;
 import MiniCAD.interpreter.dataClasses.Token;
 import MiniCAD.interpreter.dataClasses.TokenType;
 import MiniCAD.util.GeneratoreId;
-import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class GroupCommand implements  Command{
     private ListId ids ;
@@ -47,17 +42,8 @@ public class GroupCommand implements  Command{
 
         objectManager.addGroup(grpId, objectIds);
         objectManager.addObject(grpId, groupObject);
+        System.out.println(grpId);
         return grpId;
-        /*
-        StringBuilder sb = new StringBuilder();
-        System.out.println("Oggeti nel gruppo: ");
-        for(Map.Entry<String, GraphicObject> entry : objectManager.getObjectsOfGroup(grpId).entrySet()  ){
-            sb.append(" ").append(entry.getKey()).append(":").append(entry.getValue().getType()).append("\n");
-        }
-        System.out.println(sb.toString());
-
-         */
-
     }
 
 

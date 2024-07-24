@@ -2,6 +2,7 @@ package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.ObjectManager;
 import MiniCAD.interpreter.dataClasses.Token;
+import MiniCAD.util.Util;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
@@ -40,9 +41,20 @@ public class ListCommand implements Command{
                     if( object.getType().equals("Circle")){
                         sb.append(" Raggio: " + ((CircleObject)object).getRadius() +"\n");
                     }else{
-                        sb.append(" Dimensione: " + object.getDimension()+"\n");
+                        sb.append(" Dimensione: " + Util.formatDouble(object.getDimension().getWidth())+","+ Util.formatDouble(object.getDimension().getHeight())+"\n");
                     }
-                    sb.append(" Posizione corrente: " + stampaPosizione(object));
+                    sb.append(" Posizione corrente: " + Util.formatDouble(object.getPosition().getX())+","+ Util.formatDouble(object.getPosition().getY()));
+                }
+            }
+            case GRP_ID -> {
+                if (objectManager.getObjectbyId(parametro.getValore().toString()) == null) {
+                    res = "Gruppo non esiste";
+                } else {
+                    GraphicObject object = objectManager.getObjectbyId(parametro.getValore().toString());
+                    sb.append("Proprietà del gruppo con id=" + parametro.getValore().toString() +"\n");
+                    sb.append(" Tipo: " + object.getType()+"\n");
+                    sb.append(" Posizione corrente: " + Util.formatDouble(object.getPosition().getX())+","+Util.formatDouble(object.getPosition().getY())+"\n");
+                    sb.append(" Oggetti:" + objectManager.getObjectIDsOfGroup(parametro.getValore().toString()));
                 }
             }
             case CIRCLE -> {
@@ -67,7 +79,6 @@ public class ListCommand implements Command{
                         sb.append(" " + objectManager.getIdByObject(go) + " in posizione:" + stampaPosizione(go) +"\n");
                     }
                 }
-                System.out.println(sb.toString());
             }
 
             case IMG -> {
@@ -80,7 +91,6 @@ public class ListCommand implements Command{
                         sb.append(" " + objectManager.getIdByObject(go) + " in posizione:" + stampaPosizione(go) + "\n");
                     }
                 }
-                System.out.println(sb.toString());
             }
 
             case ALL -> {
@@ -93,17 +103,17 @@ public class ListCommand implements Command{
                         sb.append(" " + objectManager.getIdByObject(go) + " in posizione:" + stampaPosizione(go) + "\n");
                     }
                 }
-                System.out.println(sb.toString());
             }
 
             case GROUPS -> {
                 if( objectManager.getAllGroupIds().isEmpty()){
                     System.out.println("EMPTY");
                 }else{
-                    objectManager.stampaGruppi();
+                    sb.append(objectManager.stampaGruppi());
                 }
             }
         }
+        System.out.println(sb.toString());
         return sb.toString();
     }
 

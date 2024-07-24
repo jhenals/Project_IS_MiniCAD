@@ -62,6 +62,7 @@ public class MoveCommand implements  Command{
         } else {
             res= "Oggetto con ID "+ objectId.getValore().toString() + " non trovato";
         }
+        System.out.println(res);
         return res;
     }
 

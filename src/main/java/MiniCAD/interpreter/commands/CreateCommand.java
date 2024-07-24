@@ -11,9 +11,10 @@ import ObserverCommandFlyweight.is.shapes.model.RectangleObject;
 import javax.swing.*;
 import java.awt.geom.Point2D;
 
-public class CreateCommand implements Command {
+public class CreateCommand implements UndoableCommand {
     protected TypeConstructor typeConstructor;
     protected Posizione posizione;
+    private String objId;
 
     public CreateCommand(TypeConstructor tc, Posizione pos) {
         typeConstructor = tc;
@@ -29,7 +30,6 @@ public class CreateCommand implements Command {
 
     @Override
     public String interpreta() {
-        String res= "";
         ObjectManager objectManager= ObjectManager.getInstance();
         GraphicObject object;
         if( typeConstructor instanceof TypeConstructor.CircleConstructor){
@@ -49,9 +49,16 @@ public class CreateCommand implements Command {
         if( object != null) {
             String objectId = GeneratoreId.generaId();
             objectManager.addObject(objectId, object);
-            res =  objectId;
+            objId  =  objectId;
         }
-        return res;
+        System.out.println(objId);
+        return objId;
     }
 
+    @Override
+    public boolean undo() {
+        ObjectManager.getInstance().removeObject(objId);
+        System.out.println("Rimosso oggetto con id=" + objId);
+        return true;
+    }
 }
