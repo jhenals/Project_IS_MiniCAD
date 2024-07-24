@@ -13,20 +13,8 @@ public class ScaleCommand implements  Command{
         this.scaleFactor = scaleFactor;
     }
 
-    public Token getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(Token objectId) {
-        this.objectId = objectId;
-    }
-
     public Float getScaleFactor() {
         return Float.parseFloat(scaleFactor.getValore().toString());
-    }
-
-    public void setScaleFactor(Token sf) {
-        scaleFactor = sf;
     }
 
     @Override

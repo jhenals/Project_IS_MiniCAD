@@ -15,14 +15,6 @@ public class UngroupCommand implements  Command{
         }
     }
 
-    public Token getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Token groupId) {
-        this.groupId = groupId;
-    }
-
     @Override
     public String interpreta() {
         String res = "";

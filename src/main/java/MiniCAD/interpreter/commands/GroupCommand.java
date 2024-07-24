@@ -16,14 +16,6 @@ public class GroupCommand implements  Command{
         ids=listId;
     }
 
-    public ListId getObjectIds() {
-        return ids;
-    }
-
-    public void setObjectIds(ListId objectIds) {
-        this.ids = ids;
-    }
-
     @Override
     public String interpreta() {
         String res = "";

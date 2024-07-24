@@ -18,14 +18,6 @@ public class AreaCommand implements  Command {
         this.param = param;
     }
 
-    public Token getParam() {
-        return param;
-    }
-
-    public void setParam(Token param) {
-        this.param = param;
-    }
-
 
     @Override
     public String interpreta() {

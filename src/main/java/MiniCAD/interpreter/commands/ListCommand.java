@@ -15,15 +15,7 @@ public class ListCommand implements Command{
         this.parametro = parametro;
     }
 
-    public Token getParametro() {
-        return parametro;
-    }
 
-    public void setParametro(Token parametro) {
-        this.parametro = parametro;
-    }
-
-    //TODO
     @Override
     public String interpreta() {
         String res = "";
@@ -41,9 +33,9 @@ public class ListCommand implements Command{
                     if( object.getType().equals("Circle")){
                         sb.append(" Raggio: " + ((CircleObject)object).getRadius() +"\n");
                     }else{
-                        sb.append(" Dimensione: " + Util.formatDouble(object.getDimension().getWidth())+","+ Util.formatDouble(object.getDimension().getHeight())+"\n");
+                        sb.append(" Dimensione: base=" + Util.formatDouble(object.getDimension().getWidth())+" altezza="+ Util.formatDouble(object.getDimension().getHeight())+"\n");
                     }
-                    sb.append(" Posizione corrente: " + Util.formatDouble(object.getPosition().getX())+","+ Util.formatDouble(object.getPosition().getY()));
+                    sb.append(" Posizione corrente: "+ stampaPosizione(object));
                 }
             }
             case GRP_ID -> {
@@ -53,7 +45,7 @@ public class ListCommand implements Command{
                     GraphicObject object = objectManager.getObjectbyId(parametro.getValore().toString());
                     sb.append("Proprietà del gruppo con id=" + parametro.getValore().toString() +"\n");
                     sb.append(" Tipo: " + object.getType()+"\n");
-                    sb.append(" Posizione corrente: " + Util.formatDouble(object.getPosition().getX())+","+Util.formatDouble(object.getPosition().getY())+"\n");
+                    sb.append(" Posizione corrente del gruppo: " + stampaPosizione(object)+  "\n");
                     sb.append(" Oggetti:" + objectManager.getObjectIDsOfGroup(parametro.getValore().toString()));
                 }
             }

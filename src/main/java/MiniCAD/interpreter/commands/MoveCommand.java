@@ -22,17 +22,10 @@ public class MoveCommand implements  Command{
         return objectId;
     }
 
-    public void setObjectId(Token objectId) {
-        this.objectId = objectId;
-    }
-
     public Posizione getPosizione() {
         return posizione;
     }
 
-    public void setPosizione(Posizione posizione) {
-        this.posizione = posizione;
-    }
 
     public Point2D parsePosizione(){
         Double x = Double.parseDouble(Float.toString(posizione.getParam1()));
