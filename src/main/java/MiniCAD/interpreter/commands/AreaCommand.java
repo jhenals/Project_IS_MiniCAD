@@ -1,7 +1,7 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.dataClasses.Token;
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.utilExpr.Token;
 import MiniCAD.util.Util;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
@@ -9,10 +9,8 @@ import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import java.util.List;
 import java.util.Map;
 
-public class AreaCommand implements  Command {
+public class AreaCommand implements CommandIF {
     private Token param;
-    private ObjectManager objectManager = ObjectManager.getInstance();
-
 
     public AreaCommand(Token param) {
         this.param = param;
@@ -20,27 +18,29 @@ public class AreaCommand implements  Command {
 
 
     @Override
-    public String interpreta() {
+    public String interpreta(Context context) {
         String res = "";
+        String idStr = param.interpreta(context);
         switch (param.getTipo()){
             case OBJ_ID -> {
-                Double area= calcolaAreaDellOggetto(param.getValore().toString());
-                res = "Area dell'oggetto con id="+ param.getValore().toString() + ": "+ Util.formatDouble(area);
-            }
-            case GRP_ID -> {
-                Double area = calcolaAreaDelGruppo(param.getValore().toString());
-                res =  "Area del gruppo con id="+ param.getValore().toString()+ ": " +Util.formatDouble(area);
+                if(context.getObjectTypeById(idStr) == "Group"){
+                    Double perim = calcolaAreaDelGruppo(context, param.interpreta(context));
+                    res =  "Area del gruppo con id="+ param.getValore().toString()+ ": " +Util.formatDouble(perim);
+                }else {
+                    Double perim = calcolaAreaDellOggetto(context, param.interpreta(context));
+                    res = "Area dell'oggetto con id=" + param.getValore().toString() + ": " + Util.formatDouble(perim);
+                }
             }
             case CIRCLE -> {
-                Double area= calcolaAreaDiTuttiCerchi();
+                Double area= calcolaAreaDiTuttiCerchi(context);
                 res =  "Area totale di tutti i cerchi: "+Util.formatDouble(area);
             }
             case RECTANGLE -> {
-                Double area= calcolaAreaDiTuttiRettangoli();
+                Double area= calcolaAreaDiTuttiRettangoli(context);
                 res = "Area totale di tutti i rettangoli: "+Util.formatDouble(area);
             }
             case ALL -> {
-                Double area= calcolaAreaTotaleDiTuttiOggetti();
+                Double area= calcolaAreaTotaleDiTuttiOggetti(context);
                 res = "Area totale di tutti gli oggetti: "+ Util.formatDouble(area);
             }
         }
@@ -48,47 +48,43 @@ public class AreaCommand implements  Command {
         return res;
     }
 
-    private Double calcolaAreaTotaleDiTuttiOggetti() {
+    private Double calcolaAreaTotaleDiTuttiOggetti(Context context) {
         Double area =0D;
-        area += calcolaAreaDiTuttiRettangoli();
-        area += calcolaAreaDiTuttiCerchi();
+        area += calcolaAreaDiTuttiRettangoli(context);
+        area += calcolaAreaDiTuttiCerchi(context);
         return area;
     }
 
-    private Double calcolaAreaDelGruppo(String gid) {
-        Double perim = 0D;
-        Map<String, GraphicObject> graphicObjectList = objectManager.getObjectsOfGroup(gid);
-        for( GraphicObject go : graphicObjectList.values() ){
-            if(go.getType().equals("Circle")){
-                perim += calcolaAreaDellOggetto(objectManager.getIdByObject(go));
-            }else if(go.getType().equals("Rectangle")){
-                perim += calcolaAreaDellOggetto(objectManager.getIdByObject(go));
-            }
-        }
-        return perim;
-    }
-
-    private Double calcolaAreaDiTuttiRettangoli() {
+    private Double calcolaAreaDelGruppo(Context context, String gid) {
         Double area = 0D;
-        List<GraphicObject>  rects= objectManager.getObjectsByType("Rectangle");
-        for (GraphicObject go : rects ){
-            area += calcolaAreaDellOggetto(objectManager.getIdByObject(go));
+        Map<String, GraphicObject> graphicObjectList = context.getObjectsOfGroup(gid);
+        for( String id: graphicObjectList.keySet() ){
+            area += calcolaAreaDellOggetto(context, id);
         }
         return area;
     }
 
-    private Double calcolaAreaDiTuttiCerchi() {
+    private Double calcolaAreaDiTuttiRettangoli(Context context) {
         Double area = 0D;
-        List<GraphicObject> cerchi= objectManager.getObjectsByType("Circle");
-        for (GraphicObject go : cerchi ){
-            area += calcolaAreaDellOggetto(objectManager.getIdByObject(go));
+        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Rectangle");
+        for (String id : cerchiMap.keySet() ){
+            area += calcolaAreaDellOggetto(context, id);
         }
         return area;
     }
 
-    private Double calcolaAreaDellOggetto(String id) {
+    private Double calcolaAreaDiTuttiCerchi(Context context) {
+        Double area = 0D;
+        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Circle");
+        for (String id : cerchiMap.keySet() ){
+            area += calcolaAreaDellOggetto(context, id);
+        }
+        return area;
+    }
+
+    private Double calcolaAreaDellOggetto(Context context, String id) {
         Double a = 0D;
-        GraphicObject object = objectManager.getObjectbyId(id);
+        GraphicObject object = context.getObjectbyId(id);
         if(object.getType().equals("Circle")){
             Double r = ((CircleObject)object).getRadius();
             a= Math.PI*r*r;

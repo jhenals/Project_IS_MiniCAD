@@ -1,7 +1,7 @@
 package MiniCAD.interpreter.commands;
 
 
-import MiniCAD.interpreter.dataClasses.TokenType;
+import MiniCAD.interpreter.utilExpr.TokenType;
 
 import java.util.stream.Stream;
 

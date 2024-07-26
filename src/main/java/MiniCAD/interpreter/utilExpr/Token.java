@@ -1,6 +1,9 @@
-package MiniCAD.interpreter.dataClasses;
+package MiniCAD.interpreter.utilExpr;
 
-public class Token {
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.commands.CommandIF;
+
+public class Token implements CommandIF {
     private TokenType tipo;
     private Object valore;
 
@@ -31,5 +34,10 @@ public class Token {
                 "type=" + tipo +
                 ", value=" + valore +
                 '}';
+    }
+
+    @Override
+    public String interpreta(Context context) {
+        return valore.toString();
     }
 }

@@ -1,8 +1,7 @@
 package MiniCAD.controllers;
 
 import MiniCAD.exceptions.ParseException;
-import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.commands.Command;
+import MiniCAD.interpreter.commands.CommandIF;
 import MiniCAD.interpreter.lexerparser.CommandParser;
 import MiniCAD.util.NumericDocumentFilter;
 import ObserverCommandFlyweight.is.command.CommandHandler;
@@ -11,7 +10,6 @@ import ObserverCommandFlyweight.is.shapes.specificcommand.MoveCommand;
 import ObserverCommandFlyweight.is.shapes.specificcommand.ZoomCommand;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -19,6 +17,7 @@ import java.io.IOException;
 import java.io.Serial;
 
 public class MiniCADController extends JPanel {
+    /*
     @Serial
     private static final long serialVersionUID = -1200564294398210114L;
     private final CommandHandler cmdHandler;
@@ -222,11 +221,10 @@ public class MiniCADController extends JPanel {
         JMenuItem groupItem = new JMenuItem("View all groups");
         JMenuItem allItem = new JMenuItem("View all");
 
-        /*
         lineItem.addActionListener(e -> currentAction = "Line");
         rectItem.addActionListener(e -> currentAction = "Rectangle");
         circleItem.addActionListener(e -> currentAction = "Circle");
-         */
+
 
         advancePropertyMenu.add(imgItem);
         advancePropertyMenu.add(rectItem);
@@ -276,7 +274,7 @@ public class MiniCADController extends JPanel {
     private String getPropertiesAsString(GraphicObject subject) throws ParseException, IOException {
         CommandParser parser = new CommandParser();
         String objId = objectManager.getIdByObject(subject);
-        Command listPropCommand = parser.parseCommand("ls "+ objId);
+        CommandIF listPropCommand = parser.parseCommand("ls "+ objId);
         return listPropCommand.interpreta();
     }
 
@@ -312,12 +310,12 @@ public class MiniCADController extends JPanel {
         areaMenuBar.add(calculateAreasMenu);
         perimMenuBar.add(calculatePerimsMenu);
 
-         /*
+
         lineItem.addActionListener(e -> currentAction = "Line");
         rectItem.addActionListener(e -> currentAction = "Rectangle");
         circleItem.addActionListener(e -> currentAction = "Circle");
 
-         */
+
 
 
         areaPerim.add(area);
@@ -339,5 +337,6 @@ public class MiniCADController extends JPanel {
         propertiesArea.setEditable(false);
         return propertiesArea;
     }
+    */
 
 }

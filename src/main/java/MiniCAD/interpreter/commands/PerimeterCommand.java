@@ -1,102 +1,99 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.dataClasses.Token;
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.utilExpr.Token;
 import MiniCAD.util.Util;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
-import java.util.List;
 import java.util.Map;
 
-public class PerimeterCommand implements  Command{
+public class PerimeterCommand implements CommandIF {
     private Token param;
-    ObjectManager objectManager = ObjectManager.getInstance();
 
     public PerimeterCommand(Token param) {
         this.param = param;
     }
 
     @Override
-    public String interpreta() {
+    public String interpreta(Context context) {
         String res = "";
+        String idStr = param.interpreta(context);
         switch (param.getTipo()){
             case OBJ_ID -> {
-                Double perim= calcolaPerimetroDellOggetto(param.getValore().toString());
-                res = "Perimetro dell'oggetto con id="+ param.getValore().toString()+ ": "+ Util.formatDouble(perim);
-            }
-            case GRP_ID -> {
-                Double perim= calcolaPerimetroDelGruppo(param.getValore().toString());
-                res = "Perimetro del gruppo con id="+ param.getValore().toString()+ ": "+ Util.formatDouble(perim);
+                if(context.getObjectTypeById(idStr) == "Group"){
+                    Double perim = calcolaPerimDelGruppo(context, param.interpreta(context));
+                    res =  "Area del gruppo con id="+ param.getValore().toString()+ ": " +Util.formatDouble(perim);
+                }else {
+                    Double perim = calcolaPerimDellOggetto(context, param.interpreta(context));
+                    res = "Area dell'oggetto con id=" + param.getValore().toString() + ": " + Util.formatDouble(perim);
+                }
             }
             case CIRCLE -> {
-                Double perim= calcolaPerimetroDiTuttiCerchi();
-                res = "Circonferenza totale di tutti i cerchi: "+ Util.formatDouble(perim);
+                Double perim= calcolaPerimDiTuttiCerchi(context);
+                res =  "Area totale di tutti i cerchi: "+Util.formatDouble(perim);
             }
             case RECTANGLE -> {
-                Double perim= calcolaPerimetroDiTuttiRettangoli();
-                res = "Perimetro totale di tutti i rettangoli: "+ Util.formatDouble(perim);
+                Double perim= calcolaPerimDiTuttiRettangoli(context);
+                res = "Area totale di tutti i rettangoli: "+Util.formatDouble(perim);
             }
             case ALL -> {
-                Double perim= calcolaPerimetroTotaleDiTuttiOggetti();
-                res = "Perimetro totale: "+ Util.formatDouble(perim);
+                Double perim= calcolaPerimTotaleDiTuttiOggetti(context);
+                res = "Area totale di tutti gli oggetti: "+ Util.formatDouble(perim);
             }
         }
         System.out.println(res);
         return res;
     }
 
-    private Double calcolaPerimetroDelGruppo(String gid) {
+    private Double calcolaPerimTotaleDiTuttiOggetti(Context context) {
+        Double perim =0D;
+        perim += calcolaPerimDiTuttiRettangoli(context);
+        perim += calcolaPerimDiTuttiCerchi(context);
+        return perim;
+    }
+
+    private Double calcolaPerimDelGruppo(Context context, String gid) {
         Double perim = 0D;
-        Map<String, GraphicObject> graphicObjectList = objectManager.getObjectsOfGroup(gid);
-        for( GraphicObject go : graphicObjectList.values() ){
-            if(go.getType().equals("Circle")){
-                perim += calcolaPerimetroDellOggetto(objectManager.getIdByObject(go));
-            }else if(go.getType().equals("Rectangle")){
-                perim += calcolaPerimetroDellOggetto(objectManager.getIdByObject(go));
-            }
+        Map<String, GraphicObject> graphicObjectList = context.getObjectsOfGroup(gid);
+        for( String id: graphicObjectList.keySet() ){
+            perim += calcolaPerimDellOggetto(context, id);
         }
         return perim;
     }
 
-    private Double calcolaPerimetroTotaleDiTuttiOggetti() {
+    private Double calcolaPerimDiTuttiRettangoli(Context context) {
         Double perim = 0D;
-        perim += calcolaPerimetroDiTuttiRettangoli();
-        perim += calcolaPerimetroDiTuttiCerchi();
-        return perim;
-    }
-
-
-    private Double calcolaPerimetroDiTuttiRettangoli() {
-        Double perim = 0D;
-        List<GraphicObject> rects= objectManager.getObjectsByType("Rectangle");
-        for (GraphicObject go : rects ){
-            perim += calcolaPerimetroDellOggetto(objectManager.getIdByObject(go));
+        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Rectangle");
+        for (String id : cerchiMap.keySet() ){
+            perim += calcolaPerimDellOggetto(context, id);
         }
         return perim;
     }
 
-    private Double calcolaPerimetroDiTuttiCerchi() {
+    private Double calcolaPerimDiTuttiCerchi(Context context) {
         Double perim = 0D;
-        List<GraphicObject> cerchi= objectManager.getObjectsByType("Circle");
-        for (GraphicObject go : cerchi ){
-            perim += calcolaPerimetroDellOggetto(objectManager.getIdByObject(go));
+        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Circle");
+        for (String id : cerchiMap.keySet() ){
+            perim += calcolaPerimDellOggetto(context, id);
         }
         return perim;
     }
 
-    private Double calcolaPerimetroDellOggetto(String id) {
+    private Double calcolaPerimDellOggetto(Context context, String id) {
         Double perim = 0D;
-        GraphicObject object = objectManager.getObjectbyId(id);
-        if(object.getType().equals("Circle")){
-            perim= 2*Math.PI*((CircleObject)object).getRadius();
+        GraphicObject object = context.getObjectbyId(id);
+        if (object.getType().equals("Circle")) {
+            Double r = ((CircleObject) object).getRadius();
+            perim = 2 * Math.PI * ((CircleObject) object).getRadius();
         } else if (object.getType().equals("Rectangle")) {
             Double l = object.getDimension().getHeight();
             Double w = object.getDimension().getWidth();
-            perim = 2*l+2*w;
+            perim = 2 * l + 2 * w;
         }
         return perim;
     }
+
 
     @Override
     public String toString() {

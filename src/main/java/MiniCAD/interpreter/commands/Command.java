@@ -1,6 +1,18 @@
 package MiniCAD.interpreter.commands;
 
-public interface Command {
-    String interpreta();
 
+import MiniCAD.interpreter.Context;
+
+public class Command<T> implements CommandIF {
+    CommandIF cmd;
+
+    public Command (CommandIF cmd){
+        this.cmd = cmd;
+    }
+    @Override
+    public T interpreta(Context context) {
+        return (T) cmd.interpreta(context);
+    }
 }
+
+

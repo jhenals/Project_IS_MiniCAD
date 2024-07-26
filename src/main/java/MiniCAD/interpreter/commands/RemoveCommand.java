@@ -1,36 +1,34 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.dataClasses.Token;
-import MiniCAD.interpreter.dataClasses.TokenType;
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.utilExpr.Token;
+import MiniCAD.interpreter.utilExpr.TokenType;
 
-public class RemoveCommand implements Command {
+public class RemoveCommand implements CommandIF {
     private Token id;
     public RemoveCommand(Token id) {
         this.id = id;
     }
 
     @Override
-    public String interpreta() {
+    public String interpreta(Context context) {
         String res = "";
-        ObjectManager objectManager= ObjectManager.getInstance();
-        if( id.getTipo() == TokenType.OBJ_ID ){
-            objectManager.removeObject(id.getValore().toString());
-            res = "Rimosso oggetto con id: "+ id;
-        }else if( id.getTipo()== TokenType.GRP_ID){
-            for( String objId : objectManager.getObjectIDsOfGroup(id.getValore().toString())){
-                objectManager.removeObject(objId);
+        String idStr = id.interpreta(context);
+        if (context.getObjectTypeById(idStr) == "Group"){
+            for( String objId : context.getObjectIDsOfGroup(idStr)){
+                context.removeObjectById(objId);
             }
-            objectManager.removeObject(id.getValore().toString());
-            objectManager.unGroup(id.getValore().toString());
+            context.unGroup(idStr);
+            context.removeObjectById(idStr);
+
             res ="Rimosso oggetto con id: "+ id.getValore().toString();
         }else{
-            res = "Oggetto con id= " + id.getValore().toString() + " non trovato.";
+            context.removeObjectById(idStr);
+            res = "Rimosso oggetto con id: "+ id;
         }
         System.out.println(res);
         return res;
     }
-
 
 
     @Override

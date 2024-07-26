@@ -1,16 +1,24 @@
-package MiniCAD.interpreter.dataClasses;
+package MiniCAD.interpreter.utilExpr;
 
-public abstract class TypeConstructor {
+import MiniCAD.interpreter.commands.CommandIF;
+import MiniCAD.interpreter.Context;
+
+public abstract class TypeConstructor implements CommandIF {
     public static class CircleConstructor extends  TypeConstructor {
         private float raggio;
 
-    public CircleConstructor(float r) {
-            raggio = r;
-        }
+        public CircleConstructor(float r) {
+                raggio = r;
+            }
 
-        public float getRaggio() {
-            return raggio;
-        }
+            public float getRaggio() {
+                return raggio;
+            }
+
+            @Override
+            public CircleConstructor interpreta(Context context) {
+                return this;
+            }
     }
 
     public static class RectangleConstuctor extends TypeConstructor {
@@ -26,6 +34,11 @@ public abstract class TypeConstructor {
 
         public float getParam1(){ return param.getParam1(); }
         public float getParam2(){ return param.getParam2(); }
+
+        @Override
+        public RectangleConstuctor interpreta(Context context) {
+            return this;
+        }
     }
 
     public static class ImageConstructor extends TypeConstructor {
@@ -37,6 +50,11 @@ public abstract class TypeConstructor {
 
         public String getPath() {
             return path;
+        }
+
+        @Override
+        public ImageConstructor interpreta(Context context) {
+            return this;
         }
     }
 

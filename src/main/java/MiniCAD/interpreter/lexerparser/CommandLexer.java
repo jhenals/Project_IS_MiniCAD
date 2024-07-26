@@ -1,7 +1,7 @@
 package MiniCAD.interpreter.lexerparser;
 
-import MiniCAD.interpreter.dataClasses.Token;
-import MiniCAD.interpreter.dataClasses.TokenType;
+import MiniCAD.interpreter.utilExpr.Token;
+import MiniCAD.interpreter.utilExpr.TokenType;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
@@ -29,9 +29,7 @@ public class CommandLexer {
                     //Parole riservate
                     if (tokenizer.sval.startsWith("id")) {
                         token = new Token(TokenType.OBJ_ID, tokenizer.sval);
-                    }else  if (tokenizer.sval.startsWith("gid")) {
-                        token = new Token(TokenType.GRP_ID, tokenizer.sval);
-                    }else if (tokenizer.sval.equalsIgnoreCase("new")) {
+                   }else if (tokenizer.sval.equalsIgnoreCase("new")) {
                         token = new Token(TokenType.NEW, tokenizer.sval);
                     } else if (tokenizer.sval.equalsIgnoreCase("create")) {
                         token = new Token(TokenType.NEW, tokenizer.sval);

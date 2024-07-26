@@ -1,34 +1,45 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.dataClasses.Token;
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.utilExpr.Token;
 import MiniCAD.util.Util;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 import java.util.List;
+import java.util.Map;
 
-public class ListCommand implements Command{
-    private Token parametro;
+public class ListCommand implements CommandIF {
+    private Token token;
 
-    public ListCommand(Token parametro) {
-        this.parametro = parametro;
+    public ListCommand(Token t) {
+        this.token = t;
     }
 
 
     @Override
-    public String interpreta() {
+    public String interpreta(Context context) {
         String res = "";
+        String idStr = token.interpreta(context);
         StringBuilder sb = new StringBuilder();
-        ObjectManager objectManager = ObjectManager.getInstance();
 
-        switch( parametro.getTipo() ){
+        switch( token.getTipo() ){
             case OBJ_ID -> {
-                if (objectManager.getObjectbyId(parametro.getValore().toString()) == null) {
+                if (context.getObjectbyId(token.interpreta(context)) == null) {
                     res = "Oggetto non esiste";
-                } else {
-                    GraphicObject object = objectManager.getObjectbyId(parametro.getValore().toString());
-                    sb.append("Elenco di proprietà dell'oggetto con id=" + parametro.getValore().toString() +"\n");
+                } else if (context.getObjectTypeById(idStr) == "Group" ) {
+                    if (context.getObjectbyId(token.getValore().toString()) == null) {
+                        res = "Gruppo non esiste";
+                    } else {
+                        GraphicObject object = context.getObjectbyId(token.getValore().toString());
+                        sb.append("Proprietà del gruppo con id=" + token.interpreta(context) +"\n");
+                        sb.append(" Tipo: " + object.getType()+"\n");
+                        sb.append(" Posizione corrente del gruppo: " + stampaPosizione(object)+  "\n");
+                        sb.append(" Oggetti:" + context.getObjectIDsOfGroup(token.interpreta(context)));
+                    }
+                }else{
+                    GraphicObject object = context.getObjectbyId(token.getValore().toString());
+                    sb.append("Elenco di proprietà dell'oggetto con id=" + token.getValore().toString() +"\n");
                     sb.append(" Tipo: " + object.getType()+"\n");
                     if( object.getType().equals("Circle")){
                         sb.append(" Raggio: " + ((CircleObject)object).getRadius() +"\n");
@@ -38,70 +49,63 @@ public class ListCommand implements Command{
                     sb.append(" Posizione corrente: "+ stampaPosizione(object));
                 }
             }
-            case GRP_ID -> {
-                if (objectManager.getObjectbyId(parametro.getValore().toString()) == null) {
-                    res = "Gruppo non esiste";
-                } else {
-                    GraphicObject object = objectManager.getObjectbyId(parametro.getValore().toString());
-                    sb.append("Proprietà del gruppo con id=" + parametro.getValore().toString() +"\n");
-                    sb.append(" Tipo: " + object.getType()+"\n");
-                    sb.append(" Posizione corrente del gruppo: " + stampaPosizione(object)+  "\n");
-                    sb.append(" Oggetti:" + objectManager.getObjectIDsOfGroup(parametro.getValore().toString()));
-                }
-            }
             case CIRCLE -> {
-                List<GraphicObject> circles= objectManager.getObjectsByType("Circle");
+                Map<String, GraphicObject> circles= context.getObjectsByType("Circle");
                 if(circles.isEmpty()){
                     sb.append(" VUOTO");
                 }else {
                     sb.append("Oggetti di tipo CERCHIO:\n");
-                    for (GraphicObject go : circles) {
-                        sb.append(" " + objectManager.getIdByObject(go) + " in posizione:" + stampaPosizione(go) + "\n");
+                    for (String id: circles.keySet()) {
+                        sb.append(" " + id + " in posizione:" + stampaPosizione(circles.get(id)) + "\n");
                     }
                 }
             }
 
             case RECTANGLE -> {
-                List<GraphicObject> rectangles= objectManager.getObjectsByType("Rectangle");
+                Map<String, GraphicObject> rectangles= context.getObjectsByType("Rectangle");
                 sb.append("Oggetti di tipo RETTANGOLO:\n");
                 if(rectangles.isEmpty()){
                     sb.append(" VUOTO");
                 }else {
-                    for( GraphicObject go : rectangles ){
-                        sb.append(" " + objectManager.getIdByObject(go) + " in posizione:" + stampaPosizione(go) +"\n");
+                    for( String id : rectangles.keySet()  ){
+                        sb.append(" " + id + " in posizione:" + stampaPosizione(rectangles.get(id)) + "\n");
                     }
                 }
             }
 
             case IMG -> {
-                List<GraphicObject> images= objectManager.getObjectsByType("Image");
+                Map<String, GraphicObject> images= context.getObjectsByType("Image");
                 sb.append("Oggetti di tipo IMMAGINE:\n");
                 if(images.isEmpty()){
                     sb.append(" VUOTO");
                 }else {
-                    for (GraphicObject go : images) {
-                        sb.append(" " + objectManager.getIdByObject(go) + " in posizione:" + stampaPosizione(go) + "\n");
+                    for( String id : images.keySet()  ){
+                        sb.append(" " + id + " in posizione:" + stampaPosizione(images.get(id)) + "\n");
                     }
                 }
             }
 
             case ALL -> {
-                List<GraphicObject> allObjects= objectManager.getAllObjects();
+                Map<String, GraphicObject> allObjects= context.getAllObjects();
                 sb.append("Elenco di tutti gli oggetti:\n");
                 if(allObjects.isEmpty()){
                     sb.append(" VUOTO");
                 }else {
-                    for (GraphicObject go : allObjects) {
-                        sb.append(" " + objectManager.getIdByObject(go) + " in posizione:" + stampaPosizione(go) + "\n");
+                    for (String id : allObjects.keySet()) {
+                        sb.append(" " + id + " in posizione:" + stampaPosizione(allObjects.get(id)) + "\n");
                     }
                 }
             }
 
             case GROUPS -> {
-                if( objectManager.getAllGroupIds().isEmpty()){
-                    System.out.println("EMPTY");
+                sb.append("Elenco di tutti i gruppi:\n");
+                Map<String, List<String>> allObjects= context.getAllGroups();
+                if( allObjects.isEmpty()){
+                    System.out.println(" EMPTY");
                 }else{
-                    sb.append(objectManager.stampaGruppi());
+                    for( String id : allObjects.keySet() ){
+                        sb.append(" "+id+": " + allObjects.get(id));
+                    }
                 }
             }
         }
@@ -118,7 +122,7 @@ public class ListCommand implements Command{
     @Override
     public String toString() {
         return "ListCommand{" +
-                "parametro=" + parametro +
+                "parametro=" + token +
                 '}';
     }
 }

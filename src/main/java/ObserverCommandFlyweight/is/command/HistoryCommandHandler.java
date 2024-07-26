@@ -4,8 +4,8 @@ import java.util.LinkedList;
 
 public class HistoryCommandHandler implements CommandHandler {
 
-	// public static final Command UNDO = new NonExecutableCommand();
-	// public static final Command REDO = new NonExecutableCommand();
+	// public static final CommandIF UNDO = new NonExecutableCommand();
+	// public static final CommandIF REDO = new NonExecutableCommand();
 
 	public enum NonExecutableCommands implements Command {
 		UNDO, REDO;
@@ -21,7 +21,7 @@ public class HistoryCommandHandler implements CommandHandler {
 		}
 	}
 	/*
-	 * private static class NonExecutableCommand implements Command {
+	 * private static class NonExecutableCommand implements CommandIF {
 	 * 
 	 * @Override public boolean doIt() { throw new NoSuchMethodError(); }
 	 * 

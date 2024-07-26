@@ -1,15 +1,12 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.dataClasses.GroupObject;
-import MiniCAD.interpreter.dataClasses.ListId;
-import MiniCAD.interpreter.dataClasses.Token;
-import MiniCAD.interpreter.dataClasses.TokenType;
-import MiniCAD.util.GeneratoreId;
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.utilExpr.GroupObject;
+import MiniCAD.interpreter.utilExpr.ListId;
 
 import java.util.List;
 
-public class GroupCommand implements  Command{
+public class GroupCommand implements CommandIF {
     private ListId ids ;
 
     public GroupCommand(ListId listId) {
@@ -17,25 +14,13 @@ public class GroupCommand implements  Command{
     }
 
     @Override
-    public String interpreta() {
-        String res = "";
-        ObjectManager objectManager = ObjectManager.getInstance();
+    public String interpreta(Context context) {
 
-        String grpId = GeneratoreId.generaIdGruppo();
-        GroupObject groupObject = new GroupObject(grpId);
-        for( Token id : ids.getIds() ){
-            if( id.getTipo()== TokenType.OBJ_ID ){
-                groupObject.addObject(objectManager.getObjectbyId(id.getValore().toString()));
-            }else if( id.getTipo() == TokenType.GRP_ID){
-                groupObject.addGroup(id.getValore().toString());
-            }
-        }
-        List<String> objectIds = groupObject.getObjectIds();
+        List<String> idList = ids.interpreta(context);
+        GroupObject groupObject = context.createGroup(idList);
 
-        objectManager.addGroup(grpId, objectIds);
-        objectManager.addObject(grpId, groupObject);
-        System.out.println(grpId);
-        return grpId;
+        System.out.println(groupObject.getGroupId());
+        return groupObject.getGroupId();
     }
 
 

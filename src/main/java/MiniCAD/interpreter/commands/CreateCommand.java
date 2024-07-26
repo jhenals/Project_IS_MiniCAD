@@ -1,8 +1,7 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.dataClasses.*;
-import MiniCAD.util.GeneratoreId;
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.utilExpr.*;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.model.ImageObject;
@@ -29,26 +28,29 @@ public class CreateCommand implements UndoableCommand {
 
 
     @Override
-    public String interpreta() {
-        ObjectManager objectManager= ObjectManager.getInstance();
+    public String interpreta(Context context) {
         GraphicObject object;
+
         if( typeConstructor instanceof TypeConstructor.CircleConstructor){
-            object = new CircleObject( getPosizione(), ((TypeConstructor.CircleConstructor) typeConstructor).getRaggio());
+            TypeConstructor.CircleConstructor circleConstructor = (TypeConstructor.CircleConstructor) typeConstructor.interpreta(context);
+            object = new CircleObject( getPosizione(),circleConstructor.getRaggio());
         } else if ( typeConstructor instanceof TypeConstructor.RectangleConstuctor){
-            double base = ((TypeConstructor.RectangleConstuctor) typeConstructor).getParam1();
-            double altezza =  ((TypeConstructor.RectangleConstuctor) typeConstructor).getParam2();
+            TypeConstructor.RectangleConstuctor rectangleConstuctor = ((TypeConstructor.RectangleConstuctor) typeConstructor).interpreta(context);
+            double base = rectangleConstuctor.getParam1();
+            double altezza =  rectangleConstuctor.getParam2();
             object = new RectangleObject(getPosizione(), base, altezza);
         } else if ( typeConstructor instanceof TypeConstructor.ImageConstructor) {
-            String path = ((TypeConstructor.ImageConstructor) typeConstructor).getPath();
-            object = new ImageObject(new ImageIcon(path),
-                    getPosizione());
+            TypeConstructor.ImageConstructor imageConstructor = ((TypeConstructor.ImageConstructor) typeConstructor).interpreta(context);
+            String path = imageConstructor.getPath();
+            object = new ImageObject(new ImageIcon(path), getPosizione());
         } else {
             throw new IllegalArgumentException("Tipo di oggetto sconosciuto.");
         }
 
+
         if( object != null) {
-            String objectId = GeneratoreId.generaId();
-            objectManager.addObject(objectId, object);
+            String objectId = context.generaId();
+            context.addObject(objectId, object);
             objId  =  objectId;
         }
         System.out.println(objId);
@@ -56,8 +58,8 @@ public class CreateCommand implements UndoableCommand {
     }
 
     @Override
-    public boolean undo() {
-        ObjectManager.getInstance().removeObject(objId);
+    public boolean undo(Context context) {
+        context.removeObjectById (objId);
         System.out.println("Rimosso oggetto con id=" + objId);
         return true;
     }

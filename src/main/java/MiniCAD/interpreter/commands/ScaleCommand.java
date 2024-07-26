@@ -1,10 +1,10 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.dataClasses.Token;
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.utilExpr.Token;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
-public class ScaleCommand implements  Command{
+public class ScaleCommand implements CommandIF {
     private Token objectId;
     private Token scaleFactor; //POS_FLOAT
 
@@ -18,15 +18,15 @@ public class ScaleCommand implements  Command{
     }
 
     @Override
-    public String interpreta() {
+    public String interpreta(Context context) {
         String res = "";
-        ObjectManager objectManager = ObjectManager.getInstance();
-        GraphicObject object = objectManager.getObjectbyId(objectId.getValore().toString());
+        String idStr = objectId.interpreta(context);
+        GraphicObject object = context.getObjectbyId(idStr);
         if( object != null ){
             object.scale(getScaleFactor());
-            res = "Oggetto con id="+ objectId.getValore().toString() + " viene ridimensionato con un fattore di scala pari a " + getScaleFactor()+". Nuova dimensione="+ object.getDimension().toString();
+            res = "Oggetto con id="+ idStr + " viene ridimensionato con un fattore di scala pari a " + getScaleFactor()+". Nuova dimensione="+ object.getDimension().toString();
         }else{
-            res = "Oggetto con id="+objectId+" non trovato.";
+            res = "Oggetto con id="+idStr+" non trovato.";
         }
         System.out.println(res);
         return res;

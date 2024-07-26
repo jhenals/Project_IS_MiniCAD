@@ -1,10 +1,9 @@
-package MiniCAD.interpreter.dataClasses;
+package MiniCAD.interpreter.utilExpr;
 
-import MiniCAD.interpreter.ObjectManager;
+import MiniCAD.interpreter.Context;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObjectListener;
 
-import java.awt.*;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
@@ -14,9 +13,10 @@ import java.util.Map;
 //Composite Design Pattern
 
 public class GroupObject implements  GraphicObject{
-    String groupId ;
-    Map<String, GraphicObject> objects;
-    ObjectManager objectManager = ObjectManager.getInstance();
+    private String groupId ;
+    private Map<String, GraphicObject> objects;
+    private Context context;
+
 
     public GroupObject(String gid){
         groupId= gid;
@@ -25,26 +25,12 @@ public class GroupObject implements  GraphicObject{
 
     public String getGroupId(){ return groupId; }
 
-    public void setGroupId( String groupId ){
-        if( groupId.startsWith("gid")){
-            this.groupId = groupId;
-        }
-    }
-
     public List<String> getObjectIds(){
         return objects.keySet().stream().toList();
     }
-    public void addObject(GraphicObject go){
-        objects.put(objectManager.getIdByObject(go), go);
-    }
 
-    public void addGroup(String gid){
-        List<String> membersGroup = objectManager.getObjectIDsOfGroup(gid);
-        for(String oId : membersGroup ){
-            objects.put(oId, objectManager.getObjectbyId(oId));
-        }
-        objectManager.unGroup(gid);
-        objectManager.removeObject(gid);
+    public void setObjects(Map<String,GraphicObject> objs){
+        objects = objs;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package MiniCAD.interpreter.commands;
 
-public interface UndoableCommand extends Command{
-    boolean undo();
+import MiniCAD.interpreter.Context;
+
+public interface UndoableCommand extends CommandIF {
+    boolean undo(Context context);
 }

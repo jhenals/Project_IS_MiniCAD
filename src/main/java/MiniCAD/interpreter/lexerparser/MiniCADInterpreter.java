@@ -1,18 +1,18 @@
 package MiniCAD.interpreter.lexerparser;
 
 import MiniCAD.exceptions.ParseException;
-import MiniCAD.interpreter.commands.Command;
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.commands.CommandIF;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.List;
 
 public class MiniCADInterpreter {
     public static void main (String[] args) throws IOException {
+        Context context = new Context();
        String newImgInput = "new img (\"./pippo.png\") (6.1,4.6)";
        String newCircInput = "new circle (5.0) (3.1,4.5)";
        String newRectInput = "new rectangle (3.1,4.5) (0.0,0.0)";
-       String mvInputInput = "mv id1 (5.9,8.2)";
+       String mvInputInput = "mvoff id0 (5.9,8.2)";
 
        /*
         CommandLexer cLexer = new CommandLexer( new StringReader(commandInput) );
@@ -23,13 +23,17 @@ public class MiniCADInterpreter {
          */
 
 
-
-
         try{
-
             CommandParser parser = new CommandParser();
-            Command command = parser.parseCommand(newImgInput);
-            command.interpreta(); // Esegui il comando
+            CommandIF command = parser.parseCommand(newImgInput);
+            CommandIF command2 = parser.parseCommand(newCircInput);
+            CommandIF command3 = parser.parseCommand(newRectInput);
+            CommandIF command4 = parser.parseCommand(mvInputInput);
+            command.interpreta(context); // Esegui il comando
+            command2.interpreta(context);
+            command3.interpreta(context);
+            command4.interpreta(context);
+
 
 
         }catch (IOException | ParseException e){

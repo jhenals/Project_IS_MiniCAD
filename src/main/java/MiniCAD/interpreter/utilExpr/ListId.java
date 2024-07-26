@@ -1,13 +1,16 @@
-package MiniCAD.interpreter.dataClasses;
+package MiniCAD.interpreter.utilExpr;
 
-import java.util.ArrayList;
+import MiniCAD.interpreter.commands.CommandIF;
+import MiniCAD.interpreter.Context;
+
+import java.util.LinkedList;
 import java.util.List;
 
-public class ListId {
-    List<Token> ids = new ArrayList<>();
+public class ListId implements CommandIF {
+    private List<Token> ids = new LinkedList<>();
 
-    public ListId(List<Token> ids) {
-        this.ids = ids;
+    public ListId(Token id) {
+        ids.add(id);
     }
 
     public List<Token> getIds() {
@@ -31,5 +34,14 @@ public class ListId {
             sb.append( (cont == ids.size() ? ')' : ',') );
         }
         return sb.toString();
+    }
+
+    @Override
+    public List<String> interpreta(Context context) {
+        List<String> idList = new LinkedList<>();
+        for(Token id : ids ){
+            idList.add(id.interpreta(context));
+        }
+        return idList;
     }
 }

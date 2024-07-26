@@ -1,4 +1,4 @@
-package MiniCAD.interpreter.dataClasses;
+package MiniCAD.interpreter.utilExpr;
 
 public enum TokenType {
 
@@ -13,7 +13,7 @@ public enum TokenType {
     TONDA_APERTA, TONDA_CHIUSA, VIRGOLA, QUOTE,
 
     //Identifiers
-    PATH, POS_FLOAT, OBJ_ID, GRP_ID,
+    PATH, POS_FLOAT, OBJ_ID,
 
     CHAR_INVALIDO,
 

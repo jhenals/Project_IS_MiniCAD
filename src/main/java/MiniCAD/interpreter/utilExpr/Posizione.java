@@ -1,6 +1,9 @@
-package MiniCAD.interpreter.dataClasses;
+package MiniCAD.interpreter.utilExpr;
 
-public class Posizione {
+import MiniCAD.interpreter.commands.CommandIF;
+import MiniCAD.interpreter.Context;
+
+public class Posizione implements CommandIF {
     private float param1;
     private float param2;
 
@@ -37,5 +40,10 @@ public class Posizione {
     @Override
     public String toString(){
         return "("+ param1 + ", "+ param2+ ")";
+    }
+
+    @Override
+    public Posizione interpreta(Context context) {
+        return this ;
     }
 }

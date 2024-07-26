@@ -1,8 +1,6 @@
 package MiniCAD.ui;
 import MiniCAD.controllers.MiniCADController;
 import MiniCAD.exceptions.ParseException;
-import MiniCAD.interpreter.ObjectManager;
-import MiniCAD.interpreter.commands.Command;
 import MiniCAD.interpreter.lexerparser.CommandParser;
 import ObserverCommandFlyweight.is.command.HistoryCommandHandler;
 import ObserverCommandFlyweight.is.shapes.model.*;
@@ -16,7 +14,7 @@ import java.io.IOException;
 
 
 public class MiniCAD {
-
+/*
     public static void main(String[] args) throws ParseException, IOException {
         ObjectManager objectManager = ObjectManager.getInstance();
         CommandParser parser = new CommandParser();
@@ -54,7 +52,7 @@ public class MiniCAD {
         circButton.setText(go.getType());
         toolbar.add(circButton);
 
-        /*
+
         go = new CircleObject(new Point(200, 100), 100);
         JButton circButton2 = new JButton(new CreateObjectAction(go, gpanel, handler));
         circButton2.setText("big " + go.getType());
@@ -75,11 +73,11 @@ public class MiniCAD {
             }
         }
 
-        Command createCommand = parser.parseCommand(com);
+        CommandIF createCommand = parser.parseCommand(com);
         String objId = createCommand.interpreta();
         objectManager.addObject(objId, go);
 
-         */
+
 
         go = new ImageObject(new ImageIcon(MiniCAD.class.getResource("NyaNya.gif")),
                 new Point(240, 187));
@@ -113,5 +111,6 @@ public class MiniCAD {
         f.pack();
         f.setVisible(true);
     }
+    */
 
 }
