@@ -1,19 +1,7 @@
 package MiniCAD.ui;
-import MiniCAD.controllers.MiniCADController;
-import MiniCAD.exceptions.ParseException;
-import MiniCAD.interpreter.lexerparser.CommandParser;
-import ObserverCommandFlyweight.is.command.HistoryCommandHandler;
-import ObserverCommandFlyweight.is.shapes.model.*;
-import ObserverCommandFlyweight.is.shapes.view.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 
-public class MiniCAD {
+public class MiniCADUI {
 /*
     public static void main(String[] args) throws ParseException, IOException {
         ObjectManager objectManager = ObjectManager.getInstance();
@@ -79,7 +67,7 @@ public class MiniCAD {
 
 
 
-        go = new ImageObject(new ImageIcon(MiniCAD.class.getResource("NyaNya.gif")),
+        go = new ImageObject(new ImageIcon(MiniCADUI.class.getResource("NyaNya.gif")),
                 new Point(240, 187));
         JButton imgButton = new JButton(new CreateObjectAction(go, gpanel, handler));
         imgButton.setText(go.getType());
@@ -104,7 +92,7 @@ public class MiniCAD {
 
         controlPanel.add(goc);
         //commandPanel.add(buttons);
-        f.setTitle("MiniCAD App");
+        f.setTitle("MiniCADUI App");
         f.getContentPane().add(controlPanel, BorderLayout.EAST);
         //f.getContentPane().add(commandPanel, BorderLayout.EAST)
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
