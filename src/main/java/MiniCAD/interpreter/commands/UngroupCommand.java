@@ -12,9 +12,12 @@ public class UngroupCommand implements UndoableCmdExprIF {
 
     @Override
     public String interpreta(Context context) {
-        String res = "";
-        String gid = groupId.getValore().toString();
-        if( context.getAllGroups().keySet().contains(gid) ){
+        String res;
+        String gid = groupId.interpreta(context);
+        if( !context.getObjectTypeById(gid).equals("Group")){
+            throw new IllegalArgumentException("Id non è di tipo Gruppo.");
+        }
+        if( context.getAllGroups().containsKey(gid) ){
             context.unGroup(gid);
             context.removeObjectById(gid);
             res = "Gruppo con id=" + gid + " è stato rimosso.";
