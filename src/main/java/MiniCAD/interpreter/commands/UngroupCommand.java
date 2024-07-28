@@ -33,4 +33,9 @@ public class UngroupCommand implements CommandIF {
                 "groupId=" + groupId +
                 '}';
     }
+
+    @Override
+    public boolean undo(Context context) {
+        return false; //TODO
+    }
 }

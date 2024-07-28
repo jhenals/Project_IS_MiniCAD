@@ -39,4 +39,9 @@ public class ScaleCommand implements CommandIF {
                 ", scale factor=" + scaleFactor +
                 '}';
     }
+
+    @Override
+    public boolean undo(Context context) {
+        return false; //TODO
+    }
 }

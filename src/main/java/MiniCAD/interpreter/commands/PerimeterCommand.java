@@ -103,5 +103,8 @@ public class PerimeterCommand implements CommandIF {
     }
 
 
-
+    @Override
+    public boolean undo(Context context) {
+        return false;
+    }
 }

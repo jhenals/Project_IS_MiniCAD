@@ -19,6 +19,11 @@ public abstract class TypeConstructor implements CommandIF {
             public CircleConstructor interpreta(Context context) {
                 return this;
             }
+
+        @Override
+        public boolean undo(Context context) {
+            return false;
+        }
     }
 
     public static class RectangleConstuctor extends TypeConstructor {
@@ -39,6 +44,10 @@ public abstract class TypeConstructor implements CommandIF {
         public RectangleConstuctor interpreta(Context context) {
             return this;
         }
+        @Override
+        public boolean undo(Context context) {
+            return false;
+        }
     }
 
     public static class ImageConstructor extends TypeConstructor {
@@ -55,6 +64,10 @@ public abstract class TypeConstructor implements CommandIF {
         @Override
         public ImageConstructor interpreta(Context context) {
             return this;
+        }
+        @Override
+        public boolean undo(Context context) {
+            return false;
         }
     }
 

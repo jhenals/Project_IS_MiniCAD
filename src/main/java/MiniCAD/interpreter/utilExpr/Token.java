@@ -37,6 +37,11 @@ public class Token implements CommandIF {
     }
 
     @Override
+    public boolean undo(Context context) {
+        return false;
+    }
+
+    @Override
     public String interpreta(Context context) {
         return valore.toString();
     }

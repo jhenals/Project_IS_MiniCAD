@@ -44,4 +44,8 @@ public class ListId implements CommandIF {
         }
         return idList;
     }
+    @Override
+    public boolean undo(Context context) {
+        return false;
+    }
 }

@@ -125,4 +125,9 @@ public class ListCommand implements CommandIF {
                 "parametro=" + token +
                 '}';
     }
+
+    @Override
+    public boolean undo(Context context) {
+        return false;
+    }
 }

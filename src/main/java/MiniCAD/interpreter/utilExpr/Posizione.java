@@ -46,4 +46,8 @@ public class Posizione implements CommandIF {
     public Posizione interpreta(Context context) {
         return this ;
     }
+    @Override
+    public boolean undo(Context context) {
+        return false;
+    }
 }

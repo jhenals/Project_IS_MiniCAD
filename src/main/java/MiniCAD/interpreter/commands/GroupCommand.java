@@ -30,4 +30,9 @@ public class GroupCommand implements CommandIF {
                 "objectIds=" + ids.toString() +
                 '}';
     }
+
+    @Override
+    public boolean undo(Context context) {
+        return false; //TODO
+    }
 }

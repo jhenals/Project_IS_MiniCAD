@@ -63,4 +63,9 @@ public class MoveCommand implements CommandIF {
                 ", posizione=" + posizione +
                 '}';
     }
+
+    @Override
+    public boolean undo(Context context) {
+        return false; //TODO
+    }
 }
