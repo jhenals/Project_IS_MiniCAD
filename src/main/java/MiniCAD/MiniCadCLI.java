@@ -2,8 +2,9 @@ package MiniCAD;
 
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.commands.CommandIF;
-import MiniCAD.interpreter.commands.UndoableCommand;
+import MiniCAD.interpreter.commands.Command;
+import MiniCAD.interpreter.commands.CommandExprIF;
+import MiniCAD.interpreter.commands.UndoableCmdExprIF;
 import MiniCAD.interpreter.lexerparser.CommandParser;
 
 import java.io.IOException;
@@ -32,19 +33,17 @@ public class MiniCadCLI {
                 } else if (input.equalsIgnoreCase("redo")) {
                     sistemaMiniCAD.redo();
                 } else{
-                    CommandIF command = commandParser.parseCommand(input);
-                    if (command instanceof UndoableCommand)
-                        sistemaMiniCAD.esegueComando((UndoableCommand) command);
+                    Command command = (Command) commandParser.parseCommand(input);
+                    if (command instanceof UndoableCmdExprIF)
+                        sistemaMiniCAD.esegueComando( command, context);
                     else
-                        command.interpreta(context);
+                       command.interpreta(context);
                 }
             } catch (ParseException | IOException e) {
                 System.err.println("Errore durante l'interpretazione del comando: " + e.getMessage());
             } catch (ClassCastException e) {
                 System.err.println("Il comando non è undoable: " + e.getMessage());
             }
-
-            //System.out.println(objectManager);
         }
 
         scanner.close();

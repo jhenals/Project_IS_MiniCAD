@@ -6,7 +6,7 @@ import MiniCAD.interpreter.utilExpr.ListId;
 
 import java.util.List;
 
-public class GroupCommand implements CommandIF {
+public class GroupCommand implements UndoableCmdExprIF {
     private ListId ids ;
 
     public GroupCommand(ListId listId) {
@@ -29,5 +29,10 @@ public class GroupCommand implements CommandIF {
         return "GroupCommand{" +
                 "objectIds=" + ids.toString() +
                 '}';
+    }
+
+    @Override
+    public boolean undo(Context context) {
+        return false; //TODO
     }
 }

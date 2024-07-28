@@ -4,7 +4,7 @@ import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.utilExpr.Token;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
-public class ScaleCommand implements CommandIF {
+public class ScaleCommand implements UndoableCmdExprIF {
     private Token objectId;
     private Token scaleFactor; //POS_FLOAT
 
@@ -38,5 +38,10 @@ public class ScaleCommand implements CommandIF {
                 "objectId=" + objectId +
                 ", scale factor=" + scaleFactor +
                 '}';
+    }
+
+    @Override
+    public boolean undo(Context context) {
+        return false; //TODO
     }
 }

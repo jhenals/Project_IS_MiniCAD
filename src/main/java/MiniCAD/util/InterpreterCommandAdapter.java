@@ -1,25 +1,37 @@
 package MiniCAD.util;
 
 import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.commands.UndoableCommand;
+import MiniCAD.interpreter.commands.CommandExprIF;
+import MiniCAD.interpreter.commands.UndoableCmdExprIF;
 import ObserverCommandFlyweight.is.command.Command;
-public class InterpreterCommandAdapter implements Command {
+public class InterpreterCommandAdapter<T> implements Command {
 
-    private final UndoableCommand miniCadCommand;
+    private MiniCAD.interpreter.commands.Command miniCadCommand;
     private Context context;
+    private T res ;
 
-    public InterpreterCommandAdapter(UndoableCommand miniCadCommand) {
-        this.miniCadCommand = miniCadCommand;
+    public InterpreterCommandAdapter(MiniCAD.interpreter.commands.Command miniCadCommand, Context context) {
+        if(miniCadCommand instanceof UndoableCmdExprIF){
+            this.miniCadCommand = (MiniCAD.interpreter.commands.Command) miniCadCommand;
+        }
+        this.context = context;
     }
 
     @Override
     public boolean doIt() {
-        miniCadCommand.interpreta(context);
+        res = (T) miniCadCommand.interpreta(context);
         return true;
     }
 
     @Override
     public boolean undoIt() {
-        return miniCadCommand.undo(context);
+        if (miniCadCommand instanceof UndoableCmdExprIF) {
+            return ((UndoableCmdExprIF) miniCadCommand).undo(context);
+        }
+        return false;
+    }
+
+    public T getRes(){
+        return res;
     }
 }

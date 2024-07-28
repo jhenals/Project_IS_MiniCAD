@@ -1,13 +1,13 @@
 package MiniCAD.interpreter.utilExpr;
 
 import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.commands.CommandIF;
+import MiniCAD.interpreter.commands.CommandExprIF;
 
-public class Token implements CommandIF {
+public class Token<T> implements CommandExprIF {
     private TokenType tipo;
-    private Object valore;
+    private T valore;
 
-    public Token( TokenType tipo, Object valore){
+    public Token( TokenType tipo, T valore){
         this.tipo = tipo;
         this.valore = valore;
     }
@@ -18,14 +18,6 @@ public class Token implements CommandIF {
 
     public Object getValore(){
         return valore;
-    }
-
-    public void setTipo(TokenType tipo){
-        this.tipo = tipo;
-    }
-
-    public void setValore(String valore){
-        this.valore = valore;
     }
 
     @Override

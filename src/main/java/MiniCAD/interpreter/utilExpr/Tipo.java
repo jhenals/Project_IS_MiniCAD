@@ -1,9 +1,9 @@
 package MiniCAD.interpreter.utilExpr;
 
-import MiniCAD.interpreter.commands.CommandIF;
 import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.commands.CommandExprIF;
 
-public class Tipo implements CommandIF {
+public class Tipo implements CommandExprIF {
     private Token oggetto;
 
     public Tipo(Token oggetto) {

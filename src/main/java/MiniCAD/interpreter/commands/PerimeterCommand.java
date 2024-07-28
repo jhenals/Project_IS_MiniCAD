@@ -8,7 +8,7 @@ import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 import java.util.Map;
 
-public class PerimeterCommand implements CommandIF {
+public class PerimeterCommand implements CommandExprIF {
     private Token param;
 
     public PerimeterCommand(Token param) {

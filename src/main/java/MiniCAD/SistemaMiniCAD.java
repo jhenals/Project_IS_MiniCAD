@@ -1,6 +1,8 @@
 package MiniCAD;
 
-import MiniCAD.interpreter.commands.UndoableCommand;
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.commands.Command;
+import MiniCAD.interpreter.commands.UndoableCmdExprIF;
 import MiniCAD.util.InterpreterCommandAdapter;
 import ObserverCommandFlyweight.is.command.HistoryCommandHandler;
 
@@ -10,13 +12,18 @@ public class SistemaMiniCAD {
     Questo attributo rappresenta un'istanza del gestore di comandi storici (HistoryCommandHandler), responsabile di mantenere la storia dei comandi eseguiti e gestire le operazioni di undo e redo.
      */
 
-    public void esegueComando(UndoableCommand comando){
-        InterpreterCommandAdapter adapter = new InterpreterCommandAdapter(comando);
-        historyCommandHandler.handle(adapter);
+
+    public void esegueComando(Command comando, Context context){
+        InterpreterCommandAdapter adapter = new InterpreterCommandAdapter(comando, context);
+        if(comando instanceof  UndoableCmdExprIF){
+            historyCommandHandler.handle(adapter);
+        }else{
+            adapter.doIt();
+        }
     }
 
     /*
-    Questo metodo accetta un comando che implementa l'interfaccia UndoableCommand e lo esegue attraverso l'handler dei comandi storici. Ecco come funziona:
+    Questo metodo accetta un comando che implementa l'interfaccia NonUndoableCommand e lo esegue attraverso l'handler dei comandi storici. Ecco come funziona:
 
 Viene creato un adattatore (CommandAdapter) per il comando passato come argomento.
 L'adattatore viene passato al historyHandler per essere gestito. Questo gestore esegue il comando e lo aggiunge alla storia se è undoable.
@@ -46,7 +53,7 @@ Il comando UNDO viene passato al gestore, che annulla l'ultimo comando eseguito 
 Schema del Processo
 Esecuzione di un Comando:
 
-Il sistema riceve un comando UndoableCommand.
+Il sistema riceve un comando NonUndoableCommand.
 Il comando viene adattato tramite CommandAdapter.
 L'adattatore viene gestito da historyHandler che esegue il comando e lo aggiunge alla storia se è undoable.
 Annullamento di un Comando:

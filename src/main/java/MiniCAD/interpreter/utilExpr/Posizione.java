@@ -1,9 +1,9 @@
 package MiniCAD.interpreter.utilExpr;
 
-import MiniCAD.interpreter.commands.CommandIF;
 import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.commands.CommandExprIF;
 
-public class Posizione implements CommandIF {
+public class Posizione implements CommandExprIF {
     private float param1;
     private float param2;
 

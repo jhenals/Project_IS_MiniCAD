@@ -1,9 +1,9 @@
 package MiniCAD.interpreter.utilExpr;
 
-import MiniCAD.interpreter.commands.CommandIF;
 import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.commands.CommandExprIF;
 
-public abstract class TypeConstructor implements CommandIF {
+public abstract class TypeConstructor implements CommandExprIF {
     public static class CircleConstructor extends  TypeConstructor {
         private float raggio;
 

@@ -7,7 +7,7 @@ import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 import java.awt.geom.Point2D;
 
-public class MoveCommand implements CommandIF {
+public class MoveCommand implements UndoableCmdExprIF {
     private Token objectId;
     private Posizione posizione;
     private boolean offset;
@@ -62,5 +62,10 @@ public class MoveCommand implements CommandIF {
                 "objectId=" + objectId +
                 ", posizione=" + posizione +
                 '}';
+    }
+
+    @Override
+    public boolean undo(Context context) {
+        return false; //TODO
     }
 }

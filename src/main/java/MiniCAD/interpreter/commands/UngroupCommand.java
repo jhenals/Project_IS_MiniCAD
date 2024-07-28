@@ -2,9 +2,8 @@ package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.utilExpr.Token;
-import MiniCAD.interpreter.utilExpr.TokenType;
 
-public class UngroupCommand implements CommandIF {
+public class UngroupCommand implements UndoableCmdExprIF {
     private Token groupId;
 
     public UngroupCommand(Token groupId) {
@@ -32,5 +31,10 @@ public class UngroupCommand implements CommandIF {
         return "UngroupCommand{" +
                 "groupId=" + groupId +
                 '}';
+    }
+
+    @Override
+    public boolean undo(Context context) {
+        return false; //TODO
     }
 }

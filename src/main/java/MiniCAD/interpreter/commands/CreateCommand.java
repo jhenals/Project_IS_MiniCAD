@@ -10,7 +10,7 @@ import ObserverCommandFlyweight.is.shapes.model.RectangleObject;
 import javax.swing.*;
 import java.awt.geom.Point2D;
 
-public class CreateCommand implements UndoableCommand {
+public class CreateCommand implements UndoableCmdExprIF {
     protected TypeConstructor typeConstructor;
     protected Posizione posizione;
     private String objId;

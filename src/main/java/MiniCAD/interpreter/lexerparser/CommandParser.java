@@ -1,7 +1,6 @@
 package MiniCAD.interpreter.lexerparser;
 
 import MiniCAD.exceptions.ParseException;
-import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.commands.*;
 import MiniCAD.interpreter.utilExpr.*;
 
@@ -11,19 +10,17 @@ import java.util.Iterator;
 import java.util.List;
 
 public class CommandParser {
-    private Context context;
     private CommandLexer cLexer;
     private Iterator<Token> tokens;
     private Token tokenCorrente;
-    private Command command;
+    private CommandExprIF cmd;
 
 
-    public Command parseCommand(String cmdInput) throws ParseException, IOException {
+    public CommandExprIF parseCommand(String cmdInput) throws ParseException, IOException {
         cLexer = new CommandLexer(new StringReader(cmdInput));
         List<Token> listaToken = cLexer.tokenizzare();
         this.tokens = listaToken.iterator();
         avanza();
-        Command cmd = null;
 
         if( tokenCorrente == null ){
             throw new IllegalArgumentException("Fine dell'input inattesa");

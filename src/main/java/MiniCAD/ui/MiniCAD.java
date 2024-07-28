@@ -73,7 +73,7 @@ public class MiniCAD {
             }
         }
 
-        CommandIF createCommand = parser.parseCommand(com);
+        CommandExprIF createCommand = parser.parseCommand(com);
         String objId = createCommand.interpreta();
         objectManager.addObject(objId, go);
 

@@ -1,27 +1,17 @@
 package MiniCAD.interpreter.utilExpr;
 
-import MiniCAD.interpreter.commands.CommandIF;
 import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.commands.CommandExprIF;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class ListId implements CommandIF {
+public class ListId implements CommandExprIF {
     private List<Token> ids = new LinkedList<>();
 
     public ListId(Token id) {
         ids.add(id);
     }
-
-    public List<Token> getIds() {
-        return ids;
-    }
-
-    public void setIds(List<Token> ids) {
-        for ( Token t: ids )
-            this.ids.add(t);
-    }
-
 
     @Override
     public String toString() {

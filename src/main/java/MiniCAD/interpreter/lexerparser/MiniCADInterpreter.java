@@ -2,7 +2,7 @@ package MiniCAD.interpreter.lexerparser;
 
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.commands.CommandIF;
+import MiniCAD.interpreter.commands.CommandExprIF;
 
 import java.io.IOException;
 
@@ -25,10 +25,10 @@ public class MiniCADInterpreter {
 
         try{
             CommandParser parser = new CommandParser();
-            CommandIF command = parser.parseCommand(newImgInput);
-            CommandIF command2 = parser.parseCommand(newCircInput);
-            CommandIF command3 = parser.parseCommand(newRectInput);
-            CommandIF command4 = parser.parseCommand(mvInputInput);
+            CommandExprIF command = parser.parseCommand(newImgInput);
+            CommandExprIF command2 = parser.parseCommand(newCircInput);
+            CommandExprIF command3 = parser.parseCommand(newRectInput);
+            CommandExprIF command4 = parser.parseCommand(mvInputInput);
             command.interpreta(context); // Esegui il comando
             command2.interpreta(context);
             command3.interpreta(context);

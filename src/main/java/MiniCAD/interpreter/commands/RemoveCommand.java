@@ -2,9 +2,8 @@ package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.utilExpr.Token;
-import MiniCAD.interpreter.utilExpr.TokenType;
 
-public class RemoveCommand implements CommandIF {
+public class RemoveCommand implements UndoableCmdExprIF {
     private Token id;
     public RemoveCommand(Token id) {
         this.id = id;
@@ -36,5 +35,10 @@ public class RemoveCommand implements CommandIF {
         return "RemoveCommand{" +
                 "id='" + id + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean undo(Context context) {
+        return false; //TODO
     }
 }

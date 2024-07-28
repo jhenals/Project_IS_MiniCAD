@@ -6,10 +6,9 @@ import MiniCAD.util.Util;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
-import java.util.List;
 import java.util.Map;
 
-public class AreaCommand implements CommandIF {
+public class AreaCommand implements CommandExprIF {
     private Token param;
 
     public AreaCommand(Token param) {
@@ -47,6 +46,7 @@ public class AreaCommand implements CommandIF {
         System.out.println(res);
         return res;
     }
+
 
     private Double calcolaAreaTotaleDiTuttiOggetti(Context context) {
         Double area =0D;

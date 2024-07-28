@@ -9,7 +9,7 @@ import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import java.util.List;
 import java.util.Map;
 
-public class ListCommand implements CommandIF {
+public class ListCommand implements CommandExprIF {
     private Token token;
 
     public ListCommand(Token t) {
