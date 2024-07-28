@@ -24,26 +24,28 @@ public class MoveCommand implements UndoableCmdExprIF {
 
 
     public Point2D parsePosizioneToPoint2D(){
-        Double x = Double.parseDouble(Float.toString(posizione.getParam1()));
-        Double y = Double.parseDouble(Float.toString(posizione.getParam2()));
-        Point2D p = new Point2D.Double(x, y);
-        return p;
+        double x = Double.parseDouble(Float.toString(posizione.getParam1()));
+        double y = Double.parseDouble(Float.toString(posizione.getParam2()));
+        return new Point2D.Double(x, y);
     }
     @Override
     public String interpreta(Context context) {
-        String res = "";
+        String res;
         GraphicObject object = context.getObjectbyId(objectId.interpreta(context));
+        String idStr = objectId.interpreta(context);
         Posizione pos= posizione.interpreta(context);
 
         if( object != null ){
             if(offset){
-                Double newX = object.getPosition().getX() + Double.parseDouble(Float.toString(posizione.getParam1()));
-                Double newY = object.getPosition().getY() +  Double.parseDouble(Float.toString(posizione.getParam2()));
-                object.moveTo(newX, newY);
-                res = "Oggetto con id=" + getObjectId().getValore() + " viene spostato da " + pos + " a (" +
-                        String.format("%.2f", newX) + ";"+ String.format("%.2f", newY) + ")";
+                Point2D oldPos = object.getPosition();
+                context.moveOffObject(idStr, parsePosizioneToPoint2D());
+                Point2D newPos = object.getPosition();
+
+                res = "Oggetto con id=" + getObjectId().getValore() + " viene spostato da " + oldPos + " a (" +
+                        newPos + ")";
             }else{
-                object.moveTo(parsePosizioneToPoint2D());
+
+                context.moveObject(idStr, parsePosizioneToPoint2D());
                 res = "Oggetto con id= " + getObjectId().getValore() + " viene spostato " +
                         " alla posizione " + pos ;
 

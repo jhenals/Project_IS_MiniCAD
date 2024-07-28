@@ -3,13 +3,14 @@ package MiniCAD.interpreter;
 import MiniCAD.interpreter.utilExpr.GroupObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
+import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Context {
-    private Map<String, GraphicObject> objects ;
-    private Map<String, List<String>> groups ;
+    private final Map<String, GraphicObject> objects ;
+    private final Map<String, List<String>> groups ;
     private int nextId = 0;
 
     public Context(){
@@ -83,5 +84,21 @@ public class Context {
 
     public void unGroup(String gid) {
         groups.remove(gid);
+    }
+
+
+    public void moveOffObject(String idStr, Point2D offset) {
+        GraphicObject go = objects.get(idStr);
+        Point2D currentPosition = go.getPosition();
+
+        double newX = currentPosition.getX() + offset.getX();
+        double newY = currentPosition.getY() + offset.getY();
+
+        go.moveTo(new Point2D.Double(newX, newY));
+    }
+
+    public void moveObject(String idStr, Point2D pos) {
+        GraphicObject go = objects.get(idStr);
+        go.moveTo(pos);
     }
 }
