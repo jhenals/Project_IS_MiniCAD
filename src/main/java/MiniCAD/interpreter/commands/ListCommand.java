@@ -19,7 +19,7 @@ public class ListCommand implements CommandExprIF {
 
     @Override
     public String interpreta(Context context) {
-        String res = "";
+        String res ;
         String idStr = token.interpreta(context);
         StringBuilder sb = new StringBuilder();
 
@@ -27,7 +27,7 @@ public class ListCommand implements CommandExprIF {
             case OBJ_ID -> {
                 if (context.getObjectbyId(token.interpreta(context)) == null) {
                     res = "Oggetto non esiste";
-                } else if (context.getObjectTypeById(idStr) == "Group" ) {
+                } else if (context.getObjectTypeById(idStr).equals("Group" )) {
                     if (context.getObjectbyId(token.getValore().toString()) == null) {
                         res = "Gruppo non esiste";
                     } else {
@@ -92,7 +92,7 @@ public class ListCommand implements CommandExprIF {
                     sb.append(" VUOTO");
                 }else {
                     for (String id : allObjects.keySet()) {
-                        sb.append(" " + id + " in posizione:" + stampaPosizione(allObjects.get(id)) + "\n");
+                        sb.append(" " + id + " di tipo " + allObjects.get(id).getType() + " in posizione:" + stampaPosizione(allObjects.get(id)) + "\n");
                     }
                 }
             }
@@ -109,8 +109,9 @@ public class ListCommand implements CommandExprIF {
                 }
             }
         }
-        System.out.println(sb.toString());
-        return sb.toString();
+        res = sb.toString();
+        System.out.println(res);
+        return res;
     }
 
     private String stampaPosizione(GraphicObject go) {

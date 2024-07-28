@@ -6,18 +6,19 @@ import MiniCAD.interpreter.utilExpr.*;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class CommandParser {
-    private CommandLexer cLexer;
     private Iterator<Token> tokens;
     private Token tokenCorrente;
-    private CommandExprIF cmd;
+
 
 
     public CommandExprIF parseCommand(String cmdInput) throws ParseException, IOException {
-        cLexer = new CommandLexer(new StringReader(cmdInput));
+        CommandExprIF cmd = null;
+        CommandLexer cLexer = new CommandLexer(new StringReader(cmdInput));
         List<Token> listaToken = cLexer.tokenizzare();
         this.tokens = listaToken.iterator();
         avanza();
@@ -64,7 +65,7 @@ public class CommandParser {
                 cmd = new Command(perimeterCmd);
             }
             default -> throw new IllegalArgumentException("Tipo del comando sconosciuto: " + tokenCorrente.getValore());
-        };
+        }
         return cmd;
     } //parseCommand
 
@@ -91,7 +92,7 @@ public class CommandParser {
                 float width = Float.parseFloat(tokenCorrente.getValore().toString());
                 avanza();
                 expect(TokenType.VIRGOLA);
-                float height = Float.parseFloat(tokenCorrente.getValore().toString());;
+                float height = Float.parseFloat(tokenCorrente.getValore().toString());
                 Posizione p = new Posizione(width, height); // (base, altezza)
                 tc= new TypeConstructor.RectangleConstuctor(p);
             }
@@ -147,9 +148,9 @@ public class CommandParser {
     }
 
     private ListId parseListId() throws ParseException {
-       ListId objIds = null;
+       List<Token> objIds = new ArrayList<>();
         while(tokenCorrente.getTipo().equals(TokenType.OBJ_ID )  ){
-            objIds = new ListId(tokenCorrente);
+            objIds.add(tokenCorrente);
             avanza();
             if( tokenCorrente != null ){
                 expect(TokenType.VIRGOLA);
@@ -157,7 +158,7 @@ public class CommandParser {
                 break;
             }
         }
-        return objIds;
+        return new ListId(objIds);
 
     }
 
@@ -188,8 +189,7 @@ public class CommandParser {
         String y = tokenCorrente.getValore().toString();
         avanza();
         expect(TokenType.TONDA_CHIUSA);
-        Posizione pos = new Posizione(x,y);
-        return pos;
+        return new Posizione(x,y);
     }
 
     private boolean expect(TokenType tipo) throws ParseException {
