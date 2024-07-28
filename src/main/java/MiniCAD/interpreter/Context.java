@@ -36,14 +36,38 @@ public class Context {
 
     public GroupObject createGroup(List<String> idList) {
         String gid = generaId();
+        String existingGrp= null;
         GroupObject group = new GroupObject(gid);
+        boolean flag = false;
+        List<String> mem= null;
+
+
         Map<String, GraphicObject> objs = new HashMap<>();
         for( String id: idList){
-            objs.put(id, objects.get(id));
+            if(objects.get(id).getType().equals("Group")){
+                flag = true;
+                existingGrp = id;
+                List<String> groupObjs = groups.get(existingGrp);
+
+                for ( String idMembers : groupObjs ){
+                    objs.put(idMembers, objects.get(id));
+                }
+                mem = groupObjs;
+            }else{
+                objs.put(id, objects.get(id));
+            }
         }
         group.setObjects(objs);
+        objects.remove(existingGrp);
+        groups.remove(existingGrp);
         objects.put(gid, group);
+
+        if( flag ) {
+            idList.remove(existingGrp);
+            idList.addAll(mem);
+        }
         groups.put(gid, idList);
+
         return group;
     }
 
