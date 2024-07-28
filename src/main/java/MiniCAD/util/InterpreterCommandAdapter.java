@@ -1,24 +1,20 @@
 package MiniCAD.util;
 
 import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.commands.CommandIF;
+import MiniCAD.interpreter.commands.UndoableCommand;
 import ObserverCommandFlyweight.is.command.Command;
-
 public class InterpreterCommandAdapter implements Command {
 
-    private final CommandIF miniCadCommand;
+    private final UndoableCommand miniCadCommand;
     private Context context;
-    private Object res;
 
-    public InterpreterCommandAdapter(CommandIF miniCadCommand, Context context) {
-        this.context = context;
+    public InterpreterCommandAdapter(UndoableCommand miniCadCommand) {
         this.miniCadCommand = miniCadCommand;
-
     }
 
     @Override
     public boolean doIt() {
-        res= miniCadCommand.interpreta(context);
+        miniCadCommand.interpreta(context);
         return true;
     }
 
@@ -26,6 +22,4 @@ public class InterpreterCommandAdapter implements Command {
     public boolean undoIt() {
         return miniCadCommand.undo(context);
     }
-
-    public Object getRes() { return  res; }
 }

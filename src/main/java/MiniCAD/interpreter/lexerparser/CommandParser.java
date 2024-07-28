@@ -23,7 +23,7 @@ public class CommandParser {
         List<Token> listaToken = cLexer.tokenizzare();
         this.tokens = listaToken.iterator();
         avanza();
-        CommandIF cmd = null;
+        Command cmd = null;
 
         if( tokenCorrente == null ){
             throw new IllegalArgumentException("Fine dell'input inattesa");
@@ -68,7 +68,7 @@ public class CommandParser {
             }
             default -> throw new IllegalArgumentException("Tipo del comando sconosciuto: " + tokenCorrente.getValore());
         };
-        return (Command) cmd;
+        return cmd;
     } //parseCommand
 
 

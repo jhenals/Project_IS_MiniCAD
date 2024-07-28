@@ -22,9 +22,4 @@ public class Tipo implements CommandIF {
     public TokenType interpreta(Context context) {
         return oggetto.getTipo();
     }
-
-    @Override
-    public boolean undo(Context context) {
-        return false;
-    }
 }

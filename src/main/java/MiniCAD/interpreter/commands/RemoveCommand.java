@@ -37,9 +37,4 @@ public class RemoveCommand implements CommandIF {
                 "id='" + id + '\'' +
                 '}';
     }
-
-    @Override
-    public boolean undo(Context context) {
-        return false; //TODO
-    }
 }

@@ -10,7 +10,7 @@ import ObserverCommandFlyweight.is.shapes.model.RectangleObject;
 import javax.swing.*;
 import java.awt.geom.Point2D;
 
-public class CreateCommand implements CommandIF {
+public class CreateCommand implements UndoableCommand {
     protected TypeConstructor typeConstructor;
     protected Posizione posizione;
     private String objId;
@@ -19,8 +19,6 @@ public class CreateCommand implements CommandIF {
         typeConstructor = tc;
         posizione = pos;
     }
-
-    public String getId(){ return objId; }
 
     private Point2D getPosizione(){
         float x= posizione.getParam1();
@@ -32,18 +30,17 @@ public class CreateCommand implements CommandIF {
     @Override
     public String interpreta(Context context) {
         GraphicObject object;
-        TypeConstructor tc = (TypeConstructor) typeConstructor.interpreta(context);
 
         if( typeConstructor instanceof TypeConstructor.CircleConstructor){
-            TypeConstructor.CircleConstructor circleConstructor = (TypeConstructor.CircleConstructor) tc ;
+            TypeConstructor.CircleConstructor circleConstructor = (TypeConstructor.CircleConstructor) typeConstructor.interpreta(context);
             object = new CircleObject( getPosizione(),circleConstructor.getRaggio());
         } else if ( typeConstructor instanceof TypeConstructor.RectangleConstuctor){
-            TypeConstructor.RectangleConstuctor rectangleConstuctor = (TypeConstructor.RectangleConstuctor) tc;
+            TypeConstructor.RectangleConstuctor rectangleConstuctor = ((TypeConstructor.RectangleConstuctor) typeConstructor).interpreta(context);
             double base = rectangleConstuctor.getParam1();
             double altezza =  rectangleConstuctor.getParam2();
             object = new RectangleObject(getPosizione(), base, altezza);
         } else if ( typeConstructor instanceof TypeConstructor.ImageConstructor) {
-            TypeConstructor.ImageConstructor imageConstructor = (TypeConstructor.ImageConstructor) tc;
+            TypeConstructor.ImageConstructor imageConstructor = ((TypeConstructor.ImageConstructor) typeConstructor).interpreta(context);
             String path = imageConstructor.getPath();
             object = new ImageObject(new ImageIcon(path), getPosizione());
         } else {

@@ -102,9 +102,4 @@ public class AreaCommand implements CommandIF {
                 "param=" + param +
                 '}';
     }
-
-    @Override
-    public boolean undo(Context context) {
-        return false;
-    }
 }
