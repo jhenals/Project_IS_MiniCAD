@@ -6,11 +6,11 @@ import MiniCAD.interpreter.commands.CommandExprIF;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ListId implements CommandExprIF {
-    private List<Token> ids = new LinkedList<>();
+public class ListId implements CommandExprIF{
+    private List<Token> ids;
 
-    public ListId(Token id) {
-        ids.add(id);
+    public ListId(List<Token> ids) {
+        this.ids = ids;
     }
 
     @Override
@@ -29,9 +29,16 @@ public class ListId implements CommandExprIF {
     @Override
     public List<String> interpreta(Context context) {
         List<String> idList = new LinkedList<>();
-        for(Token id : ids ){
-            idList.add(id.interpreta(context));
+        if( ids.size()==1){
+            return null;
+        }else{
+            for(Token id : ids ){
+                if(!idList.contains(id)){
+                    idList.add(id.interpreta(context));
+                }
+            }
         }
+
         return idList;
     }
 }
