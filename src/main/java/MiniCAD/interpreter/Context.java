@@ -125,4 +125,9 @@ public class Context {
         GraphicObject go = objects.get(idStr);
         go.moveTo(pos);
     }
+
+    public void ridimensiona(String idStr, String scaleFactor) {
+        GraphicObject go = objects.get(idStr);
+        go.scale(Double.parseDouble(scaleFactor));
+    }
 }

@@ -11,19 +11,19 @@ public class RemoveCommand implements UndoableCmdExprIF {
 
     @Override
     public String interpreta(Context context) {
-        String res = "";
+        String res ;
         String idStr = id.interpreta(context);
-        if (context.getObjectTypeById(idStr) == "Group"){
+        if (context.getObjectTypeById(idStr).equals( "Group")){
             for( String objId : context.getObjectIDsOfGroup(idStr)){
                 context.removeObjectById(objId);
             }
             context.unGroup(idStr);
             context.removeObjectById(idStr);
 
-            res ="Rimosso oggetto con id: "+ id.getValore().toString();
+            res ="Rimosso oggetto con id: "+ idStr;
         }else{
             context.removeObjectById(idStr);
-            res = "Rimosso oggetto con id: "+ id;
+            res = "Rimosso oggetto con id: "+ idStr;
         }
         System.out.println(res);
         return res;
