@@ -1,7 +1,9 @@
 package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.utilExpr.TipoExpr;
 import MiniCAD.interpreter.utilExpr.Token;
+import MiniCAD.interpreter.utilExpr.TokenType;
 import MiniCAD.util.Util;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
@@ -9,37 +11,47 @@ import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import java.util.Map;
 
 public class PerimeterCommand implements CommandExprIF {
-    private Token param;
+    private CommandExprIF param;
 
-    public PerimeterCommand(Token param) {
+    public PerimeterCommand(CommandExprIF param) {
         this.param = param;
     }
 
     @Override
     public String interpreta(Context context) {
-        String res = "";
-        String idStr = param.interpreta(context);
-        switch (param.getTipo()){
-            case OBJ_ID -> {
-                if(context.getObjectTypeById(idStr) == "Group"){
-                    Double perim = calcolaPerimDelGruppo(context, param.interpreta(context));
-                    res =  "Area del gruppo con id="+ param.getValore().toString()+ ": " +Util.formatDouble(perim);
-                }else {
-                    Double perim = calcolaPerimDellOggetto(context, param.interpreta(context));
-                    res = "Area dell'oggetto con id=" + param.getValore().toString() + ": " + Util.formatDouble(perim);
+        String res;
+        if( param instanceof TipoExpr ){
+            TokenType tokenType = ((TipoExpr) param).interpreta(context);
+            switch (tokenType){
+                case CIRCLE -> {
+                    double perim= calcolaPerimDiTuttiCerchi(context);
+                    res =  "Perimetro totale di tutti i cerchi: "+Util.formatDouble(perim);
                 }
+                case RECTANGLE -> {
+                    double perim= calcolaPerimDiTuttiRettangoli(context);
+                    res = "Perimetro totale di tutti i rettangoli: "+Util.formatDouble(perim);
+                }
+                default -> throw new IllegalArgumentException("Tipo di oggetto sconosciuto");
             }
-            case CIRCLE -> {
-                Double perim= calcolaPerimDiTuttiCerchi(context);
-                res =  "Area totale di tutti i cerchi: "+Util.formatDouble(perim);
-            }
-            case RECTANGLE -> {
-                Double perim= calcolaPerimDiTuttiRettangoli(context);
-                res = "Area totale di tutti i rettangoli: "+Util.formatDouble(perim);
-            }
-            case ALL -> {
-                Double perim= calcolaPerimTotaleDiTuttiOggetti(context);
-                res = "Area totale di tutti gli oggetti: "+ Util.formatDouble(perim);
+        }else{
+            Token token = (Token) param;
+            String idStr = token.interpreta(context);
+            switch (token.getTipo()){
+                case OBJ_ID -> {
+                    if(context.getObjectTypeById(idStr).equals( "Group") ){
+                        double perim = calcolaPerimDelGruppo(context, idStr);
+                        res =  "Perimetro del gruppo con id="+ idStr + ": " +Util.formatDouble(perim);
+                    }else {
+                        double perim = calcolaPerimDellOggetto(context, idStr);
+                        res = "Perimetro dell'oggetto con id=" + idStr  + ": " + Util.formatDouble(perim);
+                    }
+                }
+
+                case ALL -> {
+                    double perim= calcolaPerimTotaleDiTuttiOggetti(context);
+                    res = "Perimetro totale di tutti gli oggetti: "+ Util.formatDouble(perim);
+                }
+                default -> throw new IllegalArgumentException("Token sconosciuto");
             }
         }
         System.out.println(res);
@@ -47,14 +59,14 @@ public class PerimeterCommand implements CommandExprIF {
     }
 
     private Double calcolaPerimTotaleDiTuttiOggetti(Context context) {
-        Double perim =0D;
+        double perim =0D;
         perim += calcolaPerimDiTuttiRettangoli(context);
         perim += calcolaPerimDiTuttiCerchi(context);
         return perim;
     }
 
     private Double calcolaPerimDelGruppo(Context context, String gid) {
-        Double perim = 0D;
+        double perim = 0D;
         Map<String, GraphicObject> graphicObjectList = context.getObjectsOfGroup(gid);
         for( String id: graphicObjectList.keySet() ){
             perim += calcolaPerimDellOggetto(context, id);
@@ -63,7 +75,7 @@ public class PerimeterCommand implements CommandExprIF {
     }
 
     private Double calcolaPerimDiTuttiRettangoli(Context context) {
-        Double perim = 0D;
+        double perim = 0D;
         Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Rectangle");
         for (String id : cerchiMap.keySet() ){
             perim += calcolaPerimDellOggetto(context, id);
@@ -72,7 +84,7 @@ public class PerimeterCommand implements CommandExprIF {
     }
 
     private Double calcolaPerimDiTuttiCerchi(Context context) {
-        Double perim = 0D;
+        double perim = 0D;
         Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Circle");
         for (String id : cerchiMap.keySet() ){
             perim += calcolaPerimDellOggetto(context, id);
@@ -81,14 +93,14 @@ public class PerimeterCommand implements CommandExprIF {
     }
 
     private Double calcolaPerimDellOggetto(Context context, String id) {
-        Double perim = 0D;
+        double perim = 0D;
         GraphicObject object = context.getObjectbyId(id);
         if (object.getType().equals("Circle")) {
-            Double r = ((CircleObject) object).getRadius();
-            perim = 2 * Math.PI * ((CircleObject) object).getRadius();
+            double r = ((CircleObject) object).getRadius();
+            perim = 2 * Math.PI * r;
         } else if (object.getType().equals("Rectangle")) {
-            Double l = object.getDimension().getHeight();
-            Double w = object.getDimension().getWidth();
+            double l = object.getDimension().getHeight();
+            double w = object.getDimension().getWidth();
             perim = 2 * l + 2 * w;
         }
         return perim;
