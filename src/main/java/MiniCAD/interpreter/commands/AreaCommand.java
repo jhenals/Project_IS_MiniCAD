@@ -26,11 +26,11 @@ public class AreaCommand implements CommandExprIF {
             switch (tokenType){
                 case CIRCLE -> {
                     Double area= calcolaAreaDiTuttiCerchi(context);
-                    res =  "Area totale di tutti i cerchi: "+Util.formatDouble(area);
+                    res = String.valueOf(area);
                 }
                 case RECTANGLE -> {
                     Double area= calcolaAreaDiTuttiRettangoli(context);
-                    res = "Area totale di tutti i rettangoli: "+Util.formatDouble(area);
+                    res = String.valueOf(area);
                 }
                 default -> throw new IllegalArgumentException("Tipo di oggetto sconosciuto");
             }
@@ -41,16 +41,16 @@ public class AreaCommand implements CommandExprIF {
                 case OBJ_ID -> {
                     if(context.getObjectTypeById(idStr).equals("Group")){
                         Double area = calcolaAreaDelGruppo(context, idStr);
-                        res =  "Area del gruppo con id="+ idStr + ": " +Util.formatDouble(area);
+                        res =  String.valueOf(area);
                     }else {
                         Double area = calcolaAreaDellOggetto(context, idStr);
-                        res = "Area dell'oggetto con id=" + idStr  + ": " + Util.formatDouble(area);
+                        res =String.valueOf(area);
                     }
                 }
 
                 case ALL -> {
                     Double area= calcolaAreaTotaleDiTuttiOggetti(context);
-                    res = "Area totale di tutti gli oggetti: "+ Util.formatDouble(area);
+                    res = String.valueOf(area);
                 }
                 default -> throw new IllegalArgumentException("Token sconosciuto");
             }

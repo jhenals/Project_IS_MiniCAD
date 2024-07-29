@@ -37,18 +37,13 @@ public class MoveCommand implements UndoableCmdExprIF {
 
         if( object != null ){
             if(offset){
-                Point2D oldPos = object.getPosition();
                 context.moveOffObject(idStr, parsePosizioneToPoint2D());
                 Point2D newPos = object.getPosition();
-
-                res = "Oggetto con id=" + getObjectId().getValore() + " viene spostato da " + oldPos + " a (" +
-                        newPos + ")";
+                res = "Nuova posizione: (" + newPos.getX() + ","+ newPos.getY() + ")";
             }else{
-
                 context.moveObject(idStr, parsePosizioneToPoint2D());
                 res = "Oggetto con id= " + getObjectId().getValore() + " viene spostato " +
-                        " alla posizione " + pos ;
-
+                        "alla posizione " + pos ;
             }
         } else {
             res= "Oggetto con ID "+ objectId.getValore().toString() + " non trovato";

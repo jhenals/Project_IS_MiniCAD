@@ -20,10 +20,10 @@ public class RemoveCommand implements UndoableCmdExprIF {
             context.unGroup(idStr);
             context.removeObjectById(idStr);
 
-            res ="Rimosso oggetto con id: "+ idStr;
+            res ="Rimosso: "+ idStr;
         }else{
             context.removeObjectById(idStr);
-            res = "Rimosso oggetto con id: "+ idStr;
+            res = "Rimosso: "+ idStr;
         }
         System.out.println(res);
         return res;

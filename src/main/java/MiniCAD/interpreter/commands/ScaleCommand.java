@@ -22,9 +22,10 @@ public class ScaleCommand implements UndoableCmdExprIF {
 
         GraphicObject object = context.getObjectbyId(idStr);
         double newDim;
+
         if( object != null ){
             context.ridimensiona(idStr, sfStr);
-            res = "Oggetto con id="+ idStr + " viene ridimensionato con un fattore di scala pari a " + sfStr+". Nuova dimensione= ";
+            res = "Nuova dimensione= ";
             if( object instanceof CircleObject){
                 newDim = ((CircleObject) object).getRadius();
                 res = res + newDim;

@@ -16,7 +16,7 @@ public class MiniCadCLI {
         CommandParser commandParser = new CommandParser();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Benvenuto in MiniCADUI CLI. Digita i comandi. Digita 'exit' per uscire.");
+        System.out.println("Benvenuto in MiniCAD CLI. Digita i comandi. Digita 'exit' per uscire.");
 
         while (true) {
             System.out.print("> ");

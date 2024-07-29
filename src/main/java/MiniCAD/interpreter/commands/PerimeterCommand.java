@@ -25,11 +25,11 @@ public class PerimeterCommand implements CommandExprIF {
             switch (tokenType){
                 case CIRCLE -> {
                     double perim= calcolaPerimDiTuttiCerchi(context);
-                    res =  "Perimetro totale di tutti i cerchi: "+Util.formatDouble(perim);
+                    res =  String.valueOf(perim);
                 }
                 case RECTANGLE -> {
                     double perim= calcolaPerimDiTuttiRettangoli(context);
-                    res = "Perimetro totale di tutti i rettangoli: "+Util.formatDouble(perim);
+                    res =String.valueOf(perim);
                 }
                 default -> throw new IllegalArgumentException("Tipo di oggetto sconosciuto");
             }
@@ -40,16 +40,16 @@ public class PerimeterCommand implements CommandExprIF {
                 case OBJ_ID -> {
                     if(context.getObjectTypeById(idStr).equals( "Group") ){
                         double perim = calcolaPerimDelGruppo(context, idStr);
-                        res =  "Perimetro del gruppo con id="+ idStr + ": " +Util.formatDouble(perim);
+                        res = String.valueOf(perim);
                     }else {
                         double perim = calcolaPerimDellOggetto(context, idStr);
-                        res = "Perimetro dell'oggetto con id=" + idStr  + ": " + Util.formatDouble(perim);
+                        res = String.valueOf(perim);
                     }
                 }
 
                 case ALL -> {
                     double perim= calcolaPerimTotaleDiTuttiOggetti(context);
-                    res = "Perimetro totale di tutti gli oggetti: "+ Util.formatDouble(perim);
+                    res = String.valueOf(perim);
                 }
                 default -> throw new IllegalArgumentException("Token sconosciuto");
             }
