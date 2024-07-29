@@ -17,7 +17,7 @@ public class CommandParser {
 
 
     public CommandExprIF parseCommand(String cmdInput) throws ParseException, IOException {
-        CommandExprIF cmd = null;
+        CommandExprIF cmd;
         CommandLexer cLexer = new CommandLexer(new StringReader(cmdInput));
         List<Token> listaToken = cLexer.tokenizzare();
         this.tokens = listaToken.iterator();
@@ -64,7 +64,7 @@ public class CommandParser {
                 PerimeterCommand perimeterCmd = parsePerimeter();
                 cmd = new Command(perimeterCmd);
             }
-            default -> throw new IllegalArgumentException("Tipo del comando sconosciuto: " + tokenCorrente.getValore());
+            default -> throw new IllegalArgumentException("TipoExpr del comando sconosciuto: " + tokenCorrente.getValore());
         }
         return cmd;
     } //parseCommand
@@ -74,33 +74,33 @@ public class CommandParser {
         expect(TokenType.NEW);
         Token tipo = tokenCorrente;
         avanza();
-        TypeConstructor typeConstructor = parseTypeConstructor(tipo);
-        Posizione p = parsePosition();
+        TypeConstructorExpr typeConstructor = parseTypeConstructor(tipo);
+        PosizioneExpr p = parsePosition();
         return new CreateCommand(typeConstructor, p);
     }
 
-    private TypeConstructor parseTypeConstructor(Token tipo) throws ParseException {
-        TypeConstructor tc ;
+    private TypeConstructorExpr parseTypeConstructor(Token tipo) throws ParseException {
+        TypeConstructorExpr tc ;
         expect(TokenType.TONDA_APERTA);
 
         switch (tipo.getTipo()) {
             case CIRCLE ->{
                 float raggio = Float.parseFloat(tokenCorrente.getValore().toString()); //Pos_float per raggio
-                tc= new TypeConstructor.CircleConstructor(raggio);
+                tc= new TypeConstructorExpr.CircleConstructor(raggio);
             }
             case RECTANGLE -> {
                 float width = Float.parseFloat(tokenCorrente.getValore().toString());
                 avanza();
                 expect(TokenType.VIRGOLA);
                 float height = Float.parseFloat(tokenCorrente.getValore().toString());
-                Posizione p = new Posizione(width, height); // (base, altezza)
-                tc= new TypeConstructor.RectangleConstuctor(p);
+                PosizioneExpr p = new PosizioneExpr(width, height); // (base, altezza)
+                tc= new TypeConstructorExpr.RectangleConstructor(p);
             }
             case IMG ->{
                 String path = (String) tokenCorrente.getValore();
-                tc = new TypeConstructor.ImageConstructor(path);
+                tc = new TypeConstructorExpr.ImageConstructor(path);
             }
-            default -> throw  new ParseException("Tipo sconosciuto: "+ tipo.getTipo().toString());
+            default -> throw  new ParseException("TipoExpr sconosciuto: "+ tipo.getTipo().toString());
         }
         avanza();
         expect(TokenType.TONDA_CHIUSA);
@@ -121,7 +121,7 @@ public class CommandParser {
         avanza();
         Token objId = tokenCorrente;
         avanza();
-        Posizione pos= parsePosition();
+        PosizioneExpr pos= parsePosition();
         return new MoveCommand(objId, pos, offset);
     }
 
@@ -137,17 +137,22 @@ public class CommandParser {
     private ListCommand parseList() throws ParseException {
         expect(TokenType.LS);
         Token param = tokenCorrente;
-        return new ListCommand(param);
+        if( paramIsType(param) ){
+            TipoExpr tipo = new TipoExpr(param);
+            return new ListCommand(tipo);
+        }else{
+            return new ListCommand(param);
+        }
     }
 
     private GroupCommand parseGroup() throws ParseException {
         expect(TokenType.GRP);
-        ListId listId = parseListId();
+        ListIdExpr listId = parseListId();
         return new GroupCommand(listId);
 
     }
 
-    private ListId parseListId() throws ParseException {
+    private ListIdExpr parseListId() throws ParseException {
        List<Token> objIds = new ArrayList<>();
         while(tokenCorrente.getTipo().equals(TokenType.OBJ_ID )  ){
             objIds.add(tokenCorrente);
@@ -158,7 +163,7 @@ public class CommandParser {
                 break;
             }
         }
-        return new ListId(objIds);
+        return new ListIdExpr(objIds);
 
     }
 
@@ -171,17 +176,27 @@ public class CommandParser {
     private AreaCommand parseArea() throws ParseException {
         expect(TokenType.AREA);
         Token param = tokenCorrente;
-        return new AreaCommand(param);
+        if( paramIsType(param) ){
+            TipoExpr tipo = new TipoExpr(param);
+            return new AreaCommand(tipo);
+        }else{
+            return new AreaCommand(param);
+        }
     }
 
     private PerimeterCommand parsePerimeter() throws ParseException {
         expect(TokenType.PERIMETER);
         Token param = tokenCorrente;
-        return new PerimeterCommand(param);
+        if( paramIsType(param) ){
+            TipoExpr tipo = new TipoExpr(param);
+            return new PerimeterCommand(tipo);
+        }else{
+            return new PerimeterCommand(param);
+        }
     }
 
-    private Posizione parsePosition() throws ParseException {
-        //Posizione : <pos>::=( <posfloat> , <posfloat> )
+    private PosizioneExpr parsePosition() throws ParseException {
+        //PosizioneExpr : <pos>::=( <posfloat> , <posfloat> )
         expect(TokenType.TONDA_APERTA);
         String x = tokenCorrente.getValore().toString();
         avanza();
@@ -189,7 +204,7 @@ public class CommandParser {
         String y = tokenCorrente.getValore().toString();
         avanza();
         expect(TokenType.TONDA_CHIUSA);
-        return new Posizione(x,y);
+        return new PosizioneExpr(x,y);
     }
 
     private boolean expect(TokenType tipo) throws ParseException {
@@ -198,6 +213,10 @@ public class CommandParser {
         }
         avanza();
         return true;
+    }
+
+    private boolean paramIsType(Token param) {
+        return param.getTipo() == TokenType.CIRCLE || param.getTipo() == TokenType.RECTANGLE || param.getTipo() == TokenType.IMG;
     }
 
     private void avanza() {
