@@ -1,6 +1,5 @@
 package MiniCAD.interpreter;
 
-import MiniCAD.interpreter.utilExpr.GroupObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 import java.awt.geom.Point2D;
