@@ -1,7 +1,7 @@
 package MiniCAD;
 
 import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.commands.Command;
+import MiniCAD.interpreter.commands.CommandExprIF;
 import MiniCAD.interpreter.commands.UndoableCmdExprIF;
 import MiniCAD.util.InterpreterCommandAdapter;
 import ObserverCommandFlyweight.is.command.HistoryCommandHandler;
@@ -13,12 +13,12 @@ public class SistemaMiniCAD {
      */
 
 
-    public void esegueComando(Command comando, Context context){
-        InterpreterCommandAdapter adapter = new InterpreterCommandAdapter(comando, context);
+    public void esegueComando(CommandExprIF comando, Context context){
         if(comando instanceof  UndoableCmdExprIF){
+            InterpreterCommandAdapter adapter = new InterpreterCommandAdapter(comando, context);
             historyCommandHandler.handle(adapter);
         }else{
-            adapter.doIt();
+            comando.interpreta(context);
         }
     }
 
