@@ -3,23 +3,23 @@ package MiniCAD.interpreter.utilExpr;
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.commands.CommandExprIF;
 
-public class Tipo implements CommandExprIF {
-    private Token oggetto;
+public class TipoExpr implements CommandExprIF {
+    private Token param;
 
-    public Tipo(Token oggetto) {
-        this.oggetto = oggetto;
+    public TipoExpr(Token param) {
+        this.param = param;
     }
 
 
     @Override
     public String toString() {
-        return "Tipo{" +
-                "oggetto=" + oggetto +
+        return "TipoExpr{" +
+                "oggetto=" + param +
                 '}';
     }
 
     @Override
     public TokenType interpreta(Context context) {
-        return oggetto.getTipo();
+        return param.getTipo();
     }
 }

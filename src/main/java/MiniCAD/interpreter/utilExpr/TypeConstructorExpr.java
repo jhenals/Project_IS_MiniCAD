@@ -3,8 +3,10 @@ package MiniCAD.interpreter.utilExpr;
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.commands.CommandExprIF;
 
-public abstract class TypeConstructor implements CommandExprIF {
-    public static class CircleConstructor extends  TypeConstructor {
+public abstract class TypeConstructorExpr<T> implements CommandExprIF {
+    public abstract T interpreta(Context context);
+
+    public static class CircleConstructor extends TypeConstructorExpr {
         private float raggio;
 
         public CircleConstructor(float r) {
@@ -21,27 +23,23 @@ public abstract class TypeConstructor implements CommandExprIF {
             }
     }
 
-    public static class RectangleConstuctor extends TypeConstructor {
-        private Posizione param; // (base, altezza)
+    public static class RectangleConstructor extends TypeConstructorExpr {
+        private PosizioneExpr param; // (base, altezza)
 
-        public RectangleConstuctor(Posizione p) {
+        public RectangleConstructor(PosizioneExpr p) {
             this.param = p;
         }
 
-        public Posizione getParametri() {
-            return param;
-        }
-
-        public float getParam1(){ return param.getParam1(); }
-        public float getParam2(){ return param.getParam2(); }
+        public float getBase(){ return param.getParam1(); }
+        public float getAltezza(){ return param.getParam2(); }
 
         @Override
-        public RectangleConstuctor interpreta(Context context) {
+        public RectangleConstructor interpreta(Context context) {
             return this;
         }
     }
 
-    public static class ImageConstructor extends TypeConstructor {
+    public static class ImageConstructor extends TypeConstructorExpr {
         private String path;
 
         public ImageConstructor(String path) {

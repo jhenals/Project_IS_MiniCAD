@@ -3,11 +3,11 @@ package MiniCAD.interpreter.utilExpr;
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.commands.CommandExprIF;
 
-public class Posizione implements CommandExprIF {
+public class PosizioneExpr implements CommandExprIF {
     private float param1;
     private float param2;
 
-    public Posizione(float param1, float param2){
+    public PosizioneExpr(float param1, float param2){
         if( param1 >=0 && param2 >=0 ){
             this.param1 = param1;
             this.param2 = param2;
@@ -16,7 +16,7 @@ public class Posizione implements CommandExprIF {
         }
     }
 
-    public Posizione(String param1, String param2){
+    public PosizioneExpr(String param1, String param2){
         this.param1 = Float.parseFloat(param1);
         this.param2 = Float.parseFloat(param2);
     }
@@ -25,16 +25,8 @@ public class Posizione implements CommandExprIF {
         return param1;
     }
 
-    public void setParam1(float param1) {
-        this.param1 = param1;
-    }
-
     public float getParam2() {
         return param2;
-    }
-
-    public void setParam2(float param2) {
-        this.param2 = param2;
     }
 
     @Override
@@ -43,7 +35,7 @@ public class Posizione implements CommandExprIF {
     }
 
     @Override
-    public Posizione interpreta(Context context) {
+    public PosizioneExpr interpreta(Context context) {
         return this ;
     }
 }
