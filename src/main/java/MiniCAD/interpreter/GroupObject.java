@@ -1,6 +1,5 @@
-package MiniCAD.interpreter.utilExpr;
+package MiniCAD.interpreter;
 
-import MiniCAD.interpreter.Context;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObjectListener;
 
@@ -10,12 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//Composite Design Pattern
-
 public class GroupObject implements  GraphicObject{
     private String groupId ;
     private Map<String, GraphicObject> objects;
-    private Context context;
 
 
     public GroupObject(String gid){
