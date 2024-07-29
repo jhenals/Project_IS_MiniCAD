@@ -1,7 +1,9 @@
 package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.utilExpr.TipoExpr;
 import MiniCAD.interpreter.utilExpr.Token;
+import MiniCAD.interpreter.utilExpr.TokenType;
 import MiniCAD.util.Util;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
@@ -10,45 +12,84 @@ import java.util.List;
 import java.util.Map;
 
 public class ListCommand implements CommandExprIF {
-    private Token token;
+    private CommandExprIF param;
 
-    public ListCommand(Token t) {
-        this.token = t;
+    public ListCommand(CommandExprIF param) {
+        this.param = param;
     }
-
 
     @Override
     public String interpreta(Context context) {
         String res ;
-        String idStr = token.interpreta(context);
         StringBuilder sb = new StringBuilder();
 
-        switch( token.getTipo() ){
-            case OBJ_ID -> {
-                if (context.getObjectbyId(token.interpreta(context)) == null) {
-                    res = "Oggetto non esiste";
-                } else if (context.getObjectTypeById(idStr).equals("Group" )) {
-                    if (context.getObjectbyId(token.getValore().toString()) == null) {
-                        res = "Gruppo non esiste";
-                    } else {
-                        GraphicObject object = context.getObjectbyId(token.getValore().toString());
-                        sb.append("Proprietà del gruppo con id=" + token.interpreta(context) +"\n");
-                        sb.append(" Tipo: " + object.getType()+"\n");
-                        sb.append(" Posizione corrente del gruppo: " + stampaPosizione(object)+  "\n");
-                        sb.append(" Oggetti:" + context.getObjectIDsOfGroup(token.interpreta(context)));
-                    }
-                }else{
-                    GraphicObject object = context.getObjectbyId(token.getValore().toString());
-                    sb.append("Elenco di proprietà dell'oggetto con id=" + token.getValore().toString() +"\n");
-                    sb.append(" Tipo: " + object.getType()+"\n");
-                    if( object.getType().equals("Circle")){
-                        sb.append(" Raggio: " + ((CircleObject)object).getRadius() +"\n");
+        if( param instanceof TipoExpr){
+            TokenType tokenType = (TokenType) param.interpreta(context);
+            res = manageTipoExpr(tokenType, context);
+        } else{
+            Token token = (Token) param;
+            String t= token.interpreta(context);
+            switch( token.getTipo() ){
+                case OBJ_ID -> {
+                    if (context.getObjectbyId(t) == null) {
+                        res = "Oggetto non esiste";
+                    } else if (context.getObjectTypeById(t).equals("Group" )) {
+                        if (context.getObjectbyId(t) == null) {
+                            res = "Gruppo non esiste";
+                        } else {
+                            GraphicObject object = context.getObjectbyId(t);
+                            sb.append("Proprietà del gruppo con id=" + token.interpreta(context) +"\n");
+                            sb.append(" TipoExpr: " + object.getType()+"\n");
+                            sb.append(" Posizione corrente del gruppo: " + stampaPosizione(object)+  "\n");
+                            sb.append(" Oggetti:" + context.getObjectIDsOfGroup(token.interpreta(context)));
+                        }
                     }else{
-                        sb.append(" Dimensione: base=" + Util.formatDouble(object.getDimension().getWidth())+" altezza="+ Util.formatDouble(object.getDimension().getHeight())+"\n");
+                        GraphicObject object = context.getObjectbyId(t);
+                        sb.append("Elenco di proprietà dell'oggetto con id=" + t +"\n");
+                        sb.append(" TipoExpr: " + object.getType()+"\n");
+                        if( object.getType().equals("Circle")){
+                            sb.append(" Raggio: " + ((CircleObject)object).getRadius() +"\n");
+                        }else{
+                            sb.append(" Dimensione: base=" + Util.formatDouble(object.getDimension().getWidth())+" altezza="+ Util.formatDouble(object.getDimension().getHeight())+"\n");
+                        }
+                        sb.append(" Posizione corrente: "+ stampaPosizione(object));
                     }
-                    sb.append(" Posizione corrente: "+ stampaPosizione(object));
+                }
+
+                case ALL -> {
+                    Map<String, GraphicObject> allObjects= context.getAllObjects();
+                    sb.append("Elenco di tutti gli oggetti:\n");
+                    if(allObjects.isEmpty()){
+                        sb.append(" VUOTO");
+                    }else {
+                        for (String id : allObjects.keySet()) {
+                            sb.append(" " + id + " di tipo " + allObjects.get(id).getType() + " in posizione:" + stampaPosizione(allObjects.get(id)) + "\n");
+                        }
+                    }
+                }
+
+                case GROUPS -> {
+                    sb.append("Elenco di tutti i gruppi:\n");
+                    Map<String, List<String>> allObjects= context.getAllGroups();
+                    if( allObjects.isEmpty()){
+                        System.out.println(" EMPTY");
+                    }else{
+                        for( String id : allObjects.keySet() ){
+                            sb.append(" "+id+": " + allObjects.get(id));
+                        }
+                    }
                 }
             }
+            res = sb.toString();
+
+        }
+        System.out.println(res);
+        return res;
+    }
+
+    private String manageTipoExpr(TokenType tokenType, Context context) {
+        StringBuilder sb = new StringBuilder();
+        switch (tokenType){
             case CIRCLE -> {
                 Map<String, GraphicObject> circles= context.getObjectsByType("Circle");
                 if(circles.isEmpty()){
@@ -84,34 +125,8 @@ public class ListCommand implements CommandExprIF {
                     }
                 }
             }
-
-            case ALL -> {
-                Map<String, GraphicObject> allObjects= context.getAllObjects();
-                sb.append("Elenco di tutti gli oggetti:\n");
-                if(allObjects.isEmpty()){
-                    sb.append(" VUOTO");
-                }else {
-                    for (String id : allObjects.keySet()) {
-                        sb.append(" " + id + " di tipo " + allObjects.get(id).getType() + " in posizione:" + stampaPosizione(allObjects.get(id)) + "\n");
-                    }
-                }
-            }
-
-            case GROUPS -> {
-                sb.append("Elenco di tutti i gruppi:\n");
-                Map<String, List<String>> allObjects= context.getAllGroups();
-                if( allObjects.isEmpty()){
-                    System.out.println(" EMPTY");
-                }else{
-                    for( String id : allObjects.keySet() ){
-                        sb.append(" "+id+": " + allObjects.get(id));
-                    }
-                }
-            }
         }
-        res = sb.toString();
-        System.out.println(res);
-        return res;
+        return sb.toString();
     }
 
     private String stampaPosizione(GraphicObject go) {
@@ -123,7 +138,7 @@ public class ListCommand implements CommandExprIF {
     @Override
     public String toString() {
         return "ListCommand{" +
-                "parametro=" + token +
+                "parametro=" + param +
                 '}';
     }
 }

@@ -2,17 +2,17 @@ package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.utilExpr.Token;
-import MiniCAD.interpreter.utilExpr.Posizione;
+import MiniCAD.interpreter.utilExpr.PosizioneExpr;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 import java.awt.geom.Point2D;
 
 public class MoveCommand implements UndoableCmdExprIF {
     private Token objectId;
-    private Posizione posizione;
+    private PosizioneExpr posizione;
     private boolean offset;
 
-    public MoveCommand(Token objectId, Posizione posizione, boolean offset){
+    public MoveCommand(Token objectId, PosizioneExpr posizione, boolean offset){
         this.objectId= objectId;
         this.posizione = posizione;
         this.offset = offset;
@@ -33,7 +33,7 @@ public class MoveCommand implements UndoableCmdExprIF {
         String res;
         GraphicObject object = context.getObjectbyId(objectId.interpreta(context));
         String idStr = objectId.interpreta(context);
-        Posizione pos= posizione.interpreta(context);
+        PosizioneExpr pos= posizione.interpreta(context);
 
         if( object != null ){
             if(offset){

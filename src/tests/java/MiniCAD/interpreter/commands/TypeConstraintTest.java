@@ -26,7 +26,7 @@ public class TypeConstraintTest {
     @ParameterizedTest
     @MethodSource("provideParametersForInterpreta")
     public void testInterpreta(TokenType type, Object parameter, String expectedOutput) {
-        TypeConstructor<Object> constraint = new TypeConstructor<>(type, parameter);
+        TypeConstructorExpr<Object> constraint = new TypeConstructorExpr<>(type, parameter);
         assertEquals(expectedOutput, constraint.interpreta());
     }
 
@@ -36,7 +36,7 @@ public class TypeConstraintTest {
     @ParameterizedTest
     @MethodSource("provideParametersForToString")
     public void testToString(TokenType type, Object parameter, String expectedOutput) {
-        TypeConstructor<Object> constraint = new TypeConstructor<>(type, parameter);
+        TypeConstructorExpr<Object> constraint = new TypeConstructorExpr<>(type, parameter);
         assertEquals(expectedOutput, constraint.toString());
     }
 
