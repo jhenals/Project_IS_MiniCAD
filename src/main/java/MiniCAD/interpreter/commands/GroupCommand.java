@@ -1,21 +1,20 @@
 package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.utilExpr.GroupObject;
-import MiniCAD.interpreter.utilExpr.ListId;
+import MiniCAD.interpreter.GroupObject;
+import MiniCAD.interpreter.utilExpr.ListIdExpr;
 
 import java.util.List;
 
 public class GroupCommand implements UndoableCmdExprIF {
-    private ListId ids ;
+    private ListIdExpr ids ;
 
-    public GroupCommand(ListId listId) {
+    public GroupCommand(ListIdExpr listId) {
         ids=listId;
     }
 
     @Override
     public String interpreta(Context context) {
-
         List<String> idList = ids.interpreta(context);
         GroupObject groupObject = context.createGroup(idList);
 
