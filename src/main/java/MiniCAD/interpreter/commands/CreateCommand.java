@@ -11,16 +11,16 @@ import javax.swing.*;
 import java.awt.geom.Point2D;
 
 public class CreateCommand implements UndoableCmdExprIF {
-    protected TypeConstructor typeConstructor;
-    protected Posizione posizione;
+    protected TypeConstructorExpr typeConstructor;
+    protected PosizioneExpr posizione;
     private String objId;
 
-    public CreateCommand(TypeConstructor tc, Posizione pos) {
+    public CreateCommand(TypeConstructorExpr tc, PosizioneExpr pos) {
         typeConstructor = tc;
         posizione = pos;
     }
 
-    private Point2D getPosizione(){
+    private Point2D getPosInPoint2D(){
         float x= posizione.getParam1();
         float y= posizione.getParam2();
         return new Point2D.Double(x,y);
@@ -29,32 +29,30 @@ public class CreateCommand implements UndoableCmdExprIF {
 
     @Override
     public String interpreta(Context context) {
-        GraphicObject object;
-
-        if( typeConstructor instanceof TypeConstructor.CircleConstructor){
-            TypeConstructor.CircleConstructor circleConstructor = (TypeConstructor.CircleConstructor) typeConstructor.interpreta(context);
-            object = new CircleObject( getPosizione(),circleConstructor.getRaggio());
-        } else if ( typeConstructor instanceof TypeConstructor.RectangleConstuctor){
-            TypeConstructor.RectangleConstuctor rectangleConstuctor = ((TypeConstructor.RectangleConstuctor) typeConstructor).interpreta(context);
-            double base = rectangleConstuctor.getParam1();
-            double altezza =  rectangleConstuctor.getParam2();
-            object = new RectangleObject(getPosizione(), base, altezza);
-        } else if ( typeConstructor instanceof TypeConstructor.ImageConstructor) {
-            TypeConstructor.ImageConstructor imageConstructor = ((TypeConstructor.ImageConstructor) typeConstructor).interpreta(context);
-            String path = imageConstructor.getPath();
-            object = new ImageObject(new ImageIcon(path), getPosizione());
-        } else {
-            throw new IllegalArgumentException("Tipo di oggetto sconosciuto.");
-        }
-
-
-        if( object != null) {
-            String objectId = context.generaId();
-            context.addObject(objectId, object);
-            objId  =  objectId;
-        }
+        GraphicObject object = getGraphicObject(typeConstructor, context);
+        String objectId = context.generaId();
+        context.addObject(objectId, object);
+        objId  =  objectId;
         System.out.println(objId);
         return objId;
+    }
+
+    private GraphicObject getGraphicObject(TypeConstructorExpr typeConstructor, Context context) {
+        if( typeConstructor instanceof TypeConstructorExpr.CircleConstructor){
+            TypeConstructorExpr.CircleConstructor circleConstructor = (TypeConstructorExpr.CircleConstructor) typeConstructor.interpreta(context);
+            return new CircleObject( getPosInPoint2D(),circleConstructor.getRaggio());
+        } else if ( typeConstructor instanceof TypeConstructorExpr.RectangleConstructor){
+            TypeConstructorExpr.RectangleConstructor rectangleConstuctor = ((TypeConstructorExpr.RectangleConstructor) typeConstructor).interpreta(context);
+            double base = rectangleConstuctor.getBase();
+            double altezza =  rectangleConstuctor.getAltezza();
+            return new RectangleObject(getPosInPoint2D(), base, altezza);
+        } else if ( typeConstructor instanceof TypeConstructorExpr.ImageConstructor) {
+            TypeConstructorExpr.ImageConstructor imageConstructor = ((TypeConstructorExpr.ImageConstructor) typeConstructor).interpreta(context);
+            String path = imageConstructor.getPath();
+            return new ImageObject(new ImageIcon(path), getPosInPoint2D());
+        } else {
+            throw new IllegalArgumentException("TipoExpr di oggetto sconosciuto.");
+        }
     }
 
     @Override
