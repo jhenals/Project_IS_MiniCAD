@@ -5,7 +5,7 @@ public enum TokenType {
     //Parole Riservate
     NEW, DEL, MV, MVOFF, SCALE, LS, ALL, GROUPS, GRP, UNGRP, AREA, PERIMETER,
 
-    //Tipo Constraints
+    //TipoExpr Constraints
     CIRCLE, RECTANGLE, IMG,
 
 
