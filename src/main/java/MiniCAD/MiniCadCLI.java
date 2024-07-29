@@ -2,7 +2,7 @@ package MiniCAD;
 
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.commands.Command;
+import MiniCAD.interpreter.commands.CommandExprIF;
 import MiniCAD.interpreter.commands.UndoableCmdExprIF;
 import MiniCAD.interpreter.lexerparser.CommandParser;
 
@@ -32,7 +32,7 @@ public class MiniCadCLI {
                 } else if (input.equalsIgnoreCase("redo")) {
                     sistemaMiniCAD.redo();
                 } else{
-                    Command command = (Command) commandParser.parseCommand(input);
+                    CommandExprIF command = commandParser.parseCommand(input);
                     if (command instanceof UndoableCmdExprIF)
                         sistemaMiniCAD.esegueComando( command, context);
                     else
