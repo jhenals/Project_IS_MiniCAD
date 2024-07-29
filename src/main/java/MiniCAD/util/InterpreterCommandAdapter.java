@@ -6,13 +6,13 @@ import MiniCAD.interpreter.commands.UndoableCmdExprIF;
 import ObserverCommandFlyweight.is.command.Command;
 public class InterpreterCommandAdapter<T> implements Command {
 
-    private MiniCAD.interpreter.commands.Command miniCadCommand;
+    private UndoableCmdExprIF miniCadCommand;
     private Context context;
     private T res ;
 
-    public InterpreterCommandAdapter(MiniCAD.interpreter.commands.Command miniCadCommand, Context context) {
+    public InterpreterCommandAdapter(CommandExprIF miniCadCommand, Context context) {
         if(miniCadCommand instanceof UndoableCmdExprIF){
-            this.miniCadCommand = (MiniCAD.interpreter.commands.Command) miniCadCommand;
+            this.miniCadCommand =(UndoableCmdExprIF) miniCadCommand;
         }
         this.context = context;
     }
@@ -25,10 +25,7 @@ public class InterpreterCommandAdapter<T> implements Command {
 
     @Override
     public boolean undoIt() {
-        if (miniCadCommand instanceof UndoableCmdExprIF) {
-            return ((UndoableCmdExprIF) miniCadCommand).undo(context);
-        }
-        return false;
+        return (miniCadCommand.undo(context));
     }
 
     public T getRes(){
