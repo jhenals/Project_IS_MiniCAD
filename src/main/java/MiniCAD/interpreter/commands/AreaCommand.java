@@ -1,7 +1,9 @@
 package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.utilExpr.TipoExpr;
 import MiniCAD.interpreter.utilExpr.Token;
+import MiniCAD.interpreter.utilExpr.TokenType;
 import MiniCAD.util.Util;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
@@ -9,38 +11,48 @@ import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import java.util.Map;
 
 public class AreaCommand implements CommandExprIF {
-    private Token param;
+    private CommandExprIF param;
 
-    public AreaCommand(Token param) {
+    public AreaCommand(CommandExprIF param) {
         this.param = param;
     }
 
 
     @Override
     public String interpreta(Context context) {
-        String res = "";
-        String idStr = param.interpreta(context);
-        switch (param.getTipo()){
-            case OBJ_ID -> {
-                if(context.getObjectTypeById(idStr) == "Group"){
-                    Double perim = calcolaAreaDelGruppo(context, param.interpreta(context));
-                    res =  "Area del gruppo con id="+ param.getValore().toString()+ ": " +Util.formatDouble(perim);
-                }else {
-                    Double perim = calcolaAreaDellOggetto(context, param.interpreta(context));
-                    res = "Area dell'oggetto con id=" + param.getValore().toString() + ": " + Util.formatDouble(perim);
+        String res;
+        if( param instanceof TipoExpr){
+            TokenType tokenType = ((TipoExpr) param).interpreta(context);
+            switch (tokenType){
+                case CIRCLE -> {
+                    Double area= calcolaAreaDiTuttiCerchi(context);
+                    res =  "Area totale di tutti i cerchi: "+Util.formatDouble(area);
                 }
+                case RECTANGLE -> {
+                    Double area= calcolaAreaDiTuttiRettangoli(context);
+                    res = "Area totale di tutti i rettangoli: "+Util.formatDouble(area);
+                }
+                default -> throw new IllegalArgumentException("Tipo di oggetto sconosciuto");
             }
-            case CIRCLE -> {
-                Double area= calcolaAreaDiTuttiCerchi(context);
-                res =  "Area totale di tutti i cerchi: "+Util.formatDouble(area);
-            }
-            case RECTANGLE -> {
-                Double area= calcolaAreaDiTuttiRettangoli(context);
-                res = "Area totale di tutti i rettangoli: "+Util.formatDouble(area);
-            }
-            case ALL -> {
-                Double area= calcolaAreaTotaleDiTuttiOggetti(context);
-                res = "Area totale di tutti gli oggetti: "+ Util.formatDouble(area);
+        }else{
+            Token token = (Token) param;
+            String idStr = token.interpreta(context);
+            switch (token.getTipo()){
+                case OBJ_ID -> {
+                    if(context.getObjectTypeById(idStr).equals("Group")){
+                        Double area = calcolaAreaDelGruppo(context, idStr);
+                        res =  "Area del gruppo con id="+ idStr + ": " +Util.formatDouble(area);
+                    }else {
+                        Double area = calcolaAreaDellOggetto(context, idStr);
+                        res = "Area dell'oggetto con id=" + idStr  + ": " + Util.formatDouble(area);
+                    }
+                }
+
+                case ALL -> {
+                    Double area= calcolaAreaTotaleDiTuttiOggetti(context);
+                    res = "Area totale di tutti gli oggetti: "+ Util.formatDouble(area);
+                }
+                default -> throw new IllegalArgumentException("Token sconosciuto");
             }
         }
         System.out.println(res);
@@ -83,7 +95,7 @@ public class AreaCommand implements CommandExprIF {
     }
 
     private Double calcolaAreaDellOggetto(Context context, String id) {
-        Double a = 0D;
+        double a = 0D;
         GraphicObject object = context.getObjectbyId(id);
         if(object.getType().equals("Circle")){
             Double r = ((CircleObject)object).getRadius();
