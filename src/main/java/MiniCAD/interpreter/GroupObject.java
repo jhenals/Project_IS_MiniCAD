@@ -14,6 +14,7 @@ public class GroupObject implements  GraphicObject{
     private Map<String, GraphicObject> objects;
 
 
+
     public GroupObject(String gid){
         groupId= gid;
         objects = new HashMap<>();

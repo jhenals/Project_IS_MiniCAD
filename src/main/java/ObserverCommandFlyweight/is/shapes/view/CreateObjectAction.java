@@ -1,5 +1,6 @@
 package ObserverCommandFlyweight.is.shapes.view;
 
+import MiniCAD.interpreter.commands.UndoableCmdExprIF;
 import ObserverCommandFlyweight.is.command.CommandHandler;
 import ObserverCommandFlyweight.is.shapes.model.AbstractGraphicObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
@@ -28,10 +29,8 @@ public class CreateObjectAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		GraphicObject go = prototype.clone();
 		ch.handle(new NewObjectCmd(panel, go));
-
 	}
 
 }

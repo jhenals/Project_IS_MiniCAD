@@ -4,6 +4,7 @@ package ObserverCommandFlyweight.is.shapes.model;
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractGraphicObject implements GraphicObject, Cloneable {
 

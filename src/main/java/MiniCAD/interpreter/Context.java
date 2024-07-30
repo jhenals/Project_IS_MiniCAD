@@ -129,4 +129,13 @@ public class Context {
         GraphicObject go = objects.get(idStr);
         go.scale(Double.parseDouble(scaleFactor));
     }
+
+    public String getIdByClickedObject(GraphicObject go) {
+        for( Map.Entry<String, GraphicObject> entry : objects.entrySet()){
+            if( entry.getValue().getType().equals(go.getType()) &&
+                    entry.getValue().contains(go.getPosition()))
+                return entry.getKey();
+        }
+        return null;
+    }
 }
