@@ -4,7 +4,6 @@ import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.utilExpr.TipoExpr;
 import MiniCAD.interpreter.utilExpr.Token;
 import MiniCAD.interpreter.utilExpr.TokenType;
-import MiniCAD.util.Util;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
@@ -30,6 +29,10 @@ public class AreaCommand implements CommandExprIF {
                 }
                 case RECTANGLE -> {
                     Double area= calcolaAreaDiTuttiRettangoli(context);
+                    res = String.valueOf(area);
+                }
+                case IMG -> {
+                    Double area= calcolaAreaDiTuttiImmagini(context);
                     res = String.valueOf(area);
                 }
                 default -> throw new IllegalArgumentException("Tipo di oggetto sconosciuto");
@@ -60,6 +63,7 @@ public class AreaCommand implements CommandExprIF {
     }
 
 
+
     private Double calcolaAreaTotaleDiTuttiOggetti(Context context) {
         Double area =0D;
         area += calcolaAreaDiTuttiRettangoli(context);
@@ -71,6 +75,15 @@ public class AreaCommand implements CommandExprIF {
         Double area = 0D;
         Map<String, GraphicObject> graphicObjectList = context.getObjectsOfGroup(gid);
         for( String id: graphicObjectList.keySet() ){
+            area += calcolaAreaDellOggetto(context, id);
+        }
+        return area;
+    }
+
+    private Double calcolaAreaDiTuttiImmagini(Context context) {
+        Double area = 0D;
+        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Image");
+        for (String id : cerchiMap.keySet() ){
             area += calcolaAreaDellOggetto(context, id);
         }
         return area;
