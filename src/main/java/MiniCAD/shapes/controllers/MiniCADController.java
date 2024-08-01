@@ -26,6 +26,7 @@ public class MiniCADController extends JPanel {
     static final double zoom_factor= 0.1;
     private String objId= null;
     private String grpId = null;
+    private String currentId = null;
     private GraphicObject subject;
     private CommandParser commandParser;
     private Context context;
@@ -35,6 +36,7 @@ public class MiniCADController extends JPanel {
     public void setControlledObject(GraphicObject go, String id) {
         subject = go;
         objId = id;
+        currentId = id;
         propertiesArea.setText(id);
     }
 
@@ -51,14 +53,11 @@ public class MiniCADController extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel commandPanel = new JPanel();
-        commandPanel.setPreferredSize(new Dimension(300, 400));
+        commandPanel.setPreferredSize(new Dimension(300, 500));
         commandPanel.setBorder(BorderFactory.createTitledBorder("Commands"));
 
-        JTextField grpIdTextField = new JTextField("Insert group Id");
-
-        //commandPanel.add(grpId);
         commandPanel.add(zoomMovePanel());
-        commandPanel.add(grpIdTextField);
+        commandPanel.add(grpManagerPanel());
         commandPanel.add(moveOffPanel());
         commandPanel.add(commandButtonsPanel());
         commandPanel.add(operazioniAvanzatePanel());
@@ -72,7 +71,8 @@ public class MiniCADController extends JPanel {
         add(propViewerPanel);
     }
 
-     private JPanel zoomMovePanel(){
+
+    private JPanel zoomMovePanel(){
         JPanel zoomMovePanel = new JPanel();
         JPanel grid = new JPanel(new GridLayout(3, 3));
         JPanel zoom = new JPanel(new GridLayout(1, 2));
@@ -82,7 +82,7 @@ public class MiniCADController extends JPanel {
         minus.addActionListener(e -> {
             clearPropertiesViewer();
             if (subject != null) {
-                String scaleMinusInput = String.format("scale %s %s", objId, 1.0 - zoom_factor);
+                String scaleMinusInput = String.format("scale %s %s", currentId, 1.0 - zoom_factor);
                 try {
                     UndoableCmdExprIF scaleMinus = (UndoableCmdExprIF) commandParser.parseCommand(scaleMinusInput);
                     cmdHandler.handle(scaleMinus);
@@ -98,7 +98,7 @@ public class MiniCADController extends JPanel {
         plus.addActionListener(e -> {
             clearPropertiesViewer();
             if (subject != null) {
-                String scalePlusInput = String.format("scale %s %s", objId, 1.0 + zoom_factor);
+                String scalePlusInput = String.format("scale %s %s", currentId, 1.0 + zoom_factor);
                 try {
                     UndoableCmdExprIF scalePlus = (UndoableCmdExprIF) commandParser.parseCommand(scalePlusInput);
                     cmdHandler.handle(scalePlus);
@@ -120,7 +120,7 @@ public class MiniCADController extends JPanel {
             }
             else if (subject != null) {
                 Point2D p = subject.getPosition();
-                String moveNWInput = "mv "+ objId + "("+ (p.getX()  - offset) +","+(p.getY() - offset)+")";
+                String moveNWInput = "mv "+ currentId + "("+ (p.getX()  - offset) +","+(p.getY() - offset)+")";
                 try {
                     UndoableCmdExprIF mvNW = (UndoableCmdExprIF) commandParser.parseCommand(moveNWInput);
                     cmdHandler.handle(mvNW);
@@ -139,7 +139,7 @@ public class MiniCADController extends JPanel {
             }
             else if (subject != null) {
                 Point2D p = subject.getPosition();
-                String moveNInput = "mv "+ objId + "("+ p.getX() +","+(p.getY() - offset)+")";
+                String moveNInput = "mv "+ currentId + "("+ p.getX() +","+(p.getY() - offset)+")";
                 try {
                     UndoableCmdExprIF mvN = (UndoableCmdExprIF) commandParser.parseCommand(moveNInput);
                     cmdHandler.handle(mvN);
@@ -159,7 +159,7 @@ public class MiniCADController extends JPanel {
             }
             else if (subject != null) {
                 Point2D p = subject.getPosition();
-                String moveNEInput = "mv "+ objId + "("+ (p.getX()  + offset) +","+(p.getY() - offset)+")";
+                String moveNEInput = "mv "+ currentId + "("+ (p.getX()  + offset) +","+(p.getY() - offset)+")";
                 try {
                     UndoableCmdExprIF mvNE = (UndoableCmdExprIF) commandParser.parseCommand(moveNEInput);
                     cmdHandler.handle(mvNE);
@@ -181,7 +181,7 @@ public class MiniCADController extends JPanel {
             }
             else if (subject != null) {
                 Point2D p = subject.getPosition();
-                String moveWInput = "mv "+ objId + "("+ (p.getX()  - offset) +","+p.getY()+")";
+                String moveWInput = "mv "+ currentId + "("+ (p.getX()  - offset) +","+p.getY()+")";
                 try {
                     UndoableCmdExprIF mvW = (UndoableCmdExprIF) commandParser.parseCommand(moveWInput);
                     cmdHandler.handle(mvW);
@@ -204,7 +204,7 @@ public class MiniCADController extends JPanel {
             }
             else if (subject != null) {
                 Point2D p = subject.getPosition();
-                String moveEInput = "mv "+ objId + "("+ (p.getX()  + offset) +","+p.getY()+")";
+                String moveEInput = "mv "+ currentId + "("+ (p.getX()  + offset) +","+p.getY()+")";
                 try {
                     UndoableCmdExprIF mvE = (UndoableCmdExprIF) commandParser.parseCommand(moveEInput);
                     cmdHandler.handle(mvE);
@@ -226,7 +226,7 @@ public class MiniCADController extends JPanel {
             }
             else if (subject != null) {
                 Point2D p = subject.getPosition();
-                String moveSWInput = "mv "+ objId + "("+ (p.getX()  - offset) +","+(p.getY() + offset)+")";
+                String moveSWInput = "mv "+ currentId + "("+ (p.getX()  - offset) +","+(p.getY() + offset)+")";
                 try {
                     UndoableCmdExprIF mvSW = (UndoableCmdExprIF) commandParser.parseCommand(moveSWInput);
                     cmdHandler.handle(mvSW);
@@ -246,7 +246,7 @@ public class MiniCADController extends JPanel {
             }
             else if (subject != null) {
                 Point2D p = subject.getPosition();
-                String moveSInput = "mv "+ objId + "("+ p.getX() +","+(p.getY() + offset)+")";
+                String moveSInput = "mv "+ currentId + "("+ p.getX() +","+(p.getY() + offset)+")";
                 try {
                     UndoableCmdExprIF mvS = (UndoableCmdExprIF) commandParser.parseCommand(moveSInput);
                     cmdHandler.handle(mvS);
@@ -267,7 +267,7 @@ public class MiniCADController extends JPanel {
             }
             else if (subject != null) {
                 Point2D p = subject.getPosition();
-                String moveSEInput = "mv "+ objId + "("+ (p.getX()  + offset) +","+(p.getY() + offset)+")";
+                String moveSEInput = "mv "+ currentId + "("+ (p.getX()  + offset) +","+(p.getY() + offset)+")";
                 try {
                     UndoableCmdExprIF mvSE = (UndoableCmdExprIF) commandParser.parseCommand(moveSEInput);
                     cmdHandler.handle(mvSE);
@@ -280,6 +280,31 @@ public class MiniCADController extends JPanel {
         grid.add(se);
         zoomMovePanel.add(grid);
         return zoomMovePanel;
+    }
+    private JPanel grpManagerPanel() {
+        JPanel panel = new JPanel();
+        JLabel label = setLabel("Insert group id to zoom or move:");
+        JTextField grpIdTextField = new JTextField("", 5);
+        JButton okBtn = new JButton("GO");
+        okBtn.addActionListener(e -> {
+            grpId = grpIdTextField.getText();
+            subject = context.getObjectbyId(grpId);
+            currentId = grpId;
+            showMessage(grpId);
+            grpIdTextField.setText("");
+        });
+
+        panel.add(label);
+        panel.add(grpIdTextField);
+        panel.add(okBtn);
+        return panel;
+    }
+
+    private JLabel setLabel(String s) {
+        JLabel label = new JLabel(s);
+        label.setForeground(Color.GRAY);
+        label.setFont(new Font("Serif", Font.BOLD, 11));
+        return label;
     }
 
 
@@ -387,7 +412,8 @@ public class MiniCADController extends JPanel {
         JPanel panel = new JPanel((new GridBagLayout()));
         GridBagConstraints c= new GridBagConstraints();
 
-        JTextField  idsField = new JTextField("Insert ids to group or group id to ungroup");
+        JLabel label = setLabel("Insert object ids to group or group id to ungroup:");
+        JTextField  idsField = new JTextField("",20);
         idsField.setForeground(Color.GRAY);
 
         JButton groupButton = new JButton("Group");
@@ -424,19 +450,28 @@ public class MiniCADController extends JPanel {
                 showMessage("Please enter a group ID to ungroup.");
             }
         });
+
+
         c.fill= GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
+        c.insets = new Insets(10, 0, 0, 0); // 10 pixels of space on top
+        panel.add(label,c);
+
+        c.fill= GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 2;
         panel.add(idsField, c);
 
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 2;
         c.gridwidth = 1;
         panel.add(groupButton,c);
 
         c.gridx = 1;
-        c.gridy = 1;
+        c.gridy = 2;
         panel.add(ungroupButton,c);
         return panel;
     }
