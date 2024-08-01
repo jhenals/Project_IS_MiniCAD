@@ -75,7 +75,6 @@ public class ImageObject extends AbstractGraphicObject {
 	 */
 	@Override
 	public String getType() {
-
 		return "Image";
 	}
 

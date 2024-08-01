@@ -10,7 +10,6 @@ public class NewObjectCmd implements Command {
 	private GraphicObject go;
 
 	public NewObjectCmd(GraphicObjectPanel panel, GraphicObject go) {
-		
 		this.panel = panel;
 		this.go = go;
 		
@@ -22,7 +21,6 @@ public class NewObjectCmd implements Command {
 		double y =  10;
 		go.moveTo(x, y);
 		panel.add(go);
-
 		return true;
 	}
 

@@ -1,86 +1,65 @@
 package MiniCAD.ui;
 
+import MiniCAD.command.MiniCadCommandHandler;
+import MiniCAD.command.MiniCadHistoryCmdHandler;
+import MiniCAD.controllers.MiniCADController;
+import MiniCAD.exceptions.ParseException;
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.lexerparser.CommandParser;
+import MiniCAD.view.CreateObjectActionMiniCad;
+import ObserverCommandFlyweight.is.shapes.model.*;
+import ObserverCommandFlyweight.is.shapes.view.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.Objects;
 
 public class MiniCADUI {
-/*
-    public static void main(String[] args) throws ParseException, IOException {
-        ObjectManager objectManager = ObjectManager.getInstance();
+
+    public static void main(String[] args)  {
         CommandParser parser = new CommandParser();
 
-        JFrame f = new JFrame();
+        final GraphicObjectPanel gpanel = new GraphicObjectPanel();
+        Context context = new Context(gpanel);
+        final MiniCadHistoryCmdHandler handler = new MiniCadHistoryCmdHandler(context);
 
+        JFrame f = new JFrame();
         JToolBar toolbar = new JToolBar();
 
         JButton undoButt = new JButton("Undo");
         JButton redoButt = new JButton("Redo");
-        final HistoryCommandHandler handler = new HistoryCommandHandler();
-
-        undoButt.addActionListener(evt -> handler.handle(HistoryCommandHandler.NonExecutableCommands.UNDO));
-        redoButt.addActionListener(evt -> handler.handle(HistoryCommandHandler.NonExecutableCommands.REDO));
-
+        undoButt.addActionListener(evt -> handler.handle(MiniCadHistoryCmdHandler.NonExecutableCommands.UNDO));
+        redoButt.addActionListener(evt -> handler.handle(MiniCadHistoryCmdHandler.NonExecutableCommands.REDO));
         toolbar.add(undoButt);
         toolbar.add(redoButt);
 
-        final GraphicObjectPanel gpanel = new GraphicObjectPanel();
-
         gpanel.setPreferredSize(new Dimension(500, 500));
-
         gpanel.installView(RectangleObject.class, new RectangleObjectView());
         gpanel.installView(CircleObject.class, new CircleObjectView());
         gpanel.installView(ImageObject.class, new ImageObjectView());
 
         AbstractGraphicObject go = new RectangleObject(new Point(0, 0), 20, 50);
 
-        JButton rectButton = new JButton(new CreateObjectAction(go, gpanel, handler));
-        rectButton.setText(go.getType());
-        toolbar.add(rectButton);
-
-        go = new CircleObject(new Point(200, 100), 10);
-        JButton circButton = new JButton(new CreateObjectAction(go, gpanel, handler));
-        circButton.setText(go.getType());
-        toolbar.add(circButton);
+        toolbar.add(createObjectButton("Rectangle", go, gpanel, handler, context, parser));
+        toolbar.add(createObjectButton("Circle", new CircleObject(new Point(200, 100), 10), gpanel, handler, context, parser));
+        toolbar.add(createObjectButton("Image",new ImageObject(new ImageIcon(Objects.requireNonNull(MiniCADUI.class.getResource("NyaNya.gif"))),
+                (new Point(200, 100))), gpanel, handler, context, parser));
 
 
-        go = new CircleObject(new Point(200, 100), 100);
-        JButton circButton2 = new JButton(new CreateObjectAction(go, gpanel, handler));
-        circButton2.setText("big " + go.getType());
-        toolbar.add(circButton2);
-
-          String com = "new rectangle ("+go.getDimension().getHeight()+","+go.getDimension().getWidth()+") ("+go.getPosition().getX()+","+go.getPosition().getY()+")";
-        switch (go.getType()){
-            case "Rectangle" ->{
-                com = "new rectangle ("+go.getDimension()+") ("+go.getPosition();
-            }
-            case  "Circle" ->{
-                CircleObject circ = (CircleObject) go;
-                com = "new circle ("+circ.getRadius()+") ("+ circ.getPosition()+")";
-            }
-            case "Image" ->{
-                ImageObject img = (ImageObject) go;
-                com = "new img (\"NyaNya.gif\") "+ img.getPosition();
-            }
-        }
-
-        CommandExprIF createCommand = parser.parseCommand(com);
-        String objId = createCommand.interpreta();
-        objectManager.addObject(objId, go);
-
-
-
-        go = new ImageObject(new ImageIcon(MiniCADUI.class.getResource("NyaNya.gif")),
-                new Point(240, 187));
-        JButton imgButton = new JButton(new CreateObjectAction(go, gpanel, handler));
-        imgButton.setText(go.getType());
-        toolbar.add(imgButton);
-
-
-
-        final MiniCADController goc = new MiniCADController(handler);
+        final MiniCADController goc = new MiniCADController(handler,context);
 
         gpanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                goc.setControlledObject(gpanel.getGraphicObjectAt(e.getPoint()));
+                GraphicObject go = gpanel.getGraphicObjectAt(e.getPoint());
+                if( go != null ){
+                    String id = context.getIdByClickedObject(go);
+                    System.out.println(id);
+                    goc.setControlledObject(go, id);
+                }
             }
         });
 
@@ -88,17 +67,73 @@ public class MiniCADUI {
         f.add(new JScrollPane(gpanel), BorderLayout.CENTER);
 
         JPanel controlPanel = new JPanel(new FlowLayout());
-        //JPanel commandPanel = new JPanel(new FlowLayout());
 
         controlPanel.add(goc);
-        //commandPanel.add(buttons);
         f.setTitle("MiniCADUI App");
         f.getContentPane().add(controlPanel, BorderLayout.EAST);
-        //f.getContentPane().add(commandPanel, BorderLayout.EAST)
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
         f.setVisible(true);
-    }
-    */
+    } //main
 
-}
+    private static JButton createObjectButton(String type, AbstractGraphicObject go, GraphicObjectPanel gpanel, MiniCadCommandHandler handler, Context context, CommandParser parser) {
+        String cmdInput = "";
+        switch (go.getType()){
+            case "Rectangle" -> cmdInput = "create rectangle ("+ go.getDimension().getHeight()+","+go.getDimension().getWidth()+") ("+ go.getPosition().getX()+","+go.getPosition().getY()+")";
+            case "Circle" -> {
+                CircleObject circ = (CircleObject) go;
+                cmdInput = "create circle (" + circ.getRadius() + ") (" + circ.getPosition().getX() + "," + circ.getPosition().getY() + ")";
+            }
+            case "Image" -> {
+                ImageObject img = (ImageObject) go;
+                cmdInput = "create img (\"NyaNya.gif\") (" +img.getPosition().getX() + "," + img.getPosition().getY()+")";
+            }
+        }
+        JButton button = new JButton(new CreateObjectActionMiniCad(go, gpanel, handler, context, parser, cmdInput));
+        button.setText(type);
+        return button;
+    }
+} //MiniCADUI
+
+
+  /*
+        String cmdInput = "create rectangle ("+go.getDimension().getHeight()+","+go.getDimension().getWidth()+") ("+go.getPosition().getX()+","+go.getPosition().getY()+")";
+
+        switch (go.getType()){
+            case "Rectangle" ->{
+                cmdInput = "create rectangle ("+go.getDimension().getHeight()+","+go.getDimension().getWidth()+") ("+go.getPosition().getX()+","+go.getPosition().getY()+")";
+            }
+            case  "Circle" ->{
+                CircleObject circ = (CircleObject) go;
+                cmdInput = "create circle ("+circ.getRadius()+") ("+ circ.getPosition()+")";
+            }
+            case "Image" ->{
+                ImageObject img = (ImageObject) go;
+                cmdInput = "create img (\"NyaNya.gif\") "+ img.getPosition();
+            }
+        }
+
+        JButton rectButton = new JButton(new CreateObjectActionMiniCad(go, gpanel, handler, context, parser, cmdInput));
+        rectButton.setText(go.getType());
+        toolbar.add(rectButton);
+
+        go = new CircleObject(new Point(200, 100), 10);
+        JButton circButton = new JButton(new CreateObjectActionMiniCad(go, gpanel, handler, context, parser, cmdInput));
+        circButton.setText(go.getType());
+        toolbar.add(circButton);
+
+        go = new CircleObject(new Point(200, 100), 100);
+        JButton circButton2 = new JButton(new CreateObjectActionMiniCad(go, gpanel, handler, context, parser, cmdInput));
+        circButton2.setText("big " + go.getType());
+        toolbar.add(circButton2);
+
+        toolbar.add(createObjectButton("Rectangle", new RectangleObject(new
+                Point(0,0), 20, 50)));
+
+        go = new ImageObject(new ImageIcon(MiniCADUI.class.getResource("NyaNya.gif")),
+                new Point(240, 187));
+        JButton imgButton = new JButton(new CreateObjectActionMiniCad(go, gpanel, handler, context, parser, cmdInput));
+        imgButton.setText(go.getType());
+        toolbar.add(imgButton);
+
+         */

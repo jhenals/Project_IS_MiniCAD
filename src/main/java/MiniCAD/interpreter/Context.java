@@ -1,6 +1,8 @@
 package MiniCAD.interpreter;
 
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
+import ObserverCommandFlyweight.is.shapes.specificcommand.NewObjectCmd;
+import ObserverCommandFlyweight.is.shapes.view.GraphicObjectPanel;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;
@@ -10,8 +12,14 @@ import java.util.Map;
 public class Context {
     private final Map<String, GraphicObject> objects ;
     private final Map<String, List<String>> groups ;
+    private GraphicObjectPanel panel;
     private int nextId = 0;
 
+    public Context(GraphicObjectPanel gpanel){
+        objects = new HashMap<>();
+        groups = new HashMap<>();
+        panel = gpanel;
+    }
     public Context(){
         objects = new HashMap<>();
         groups = new HashMap<>();
@@ -23,9 +31,12 @@ public class Context {
 
     public void addObject(String id, GraphicObject go){
         objects.put(id, go);
+        new NewObjectCmd(panel, go).doIt();
     }
 
     public void removeObjectById(String id){
+        GraphicObject go = objects.get(id) ;
+        new NewObjectCmd(panel, go).undoIt();
         objects.remove(id);
     }
 
@@ -128,5 +139,14 @@ public class Context {
     public void ridimensiona(String idStr, String scaleFactor) {
         GraphicObject go = objects.get(idStr);
         go.scale(Double.parseDouble(scaleFactor));
+    }
+
+    public String getIdByClickedObject(GraphicObject go) {
+        for( Map.Entry<String, GraphicObject> entry : objects.entrySet()){
+            if( entry.getValue().getType().equals(go.getType()) &&
+                    entry.getValue().contains(go.getPosition()) )
+                return entry.getKey();
+        }
+        return null;
     }
 }

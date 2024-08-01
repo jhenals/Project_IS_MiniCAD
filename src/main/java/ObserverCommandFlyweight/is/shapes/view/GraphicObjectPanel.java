@@ -39,7 +39,6 @@ public class GraphicObjectPanel extends JComponent implements GraphicObjectListe
 	public void graphicChanged(GraphicEvent e) {
 		repaint();
 		revalidate();
-
 	}
 
 	

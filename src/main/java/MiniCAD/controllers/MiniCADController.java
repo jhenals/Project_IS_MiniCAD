@@ -1,26 +1,49 @@
 package MiniCAD.controllers;
 
+import MiniCAD.command.MiniCadCommandHandler;
+import MiniCAD.exceptions.ParseException;
+import MiniCAD.interpreter.Context;
+import MiniCAD.interpreter.commands.UndoableCmdExprIF;
+import MiniCAD.interpreter.lexerparser.CommandParser;
+import MiniCAD.util.NumericDocumentFilter;
+import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
+
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.io.Serial;
+
 
 public class MiniCADController extends JPanel {
-    /*
+
     @Serial
     private static final long serialVersionUID = -1200564294398210114L;
-    private final CommandHandler cmdHandler;
-    private GraphicObject subject;
+    private final MiniCadCommandHandler cmdHandler;
     static final int offset = 10;
     static final double zoom_factor= 0.1;
+    private String objId= null;
+    private GraphicObject subject;
+    private CommandParser commandParser;
+    private Context context;
 
-    private ObjectManager objectManager = ObjectManager.getInstance();
 
-    public void setControlledObject(GraphicObject go) { subject = go; }
-    public MiniCADController(CommandHandler cmdH) {
-        this(null, cmdH);
+    public void setControlledObject(GraphicObject go, String id) {
+        subject = go;
+        objId = id;
     }
 
-    public MiniCADController(GraphicObject go, CommandHandler cmdH){
+    public MiniCADController(MiniCadCommandHandler cmdH, Context context) {
+        this(null,cmdH,context);
+    }
+
+    public MiniCADController(GraphicObject go, MiniCadCommandHandler cmdH, Context c){
         cmdHandler = cmdH;
         subject = go;
+        context = c;
+        commandParser = new CommandParser();
+
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -31,7 +54,7 @@ public class MiniCADController extends JPanel {
         commandPanel.add(zoomMovePanel());
         commandPanel.add(moveOffPanel());
         commandPanel.add(commandButtonsPanel());
-        commandPanel.add(geomOperationsPanel());
+        commandPanel.add(operazioniAvanzatePanel());
 
         JPanel propViewerPanel = new JPanel();
         propViewerPanel.setBorder(BorderFactory.createTitledBorder("Properties"));
@@ -41,8 +64,7 @@ public class MiniCADController extends JPanel {
         add(propViewerPanel);
     }
 
-
-    private JPanel zoomMovePanel(){
+     private JPanel zoomMovePanel(){
         JPanel zoomMovePanel = new JPanel();
         JPanel grid = new JPanel(new GridLayout(3, 3));
         JPanel zoom = new JPanel(new GridLayout(1, 2));
@@ -51,7 +73,13 @@ public class MiniCADController extends JPanel {
 
         minus.addActionListener(e -> {
             if (subject != null) {
-                cmdHandler.handle(new ZoomCommand(subject, 1.0 - zoom_factor));
+                String scaleMinusInput = String.format("scale %s %s", objId, 1.0 - zoom_factor);
+                try {
+                    UndoableCmdExprIF scaleMinus = (UndoableCmdExprIF) commandParser.parseCommand(scaleMinusInput);
+                    cmdHandler.handle(scaleMinus);
+                } catch (ParseException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -60,7 +88,13 @@ public class MiniCADController extends JPanel {
         JButton plus = new JButton("+");
         plus.addActionListener(e -> {
             if (subject != null) {
-                cmdHandler.handle(new ZoomCommand(subject, 1.0 + zoom_factor));
+                String scalePlusInput = String.format("scale %s %s", objId, 1.0 + zoom_factor);
+                try {
+                    UndoableCmdExprIF scalePlus = (UndoableCmdExprIF) commandParser.parseCommand(scalePlusInput);
+                    cmdHandler.handle(scalePlus);
+                } catch (ParseException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -70,29 +104,57 @@ public class MiniCADController extends JPanel {
         JButton nw = new JButton("\\");
 
         nw.addActionListener(e -> {
-            if (subject == null)
+            if (subject == null) {
                 return;
-            Point2D p = subject.getPosition();
-            cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() - offset, p.getY() - offset)));
+            }
+            else if (subject != null) {
+                Point2D p = subject.getPosition();
+                String moveNWInput = "mv "+ objId + "("+ (p.getX()  - offset) +","+(p.getY() - offset)+")";
+                try {
+                    UndoableCmdExprIF mvNW = (UndoableCmdExprIF) commandParser.parseCommand(moveNWInput);
+                    cmdHandler.handle(mvNW);
+                } catch (ParseException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
         });
         grid.add(nw);
 
         JButton n = new JButton("|");
         n.addActionListener(e -> {
-            if (subject == null)
+            if (subject == null) {
                 return;
-            Point2D p = subject.getPosition();
-            cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX(), p.getY() - offset)));
+            }
+            else if (subject != null) {
+                Point2D p = subject.getPosition();
+                String moveNInput = "mv "+ objId + "("+ p.getX() +","+(p.getY() - offset)+")";
+                try {
+                    UndoableCmdExprIF mvN = (UndoableCmdExprIF) commandParser.parseCommand(moveNInput);
+                    cmdHandler.handle(mvN);
+                } catch (ParseException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
         });
 
         grid.add(n);
 
         JButton ne = new JButton("/");
         ne.addActionListener(e -> {
-            if (subject == null)
+            if (subject == null) {
                 return;
-            Point2D p = subject.getPosition();
-            cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY() - offset)));
+            }
+            else if (subject != null) {
+                Point2D p = subject.getPosition();
+                String moveNEInput = "mv "+ objId + "("+ (p.getX()  + offset) +","+(p.getY() - offset)+")";
+                try {
+                    UndoableCmdExprIF mvNE = (UndoableCmdExprIF) commandParser.parseCommand(moveNEInput);
+                    cmdHandler.handle(mvNE);
+                } catch (ParseException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY() - offset)));
 
         });
 
@@ -100,10 +162,20 @@ public class MiniCADController extends JPanel {
 
         JButton w = new JButton("<-");
         w.addActionListener(e -> {
-            if (subject == null)
+            if (subject == null) {
                 return;
-            Point2D p = subject.getPosition();
-            cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() - offset, p.getY())));
+            }
+            else if (subject != null) {
+                Point2D p = subject.getPosition();
+                String moveWInput = "mv "+ objId + "("+ (p.getX()  - offset) +","+p.getY()+")";
+                try {
+                    UndoableCmdExprIF mvW = (UndoableCmdExprIF) commandParser.parseCommand(moveWInput);
+                    cmdHandler.handle(mvW);
+                } catch (ParseException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() - offset, p.getY())));
         });
 
         grid.add(w);
@@ -112,10 +184,20 @@ public class MiniCADController extends JPanel {
 
         JButton e = new JButton("->");
         e.addActionListener(e1 -> {
-            if (subject == null)
+            if (subject == null) {
                 return;
-            Point2D p = subject.getPosition();
-            cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY())));
+            }
+            else if (subject != null) {
+                Point2D p = subject.getPosition();
+                String moveEInput = "mv "+ objId + "("+ (p.getX()  + offset) +","+p.getY()+")";
+                try {
+                    UndoableCmdExprIF mvE = (UndoableCmdExprIF) commandParser.parseCommand(moveEInput);
+                    cmdHandler.handle(mvE);
+                } catch (ParseException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY())));
         });
 
         grid.add(e);
@@ -123,41 +205,70 @@ public class MiniCADController extends JPanel {
         JButton sw = new JButton("/");
 
         sw.addActionListener(e12 -> {
-            if (subject == null)
+            if (subject == null) {
                 return;
-            Point2D p = subject.getPosition();
-            cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() - offset, p.getY() + offset)));
+            }
+            else if (subject != null) {
+                Point2D p = subject.getPosition();
+                String moveSWInput = "mv "+ objId + "("+ (p.getX()  - offset) +","+(p.getY() + offset)+")";
+                try {
+                    UndoableCmdExprIF mvSW = (UndoableCmdExprIF) commandParser.parseCommand(moveSWInput);
+                    cmdHandler.handle(mvSW);
+                } catch (ParseException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() - offset, p.getY() + offset)));
         });
         grid.add(sw);
 
         JButton s = new JButton("|");
         s.addActionListener(e13 -> {
-            if (subject == null)
+            if (subject == null) {
                 return;
-            Point2D p = subject.getPosition();
-            cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX(), p.getY() + offset)));
+            }
+            else if (subject != null) {
+                Point2D p = subject.getPosition();
+                String moveSInput = "mv "+ objId + "("+ p.getX() +","+(p.getY() + offset)+")";
+                try {
+                    UndoableCmdExprIF mvS = (UndoableCmdExprIF) commandParser.parseCommand(moveSInput);
+                    cmdHandler.handle(mvS);
+                }catch (ParseException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX(), p.getY() + offset)));
         });
 
         grid.add(s);
 
         JButton se = new JButton("\\");
         se.addActionListener(e14 -> {
-            if (subject == null)
+            if (subject == null) {
                 return;
-            Point2D p = subject.getPosition();
-            cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY() + offset)));
+            }
+            else if (subject != null) {
+                Point2D p = subject.getPosition();
+                String moveSEInput = "mv "+ objId + "("+ (p.getX()  + offset) +","+(p.getY() + offset)+")";
+                try {
+                    UndoableCmdExprIF mvSE = (UndoableCmdExprIF) commandParser.parseCommand(moveSEInput);
+                    cmdHandler.handle(mvSE);
+                } catch (ParseException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY() + offset)));
         });
         grid.add(se);
         zoomMovePanel.add(grid);
         return zoomMovePanel;
     }
 
-    private JPanel moveOffPanel() {
 
+    private JPanel moveOffPanel() {
         JTextField  newXAxisField = new JTextField();
         newXAxisField.setPreferredSize(new Dimension(50, 20));
         setNumericFilter(newXAxisField);
-
 
         JTextField  newYAxisField = new JTextField();
         newYAxisField.setPreferredSize(new Dimension(50, 20));
@@ -185,39 +296,21 @@ public class MiniCADController extends JPanel {
 
         //Buttons
         JButton deleteButton = new JButton("Delete");
+        JButton areaButton = new JButton("Area");
+        JButton perimButton = new JButton("Perimeter");
+        JButton viewProperty = new JButton("View Property");
         JButton groupButton = new JButton("Group");
         JButton ungroupButton = new JButton("Ungroup");
-        JButton viewProperty = new JButton("View Property");
+
 
         viewProperty.addActionListener(e -> {
             try {
                 updatePropertiesViewer();
-            } catch (ParseException ex) {
-                throw new RuntimeException(ex);
-            } catch (IOException ex) {
+            } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
 
-        JMenuBar menuBar = new JMenuBar();
-        JMenu advancePropertyMenu = new JMenu("Advance View");
-        JMenuItem imgItem = new JMenuItem("View all images");
-        JMenuItem rectItem = new JMenuItem("View all rectangles");
-        JMenuItem circleItem = new JMenuItem("View all circles");
-        JMenuItem groupItem = new JMenuItem("View all groups");
-        JMenuItem allItem = new JMenuItem("View all");
-
-        lineItem.addActionListener(e -> currentAction = "Line");
-        rectItem.addActionListener(e -> currentAction = "Rectangle");
-        circleItem.addActionListener(e -> currentAction = "Circle");
-
-
-        advancePropertyMenu.add(imgItem);
-        advancePropertyMenu.add(rectItem);
-        advancePropertyMenu.add(circleItem);
-        advancePropertyMenu.add(groupItem);
-        advancePropertyMenu.add(allItem);
-        menuBar.add(advancePropertyMenu);
 
         //constraints
         c.gridx=0;
@@ -229,11 +322,11 @@ public class MiniCADController extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 1;
-        cmdButtonsPanel.add(groupButton, c);
+        cmdButtonsPanel.add(areaButton, c);
 
         c.gridx = 1;
         c.gridy = 1;
-        cmdButtonsPanel.add(ungroupButton, c);
+        cmdButtonsPanel.add(perimButton, c);
 
         c.gridx = 0;
         c.gridy = 2;
@@ -243,9 +336,12 @@ public class MiniCADController extends JPanel {
 
         c.gridx = 0;
         c.gridy = 3;
-        c.gridwidth= 2;
-        c.fill= GridBagConstraints.HORIZONTAL;
-        cmdButtonsPanel.add(menuBar, c);
+        c.gridwidth = 1;
+        cmdButtonsPanel.add(groupButton, c);
+
+        c.gridx = 1;
+        c.gridy = 3;
+        cmdButtonsPanel.add(ungroupButton, c);
 
         return cmdButtonsPanel;
     }
@@ -258,62 +354,68 @@ public class MiniCADController extends JPanel {
     }
 
     private String getPropertiesAsString(GraphicObject subject) throws ParseException, IOException {
-        CommandParser parser = new CommandParser();
+        /*CommandParser parser = new CommandParser();
         String objId = objectManager.getIdByObject(subject);
         CommandExprIF listPropCommand = parser.parseCommand("ls "+ objId);
-        return listPropCommand.interpreta();
+
+         */
+        return null;
     }
 
 
-    private JPanel geomOperationsPanel() {
-        JPanel areaPerim = new JPanel();
-        areaPerim.setPreferredSize(new Dimension(280,115));
+    private JPanel operazioniAvanzatePanel() {
+        JPanel advOpsPanel = new JPanel();
+        advOpsPanel.setPreferredSize(new Dimension(280,115));
+        advOpsPanel.setLayout(new BoxLayout(advOpsPanel, BoxLayout.PAGE_AXIS));
 
-        areaPerim.setBorder(BorderFactory.createTitledBorder("Operations"));
-        JButton area = new JButton("Area");
-        JButton perimeter = new JButton("Perimeter");
+        advOpsPanel.setBorder(BorderFactory.createTitledBorder("Advance Operations"));
 
+        //Visualizza Proprietà
+        JMenuBar advViewPropMenuBar = new JMenuBar();
+        JMenu advancePropertyViewMenu = new JMenu("Advance View");
+        JMenuItem imgItem = new JMenuItem("View all images");
+        JMenuItem rectItem = new JMenuItem("View all rectangles");
+        JMenuItem circleItem = new JMenuItem("View all circles");
+        JMenuItem groupItem = new JMenuItem("View all groups");
+        JMenuItem allItem = new JMenuItem("View all");
+
+        advancePropertyViewMenu.add(imgItem);
+        advancePropertyViewMenu.add(rectItem);
+        advancePropertyViewMenu.add(circleItem);
+        advancePropertyViewMenu.add(groupItem);
+        advancePropertyViewMenu.add(allItem);
+
+        //Area
         JMenuBar areaMenuBar = new JMenuBar();
         JMenu calculateAreasMenu = new JMenu("Calculate Areas");
         JMenuItem areaRectItem = new JMenuItem("Areas of all rectangles");
         JMenuItem areaCircleItem = new JMenuItem("Areas of all circles");
         JMenuItem areaAllItem = new JMenuItem("Total Areas");
 
+        calculateAreasMenu.add(areaRectItem);
+        calculateAreasMenu.add(areaCircleItem);
+        calculateAreasMenu.add(areaAllItem);
+
+        //Perimetro
         JMenuBar perimMenuBar = new JMenuBar();
         JMenu calculatePerimsMenu = new JMenu("Calculate Perimeters");
         JMenuItem perimRectItem = new JMenuItem("Perimeters of all rectangles");
         JMenuItem perimCircleItem = new JMenuItem("Perimeters of all circles");
         JMenuItem perimAllItem = new JMenuItem("Total Perimeters");
 
-        calculateAreasMenu.add(areaRectItem);
-        calculateAreasMenu.add(areaCircleItem);
-        calculateAreasMenu.add(areaAllItem);
-
         calculatePerimsMenu.add(perimRectItem);
         calculatePerimsMenu.add(perimCircleItem);
         calculatePerimsMenu.add(perimAllItem);
 
+        advViewPropMenuBar.add(advancePropertyViewMenu);
         areaMenuBar.add(calculateAreasMenu);
         perimMenuBar.add(calculatePerimsMenu);
 
+        advOpsPanel.add(areaMenuBar);
+        advOpsPanel.add(perimMenuBar);
+        advOpsPanel.add(advViewPropMenuBar);
 
-        lineItem.addActionListener(e -> currentAction = "Line");
-        rectItem.addActionListener(e -> currentAction = "Rectangle");
-        circleItem.addActionListener(e -> currentAction = "Circle");
-
-
-
-
-        areaPerim.add(area);
-        areaPerim.add(perimeter);
-
-        JPanel extOps = new JPanel();
-        extOps.add(areaMenuBar);
-        extOps.add(perimMenuBar);
-
-        areaPerim.add(extOps);
-
-        return areaPerim;
+        return advOpsPanel;
     }
 
     private JTextArea propertiesViewer() {
@@ -323,6 +425,6 @@ public class MiniCADController extends JPanel {
         propertiesArea.setEditable(false);
         return propertiesArea;
     }
-    */
+
 
 }

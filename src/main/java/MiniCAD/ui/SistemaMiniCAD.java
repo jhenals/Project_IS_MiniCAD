@@ -1,17 +1,27 @@
-package MiniCAD;
+package MiniCAD.ui;
 
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.commands.CommandExprIF;
 import MiniCAD.interpreter.commands.UndoableCmdExprIF;
-import MiniCAD.util.InterpreterCommandAdapter;
+import MiniCAD.command.InterpreterCommandAdapter;
 import ObserverCommandFlyweight.is.command.HistoryCommandHandler;
+import ObserverCommandFlyweight.is.shapes.view.GraphicObjectPanel;
 
 public class SistemaMiniCAD {
+    private final GraphicObjectPanel panel;
     private final HistoryCommandHandler historyCommandHandler = new HistoryCommandHandler();
-    /*
-    Questo attributo rappresenta un'istanza del gestore di comandi storici (HistoryCommandHandler), responsabile di mantenere la storia dei comandi eseguiti e gestire le operazioni di undo e redo.
-     */
+    private Context context;
 
+    public SistemaMiniCAD(GraphicObjectPanel gpanel, Context context) {
+        this.panel = gpanel;
+        this.context = context;
+    }
+
+    public SistemaMiniCAD() {
+        this.panel = null;
+    }
+
+    public GraphicObjectPanel getPanel() { return panel; }
 
     public void esegueComando(CommandExprIF comando, Context context){
         if(comando instanceof  UndoableCmdExprIF){
@@ -22,30 +32,18 @@ public class SistemaMiniCAD {
         }
     }
 
-    /*
-    Questo metodo accetta un comando che implementa l'interfaccia NonUndoableCommand e lo esegue attraverso l'handler dei comandi storici. Ecco come funziona:
-
-Viene creato un adattatore (CommandAdapter) per il comando passato come argomento.
-L'adattatore viene passato al historyHandler per essere gestito. Questo gestore esegue il comando e lo aggiunge alla storia se è undoable.
-     */
-
     public void undo(){
         historyCommandHandler.handle(HistoryCommandHandler.NonExecutableCommands.UNDO);
     }
 
-    /*
-    Questo metodo avvia un'operazione di undo utilizzando il historyHandler.
-
-Il comando UNDO viene passato al gestore, che annulla l'ultimo comando eseguito se esiste.
-     */
 
     public void redo(){
         historyCommandHandler.handle(HistoryCommandHandler.NonExecutableCommands.REDO);
     }
 
-    /*
-    Il comando REDO viene passato al gestore, che rifà l'ultimo comando annullato se esiste.
-     */
+    public Context getContext() {
+        return context;
+    }
 }
 
 

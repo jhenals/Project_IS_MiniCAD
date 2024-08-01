@@ -1,17 +1,19 @@
-package MiniCAD;
+package MiniCAD.ui;
 
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.commands.CommandExprIF;
 import MiniCAD.interpreter.commands.UndoableCmdExprIF;
 import MiniCAD.interpreter.lexerparser.CommandParser;
+import ObserverCommandFlyweight.is.shapes.view.GraphicObjectPanel;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class MiniCadCLI {
     public static void main(String[] args) {
-        Context context = new Context();
+        final GraphicObjectPanel gpanel = new GraphicObjectPanel();
+        Context context = new Context(gpanel);
         SistemaMiniCAD sistemaMiniCAD = new SistemaMiniCAD();
         CommandParser commandParser = new CommandParser();
         Scanner scanner = new Scanner(System.in);

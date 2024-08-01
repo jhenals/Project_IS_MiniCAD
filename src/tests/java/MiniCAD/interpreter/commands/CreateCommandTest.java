@@ -3,9 +3,6 @@ package MiniCAD.interpreter.commands;
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.lexerparser.CommandParser;
-import MiniCAD.interpreter.utilExpr.PosizioneExpr;
-import MiniCAD.interpreter.utilExpr.TypeConstructorExpr;
-import MiniCAD.util.InterpreterCommandAdapter;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.model.ImageObject;
@@ -14,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 

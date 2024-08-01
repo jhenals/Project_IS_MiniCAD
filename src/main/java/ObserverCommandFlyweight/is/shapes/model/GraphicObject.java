@@ -22,4 +22,5 @@ public interface GraphicObject {
 	boolean contains(Point2D p);
 
 	String getType();
+
 }

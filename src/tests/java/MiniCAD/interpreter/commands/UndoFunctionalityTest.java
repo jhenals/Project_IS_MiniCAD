@@ -3,7 +3,7 @@ package MiniCAD.interpreter.commands;
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.utilExpr.*;
-import MiniCAD.util.InterpreterCommandAdapter;
+import MiniCAD.command.InterpreterCommandAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ public class UndoFunctionalityTest {
 
     @DisplayName("Undo functionality test successful")
     @Test
-    void testUndo() throws ParseException, IOException {
+    void testUndo() {
         TypeConstructorExpr.CircleConstructor circleConstructor = new TypeConstructorExpr.CircleConstructor(5.0f);
         PosizioneExpr posizione = new PosizioneExpr(3.1f, 4.5f);
         UndoableCmdExprIF createCommand = new CreateCommand(circleConstructor, posizione);

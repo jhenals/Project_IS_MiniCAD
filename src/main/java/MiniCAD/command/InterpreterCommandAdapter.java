@@ -1,4 +1,4 @@
-package MiniCAD.util;
+package MiniCAD.command;
 
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.commands.CommandExprIF;
