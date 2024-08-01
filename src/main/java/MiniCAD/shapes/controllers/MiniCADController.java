@@ -25,6 +25,7 @@ public class MiniCADController extends JPanel {
     static final int offset = 10;
     static final double zoom_factor= 0.1;
     private String objId= null;
+    private String grpId = null;
     private GraphicObject subject;
     private CommandParser commandParser;
     private Context context;
@@ -53,7 +54,11 @@ public class MiniCADController extends JPanel {
         commandPanel.setPreferredSize(new Dimension(300, 400));
         commandPanel.setBorder(BorderFactory.createTitledBorder("Commands"));
 
+        JTextField grpIdTextField = new JTextField("Insert group Id");
+
+        //commandPanel.add(grpId);
         commandPanel.add(zoomMovePanel());
+        commandPanel.add(grpIdTextField);
         commandPanel.add(moveOffPanel());
         commandPanel.add(commandButtonsPanel());
         commandPanel.add(operazioniAvanzatePanel());
@@ -644,7 +649,7 @@ public class MiniCADController extends JPanel {
     private JTextArea propertiesViewer() {
         propertiesArea = new JTextArea();
         propertiesArea.setBackground(Color.WHITE);
-        propertiesArea.setPreferredSize(new Dimension(300, 200));
+        propertiesArea.setPreferredSize(new Dimension(300, 100));
         propertiesArea.setEditable(false);
         return propertiesArea;
     }
