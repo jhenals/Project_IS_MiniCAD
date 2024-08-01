@@ -28,7 +28,7 @@ MiniCAD è un'applicazione che consente la creazione, manipolazione e gestione d
 L'interfaccia utente permette agli utenti di interagire con il sistema MiniCAD tramite pulsanti e una visualizzazione grafica degli oggetti.
 ![img.png](img.png)
 ### Utilizzo MiniCAD UI
-1. Far avviare la classe _MiniCAD/ui/MiniCADUI.java_.
+1. Avviare la classe _MiniCAD/ui/MiniCADUI.java_.
 2. All'avvio dell'applicazione, verrà visualizzataa una finestra con una toolbar, un'area di disegno e il panello per i comandi.
 3. Utilizza i pulsanti sulla toolbar per crrare nuovi oggetti grafici.
 4. Clicca sugli oggetti nell'area di disegno per selezionarli e poter utilizzare i pulsanti di comandi.
