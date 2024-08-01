@@ -3,8 +3,11 @@ package MiniCAD.shapes.interpreter.commands;
 import MiniCAD.shapes.interpreter.Context;
 import MiniCAD.shapes.interpreter.utilExpr.Token;
 
+import java.util.List;
+
 public class UngroupCommand implements UndoableCmdExprIF {
     private Token groupId;
+    private List<String> idList;
 
     public UngroupCommand(Token groupId) {
         this.groupId = groupId;
@@ -18,6 +21,7 @@ public class UngroupCommand implements UndoableCmdExprIF {
             throw new IllegalArgumentException("Id non è di tipo Gruppo.");
         }
         if( context.getAllGroups().containsKey(gid) ){
+            idList = context.getObjectIDsOfGroup(gid);
             context.unGroup(gid);
             context.removeObjectById(gid);
             res = "Gruppo con id=" + gid + " è stato rimosso.";
@@ -38,6 +42,7 @@ public class UngroupCommand implements UndoableCmdExprIF {
 
     @Override
     public boolean undo(Context context) {
-        return false; //TODO
+        context.createGroup(idList);
+        return true;
     }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 public class GroupCommand implements UndoableCmdExprIF {
     private ListIdExpr ids ;
+    private String gid;
 
     public GroupCommand(ListIdExpr listId) {
         ids=listId;
@@ -17,8 +18,8 @@ public class GroupCommand implements UndoableCmdExprIF {
     public String interpreta(Context context) {
         List<String> idList = ids.interpreta(context);
         GroupObject groupObject = context.createGroup(idList);
-
-        System.out.println(groupObject.getGroupId());
+        gid = groupObject.getGroupId();
+        System.out.println(gid);
         return groupObject.getGroupId();
     }
 
@@ -32,6 +33,7 @@ public class GroupCommand implements UndoableCmdExprIF {
 
     @Override
     public boolean undo(Context context) {
-        return false; //TODO
+        context.unGroup(gid);
+        return true;
     }
 }

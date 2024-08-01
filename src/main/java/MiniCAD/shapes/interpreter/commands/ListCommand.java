@@ -39,14 +39,14 @@ public class ListCommand implements CommandExprIF {
                         } else {
                             GraphicObject object = context.getObjectbyId(t);
                             sb.append("Proprietà del gruppo con id=" + token.interpreta(context) +"\n");
-                            sb.append(" TipoExpr: " + object.getType()+"\n");
+                            sb.append(" Tipo: " + object.getType()+"\n");
                             sb.append(" Posizione corrente del gruppo: " + stampaPosizione(object)+  "\n");
                             sb.append(" Oggetti:" + context.getObjectIDsOfGroup(token.interpreta(context)));
                         }
                     }else{
                         GraphicObject object = context.getObjectbyId(t);
                         sb.append("Elenco di proprietà dell'oggetto con id=" + t +"\n");
-                        sb.append(" TipoExpr: " + object.getType()+"\n");
+                        sb.append(" Tipo: " + object.getType()+"\n");
                         if( object.getType().equals("Circle")){
                             sb.append(" Raggio: " + ((CircleObject)object).getRadius() +"\n");
                         }else{

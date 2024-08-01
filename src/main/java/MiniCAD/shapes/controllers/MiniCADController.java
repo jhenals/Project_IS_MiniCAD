@@ -3,6 +3,7 @@ package MiniCAD.shapes.controllers;
 import MiniCAD.command.MiniCadCommandHandler;
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.commands.CommandExprIF;
 import MiniCAD.shapes.interpreter.commands.UndoableCmdExprIF;
 import MiniCAD.shapes.interpreter.lexerparser.CommandParser;
 import MiniCAD.util.NumericDocumentFilter;
@@ -27,11 +28,13 @@ public class MiniCADController extends JPanel {
     private GraphicObject subject;
     private CommandParser commandParser;
     private Context context;
+    private JTextArea propertiesArea;
 
 
     public void setControlledObject(GraphicObject go, String id) {
         subject = go;
         objId = id;
+        propertiesArea.setText(id);
     }
 
     public MiniCADController(MiniCadCommandHandler cmdH, Context context) {
@@ -43,7 +46,6 @@ public class MiniCADController extends JPanel {
         subject = go;
         context = c;
         commandParser = new CommandParser();
-
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -58,7 +60,8 @@ public class MiniCADController extends JPanel {
 
         JPanel propViewerPanel = new JPanel();
         propViewerPanel.setBorder(BorderFactory.createTitledBorder("Properties"));
-        propViewerPanel.add(new JScrollPane(propertiesViewer()));
+        propertiesArea = propertiesViewer();
+        propViewerPanel.add(new JScrollPane(propertiesArea));
 
         add(commandPanel);
         add(propViewerPanel);
@@ -72,6 +75,7 @@ public class MiniCADController extends JPanel {
         JButton minus = new JButton("-");
 
         minus.addActionListener(e -> {
+            clearPropertiesViewer();
             if (subject != null) {
                 String scaleMinusInput = String.format("scale %s %s", objId, 1.0 - zoom_factor);
                 try {
@@ -87,6 +91,7 @@ public class MiniCADController extends JPanel {
 
         JButton plus = new JButton("+");
         plus.addActionListener(e -> {
+            clearPropertiesViewer();
             if (subject != null) {
                 String scalePlusInput = String.format("scale %s %s", objId, 1.0 + zoom_factor);
                 try {
@@ -104,6 +109,7 @@ public class MiniCADController extends JPanel {
         JButton nw = new JButton("\\");
 
         nw.addActionListener(e -> {
+            clearPropertiesViewer();
             if (subject == null) {
                 return;
             }
@@ -122,6 +128,7 @@ public class MiniCADController extends JPanel {
 
         JButton n = new JButton("|");
         n.addActionListener(e -> {
+            clearPropertiesViewer();
             if (subject == null) {
                 return;
             }
@@ -141,6 +148,7 @@ public class MiniCADController extends JPanel {
 
         JButton ne = new JButton("/");
         ne.addActionListener(e -> {
+            clearPropertiesViewer();
             if (subject == null) {
                 return;
             }
@@ -162,6 +170,7 @@ public class MiniCADController extends JPanel {
 
         JButton w = new JButton("<-");
         w.addActionListener(e -> {
+            clearPropertiesViewer();
             if (subject == null) {
                 return;
             }
@@ -184,6 +193,7 @@ public class MiniCADController extends JPanel {
 
         JButton e = new JButton("->");
         e.addActionListener(e1 -> {
+            clearPropertiesViewer();
             if (subject == null) {
                 return;
             }
@@ -205,6 +215,7 @@ public class MiniCADController extends JPanel {
         JButton sw = new JButton("/");
 
         sw.addActionListener(e12 -> {
+            clearPropertiesViewer();
             if (subject == null) {
                 return;
             }
@@ -224,6 +235,7 @@ public class MiniCADController extends JPanel {
 
         JButton s = new JButton("|");
         s.addActionListener(e13 -> {
+            clearPropertiesViewer();
             if (subject == null) {
                 return;
             }
@@ -244,6 +256,7 @@ public class MiniCADController extends JPanel {
 
         JButton se = new JButton("\\");
         se.addActionListener(e14 -> {
+            clearPropertiesViewer();
             if (subject == null) {
                 return;
             }
@@ -265,7 +278,7 @@ public class MiniCADController extends JPanel {
     }
 
 
-    private JPanel moveOffPanel() {
+    private JPanel moveOffPanel() { //TODO
         JTextField  newXAxisField = new JTextField();
         newXAxisField.setPreferredSize(new Dimension(50, 20));
         setNumericFilter(newXAxisField);
@@ -295,17 +308,32 @@ public class MiniCADController extends JPanel {
         GridBagConstraints c= new GridBagConstraints();
 
         //Buttons
-        JButton deleteButton = new JButton("Delete");
+        JButton deleteButton = new JButton("Delete"); //TODO
         JButton areaButton = new JButton("Area");
         JButton perimButton = new JButton("Perimeter");
         JButton viewProperty = new JButton("View Property");
-        JButton groupButton = new JButton("Group");
-        JButton ungroupButton = new JButton("Ungroup");
+        JButton groupButton = new JButton("Group"); //TODO
+        JButton ungroupButton = new JButton("Ungroup"); //TODO
 
+        areaButton.addActionListener(e -> {
+            try{
+                updatePropertiesViewer("area", objId);
+            } catch (IOException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        perimButton.addActionListener(e -> {
+            try{
+                updatePropertiesViewer("perimeter" , objId);
+            } catch (IOException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         viewProperty.addActionListener(e -> {
             try {
-                updatePropertiesViewer();
+                updatePropertiesViewer("ls", objId);
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -346,22 +374,6 @@ public class MiniCADController extends JPanel {
         return cmdButtonsPanel;
     }
 
-    private void updatePropertiesViewer() throws ParseException, IOException {
-        if(subject != null ){
-            JTextArea propertiesArea = propertiesViewer();
-            propertiesArea.setText(getPropertiesAsString(subject));
-        }
-    }
-
-    private String getPropertiesAsString(GraphicObject subject) throws ParseException, IOException {
-        /*CommandParser parser = new CommandParser();
-        String objId = objectManager.getIdByObject(subject);
-        CommandExprIF listPropCommand = parser.parseCommand("ls "+ objId);
-
-         */
-        return null;
-    }
-
 
     private JPanel operazioniAvanzatePanel() {
         JPanel advOpsPanel = new JPanel();
@@ -379,6 +391,46 @@ public class MiniCADController extends JPanel {
         JMenuItem groupItem = new JMenuItem("View all groups");
         JMenuItem allItem = new JMenuItem("View all");
 
+        imgItem.addActionListener(e -> {
+            try {
+                updatePropertiesViewer("ls", "img");
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        rectItem.addActionListener(e -> {
+            try {
+                updatePropertiesViewer("ls", "rectangle");
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        circleItem.addActionListener(e -> {
+            try {
+                updatePropertiesViewer("ls", "circle");
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        groupItem.addActionListener(e -> {
+            try {
+                updatePropertiesViewer("ls", "groups");
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        allItem.addActionListener(e -> {
+            try {
+                updatePropertiesViewer("ls", "all");
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         advancePropertyViewMenu.add(imgItem);
         advancePropertyViewMenu.add(rectItem);
         advancePropertyViewMenu.add(circleItem);
@@ -392,6 +444,30 @@ public class MiniCADController extends JPanel {
         JMenuItem areaCircleItem = new JMenuItem("Areas of all circles");
         JMenuItem areaAllItem = new JMenuItem("Total Areas");
 
+        areaRectItem.addActionListener(e -> {
+            try{
+                updatePropertiesViewer("area" , "rectangle");
+            } catch (IOException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        areaCircleItem.addActionListener(e -> {
+            try{
+                updatePropertiesViewer("area" , "circle");
+            } catch (IOException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        areaAllItem.addActionListener(e -> {
+            try{
+                updatePropertiesViewer("area" , "all");
+            } catch (IOException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         calculateAreasMenu.add(areaRectItem);
         calculateAreasMenu.add(areaCircleItem);
         calculateAreasMenu.add(areaAllItem);
@@ -402,6 +478,31 @@ public class MiniCADController extends JPanel {
         JMenuItem perimRectItem = new JMenuItem("Perimeters of all rectangles");
         JMenuItem perimCircleItem = new JMenuItem("Perimeters of all circles");
         JMenuItem perimAllItem = new JMenuItem("Total Perimeters");
+
+        perimRectItem.addActionListener(e -> {
+            try{
+                updatePropertiesViewer("perimeter" , "rectangle");
+            } catch (IOException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        perimCircleItem.addActionListener(e -> {
+            try{
+                updatePropertiesViewer("perimeter" , "circle");
+            } catch (IOException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        perimAllItem.addActionListener(e -> {
+            try{
+                updatePropertiesViewer("perimeter" , "all");
+            } catch (IOException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
 
         calculatePerimsMenu.add(perimRectItem);
         calculatePerimsMenu.add(perimCircleItem);
@@ -418,12 +519,36 @@ public class MiniCADController extends JPanel {
         return advOpsPanel;
     }
 
+
+    private void updatePropertiesViewer(String cmd, String param) throws ParseException, IOException {
+        if(subject != null ){
+            propertiesArea.setText(getPropertiesAsString(cmd, param));
+        }
+    }
+
+    private String getPropertiesAsString(String cmd, String param) {
+        String commandInput = cmd + " " + param;
+
+        try {
+            CommandExprIF command = commandParser.parseCommand(commandInput);
+            return command.interpreta(context).toString();
+        } catch (ParseException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     private JTextArea propertiesViewer() {
-        JTextArea propertiesArea = new JTextArea();
+        propertiesArea = new JTextArea();
         propertiesArea.setBackground(Color.WHITE);
-        propertiesArea.setPreferredSize(new Dimension(300,200));
+        propertiesArea.setPreferredSize(new Dimension(300, 200));
         propertiesArea.setEditable(false);
         return propertiesArea;
+    }
+
+
+    private void clearPropertiesViewer() {
+        propertiesArea.setText("");
     }
 
 
