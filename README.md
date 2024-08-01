@@ -1,8 +1,19 @@
 # MiniCAD
 MiniCAD è un'applicazione che consente la creazione, manipolazione e gestione di oggetti grafici bidimensionali. Questo progetto include un interprete di comandi che permette di interagire con l'applicazione tramite comandi testuali.
 
-##TABLE OF CONTENTS
-- [Servizi] 
+----------------------------------------------------------------------------
+## TABLE OF CONTENTS
+- [Servizi] (#servizi)
+- MiniCAD UI
+- MiniCAD CLI
+- Requisiti
+- Architettura
+- Grammatica
+- Design Pattern Utilizzati
+- Struttura del Codice
+- Testing
+
+-------------------------------------------------------------------------------------
 ## Servizi
 1. Creazione 
 2. Rimozione 
