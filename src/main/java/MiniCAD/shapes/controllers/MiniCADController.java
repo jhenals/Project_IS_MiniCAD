@@ -32,7 +32,6 @@ public class MiniCADController extends JPanel {
     private final Context context;
     private JTextArea propertiesArea;
 
-
     public void setControlledObject(GraphicObject go, String id) {
         subject = go;
         objId = id;
@@ -144,18 +143,13 @@ public class MiniCADController extends JPanel {
         JButton ne = new JButton("/");
         ne.addActionListener(e -> {
             clearPropertiesViewer();
-            if (subject == null) {
-                return;
-            }
-            else if (subject != null) {
-                Point2D p = subject.getPosition();
-                String moveNEInput = "mv "+ currentId + "("+ (p.getX()  + offset) +","+(p.getY() - offset)+")";
-                try {
-                    UndoableCmdExprIF mvNE = (UndoableCmdExprIF) commandParser.parseCommand(moveNEInput);
-                    cmdHandler.handle(mvNE);
-                } catch (ParseException | IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            Point2D p = subject.getPosition();
+            String moveNEInput = "mv "+ currentId + "("+ (p.getX()  + offset) +","+(p.getY() - offset)+")";
+            try {
+                UndoableCmdExprIF mvNE = (UndoableCmdExprIF) commandParser.parseCommand(moveNEInput);
+                cmdHandler.handle(mvNE);
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
             }
             //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY() - offset)));
 
@@ -278,7 +272,6 @@ public class MiniCADController extends JPanel {
         sposta.addActionListener(e -> {
             String xAxis = newXAxisField.getText();
             String yAxis = newYAxisField.getText();
-            Point2D newPos = new Point2D.Double(Double.parseDouble(xAxis), Double.parseDouble(yAxis));
             String mvoffInput = "mvoff "+ currentId +"("+ xAxis+","+yAxis+")";
 
             try {
