@@ -68,8 +68,8 @@ public class MiniCADController extends JPanel {
 
         add(commandPanel);
         add(propViewerPanel);
+        add(howToPanel());
     }
-
 
     private JPanel zoomMovePanel(){
         JPanel zoomMovePanel = new JPanel();
@@ -377,7 +377,6 @@ public class MiniCADController extends JPanel {
 
         JLabel label = setLabel("Insert object ids to group or group id to ungroup:");
         JTextField  idsField = new JTextField("",20);
-        idsField.setForeground(Color.GRAY);
 
         JButton groupButton = new JButton("Group");
         JButton ungroupButton = new JButton("Ungroup");
@@ -648,7 +647,7 @@ public class MiniCADController extends JPanel {
     }
 
     private JTextArea propertiesViewer() {
-        propertiesArea = new JTextArea();
+        propertiesArea = new JTextArea("\"Hello User! Welcome to MiniCAD App\"");
         propertiesArea.setBackground(Color.WHITE);
         propertiesArea.setPreferredSize(new Dimension(300, 100));
         propertiesArea.setEditable(false);
@@ -660,6 +659,25 @@ public class MiniCADController extends JPanel {
     }
     private static void setNumericFilter(JTextField textField){
         ((AbstractDocument) textField.getDocument()).setDocumentFilter(new NumericDocumentFilter());
+    }
+
+    private JPanel howToPanel() {
+        JPanel howToPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        JLabel howTo = new JLabel("<html>HOW TO: Click the object in order to use the command buttons. " +
+                "In case of group objects, insert the groupId in the designated input and click GO button.</html>");
+        howTo.setForeground(Color.GRAY);
+        howTo.setFont(new Font("Arial", Font.PLAIN, 9));
+        howToPanel.setPreferredSize(new Dimension(300, 40));
+
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(5, 5, 5, 5);
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        howToPanel.add(howTo, c);
+        return howToPanel;
     }
 
 
