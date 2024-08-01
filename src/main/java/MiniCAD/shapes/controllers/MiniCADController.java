@@ -28,8 +28,8 @@ public class MiniCADController extends JPanel {
     private String grpId = null;
     private String currentId = null;
     private GraphicObject subject;
-    private CommandParser commandParser;
-    private Context context;
+    private final CommandParser commandParser;
+    private final Context context;
     private JTextArea propertiesArea;
 
 
@@ -56,9 +56,9 @@ public class MiniCADController extends JPanel {
         commandPanel.setPreferredSize(new Dimension(300, 500));
         commandPanel.setBorder(BorderFactory.createTitledBorder("Commands"));
 
+        commandPanel.add(moveOffPanel());
         commandPanel.add(zoomMovePanel());
         commandPanel.add(grpManagerPanel());
-        commandPanel.add(moveOffPanel());
         commandPanel.add(commandButtonsPanel());
         commandPanel.add(operazioniAvanzatePanel());
 
@@ -115,18 +115,13 @@ public class MiniCADController extends JPanel {
 
         nw.addActionListener(e -> {
             clearPropertiesViewer();
-            if (subject == null) {
-                return;
-            }
-            else if (subject != null) {
-                Point2D p = subject.getPosition();
-                String moveNWInput = "mv "+ currentId + "("+ (p.getX()  - offset) +","+(p.getY() - offset)+")";
-                try {
-                    UndoableCmdExprIF mvNW = (UndoableCmdExprIF) commandParser.parseCommand(moveNWInput);
-                    cmdHandler.handle(mvNW);
-                } catch (ParseException | IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            Point2D p = subject.getPosition();
+            String moveNWInput = "mv "+ currentId + "("+ (p.getX()  - offset) +","+(p.getY() - offset)+")";
+            try {
+                UndoableCmdExprIF mvNW = (UndoableCmdExprIF) commandParser.parseCommand(moveNWInput);
+                cmdHandler.handle(mvNW);
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
             }
         });
         grid.add(nw);
@@ -134,18 +129,13 @@ public class MiniCADController extends JPanel {
         JButton n = new JButton("|");
         n.addActionListener(e -> {
             clearPropertiesViewer();
-            if (subject == null) {
-                return;
-            }
-            else if (subject != null) {
-                Point2D p = subject.getPosition();
-                String moveNInput = "mv "+ currentId + "("+ p.getX() +","+(p.getY() - offset)+")";
-                try {
-                    UndoableCmdExprIF mvN = (UndoableCmdExprIF) commandParser.parseCommand(moveNInput);
-                    cmdHandler.handle(mvN);
-                } catch (ParseException | IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            Point2D p = subject.getPosition();
+            String moveNInput = "mv "+ currentId + "("+ p.getX() +","+(p.getY() - offset)+")";
+            try {
+                UndoableCmdExprIF mvN = (UndoableCmdExprIF) commandParser.parseCommand(moveNInput);
+                cmdHandler.handle(mvN);
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
             }
         });
 
@@ -176,18 +166,13 @@ public class MiniCADController extends JPanel {
         JButton w = new JButton("<-");
         w.addActionListener(e -> {
             clearPropertiesViewer();
-            if (subject == null) {
-                return;
-            }
-            else if (subject != null) {
-                Point2D p = subject.getPosition();
-                String moveWInput = "mv "+ currentId + "("+ (p.getX()  - offset) +","+p.getY()+")";
-                try {
-                    UndoableCmdExprIF mvW = (UndoableCmdExprIF) commandParser.parseCommand(moveWInput);
-                    cmdHandler.handle(mvW);
-                } catch (ParseException | IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            Point2D p = subject.getPosition();
+            String moveWInput = "mv "+ currentId + "("+ (p.getX()  - offset) +","+p.getY()+")";
+            try {
+                UndoableCmdExprIF mvW = (UndoableCmdExprIF) commandParser.parseCommand(moveWInput);
+                cmdHandler.handle(mvW);
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
             }
             //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() - offset, p.getY())));
         });
@@ -199,18 +184,13 @@ public class MiniCADController extends JPanel {
         JButton e = new JButton("->");
         e.addActionListener(e1 -> {
             clearPropertiesViewer();
-            if (subject == null) {
-                return;
-            }
-            else if (subject != null) {
-                Point2D p = subject.getPosition();
-                String moveEInput = "mv "+ currentId + "("+ (p.getX()  + offset) +","+p.getY()+")";
-                try {
-                    UndoableCmdExprIF mvE = (UndoableCmdExprIF) commandParser.parseCommand(moveEInput);
-                    cmdHandler.handle(mvE);
-                } catch (ParseException | IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            Point2D p = subject.getPosition();
+            String moveEInput = "mv "+ currentId + "("+ (p.getX()  + offset) +","+p.getY()+")";
+            try {
+                UndoableCmdExprIF mvE = (UndoableCmdExprIF) commandParser.parseCommand(moveEInput);
+                cmdHandler.handle(mvE);
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
             }
             //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY())));
         });
@@ -221,18 +201,13 @@ public class MiniCADController extends JPanel {
 
         sw.addActionListener(e12 -> {
             clearPropertiesViewer();
-            if (subject == null) {
-                return;
-            }
-            else if (subject != null) {
-                Point2D p = subject.getPosition();
-                String moveSWInput = "mv "+ currentId + "("+ (p.getX()  - offset) +","+(p.getY() + offset)+")";
-                try {
-                    UndoableCmdExprIF mvSW = (UndoableCmdExprIF) commandParser.parseCommand(moveSWInput);
-                    cmdHandler.handle(mvSW);
-                } catch (ParseException | IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            Point2D p = subject.getPosition();
+            String moveSWInput = "mv "+ currentId + "("+ (p.getX()  - offset) +","+(p.getY() + offset)+")";
+            try {
+                UndoableCmdExprIF mvSW = (UndoableCmdExprIF) commandParser.parseCommand(moveSWInput);
+                cmdHandler.handle(mvSW);
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
             }
             //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() - offset, p.getY() + offset)));
         });
@@ -241,18 +216,13 @@ public class MiniCADController extends JPanel {
         JButton s = new JButton("|");
         s.addActionListener(e13 -> {
             clearPropertiesViewer();
-            if (subject == null) {
-                return;
-            }
-            else if (subject != null) {
-                Point2D p = subject.getPosition();
-                String moveSInput = "mv "+ currentId + "("+ p.getX() +","+(p.getY() + offset)+")";
-                try {
-                    UndoableCmdExprIF mvS = (UndoableCmdExprIF) commandParser.parseCommand(moveSInput);
-                    cmdHandler.handle(mvS);
-                }catch (ParseException | IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            Point2D p = subject.getPosition();
+            String moveSInput = "mv "+ currentId + "("+ p.getX() +","+(p.getY() + offset)+")";
+            try {
+                UndoableCmdExprIF mvS = (UndoableCmdExprIF) commandParser.parseCommand(moveSInput);
+                cmdHandler.handle(mvS);
+            }catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
             }
             //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX(), p.getY() + offset)));
         });
@@ -262,18 +232,13 @@ public class MiniCADController extends JPanel {
         JButton se = new JButton("\\");
         se.addActionListener(e14 -> {
             clearPropertiesViewer();
-            if (subject == null) {
-                return;
-            }
-            else if (subject != null) {
-                Point2D p = subject.getPosition();
-                String moveSEInput = "mv "+ currentId + "("+ (p.getX()  + offset) +","+(p.getY() + offset)+")";
-                try {
-                    UndoableCmdExprIF mvSE = (UndoableCmdExprIF) commandParser.parseCommand(moveSEInput);
-                    cmdHandler.handle(mvSE);
-                } catch (ParseException | IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            Point2D p = subject.getPosition();
+            String moveSEInput = "mv "+ currentId + "("+ (p.getX()  + offset) +","+(p.getY() + offset)+")";
+            try {
+                UndoableCmdExprIF mvSE = (UndoableCmdExprIF) commandParser.parseCommand(moveSEInput);
+                cmdHandler.handle(mvSE);
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
             }
             //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY() + offset)));
         });
@@ -300,14 +265,6 @@ public class MiniCADController extends JPanel {
         return panel;
     }
 
-    private JLabel setLabel(String s) {
-        JLabel label = new JLabel(s);
-        label.setForeground(Color.GRAY);
-        label.setFont(new Font("Serif", Font.BOLD, 11));
-        return label;
-    }
-
-
     private JPanel moveOffPanel() { //TODO
         JTextField  newXAxisField = new JTextField();
         newXAxisField.setPreferredSize(new Dimension(50, 20));
@@ -318,11 +275,28 @@ public class MiniCADController extends JPanel {
         setNumericFilter(newYAxisField);
 
         JButton sposta = new JButton("Move");
+        sposta.addActionListener(e -> {
+            String xAxis = newXAxisField.getText();
+            String yAxis = newYAxisField.getText();
+            Point2D newPos = new Point2D.Double(Double.parseDouble(xAxis), Double.parseDouble(yAxis));
+            String mvoffInput = "mvoff "+ currentId +"("+ xAxis+","+yAxis+")";
+
+            try {
+                UndoableCmdExprIF mvoffCommand = (UndoableCmdExprIF) commandParser.parseCommand(mvoffInput);
+                cmdHandler.handle(mvoffCommand);
+                updatePropertiesViewer("ls", currentId);
+            } catch (ParseException | IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            newXAxisField.setText("");
+            newYAxisField.setText("");
+        });
 
         JPanel inputPanel = new JPanel();
-        inputPanel.add(new JLabel("X-Axis:"));
+        inputPanel.add(setLabel("X-axis"));
         inputPanel.add(newXAxisField);
-        inputPanel.add(new JLabel("Y-Axis:"));
+        inputPanel.add(setLabel("Y-axis"));
         inputPanel.add(newYAxisField);
         inputPanel.add(sposta);
 
@@ -476,7 +450,6 @@ public class MiniCADController extends JPanel {
         return panel;
     }
 
-    //TODO
     private void handleUngroupAction(String gid) {
         String ungroupInput = "ungrp "+ gid;
         try {
@@ -488,7 +461,6 @@ public class MiniCADController extends JPanel {
         }
     }
 
-    //TODO
     private void handleGroupAction(String[] ids) {
         String idList = transformInput(ids);
         String groupInput = "grp "+ idList;
@@ -512,7 +484,6 @@ public class MiniCADController extends JPanel {
         }
         return sb.toString();
     }
-
 
     private JPanel operazioniAvanzatePanel() {
         JPanel advOpsPanel = new JPanel();
@@ -658,6 +629,12 @@ public class MiniCADController extends JPanel {
         return advOpsPanel;
     }
 
+    private JLabel setLabel(String s) {
+        JLabel label = new JLabel(s);
+        label.setForeground(Color.GRAY);
+        label.setFont(new Font("Serif", Font.BOLD, 11));
+        return label;
+    }
 
     private void updatePropertiesViewer(String cmd, String param) throws ParseException, IOException {
         if(subject != null ){
