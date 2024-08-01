@@ -34,7 +34,7 @@ public class CreateCommand implements UndoableCmdExprIF {
         String objectId = context.generaId();
         if( object instanceof ImageObject){
             object = new ImageObject(new ImageIcon(Objects.requireNonNull(MiniCADUI.class.getResource("NyaNya.gif"))),
-                    (new Point(200, 100)));
+                    (new Point(240, 290)));
         }
         GraphicObject go = object.clone();
         context.addObject(objectId, go);

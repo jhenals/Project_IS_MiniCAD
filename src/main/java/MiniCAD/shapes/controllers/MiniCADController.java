@@ -296,10 +296,6 @@ public class MiniCADController extends JPanel {
         return inputPanel;
     }
 
-    private static void setNumericFilter(JTextField textField){
-        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new NumericDocumentFilter());
-    }
-
     private JPanel commandButtonsPanel() {
         JPanel cmdButtonsPanel = new JPanel(new GridBagLayout());
         GridBagConstraints c= new GridBagConstraints();
@@ -442,42 +438,6 @@ public class MiniCADController extends JPanel {
         panel.add(ungroupButton,c);
         return panel;
     }
-
-    private void handleUngroupAction(String gid) {
-        String ungroupInput = "ungrp "+ gid;
-        try {
-            UndoableCmdExprIF ungroupCommand = (UndoableCmdExprIF) commandParser.parseCommand(ungroupInput);
-            cmdHandler.handle(ungroupCommand);
-            showMessage(gid + " is ungrouped.");
-        } catch (ParseException | IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    private void handleGroupAction(String[] ids) {
-        String idList = transformInput(ids);
-        String groupInput = "grp "+ idList;
-        System.out.println(groupInput);
-        try {
-            UndoableCmdExprIF groupCommand = (UndoableCmdExprIF) commandParser.parseCommand(groupInput);
-            cmdHandler.handle(groupCommand);
-            showMessage("New group element is created.");
-        } catch (ParseException | IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    private String transformInput(String[] ids) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < ids.length; i++) {
-            sb.append(ids[i]);
-            if (i < ids.length - 1) {
-                sb.append(", ");
-            }
-        }
-        return sb.toString();
-    }
-
     private JPanel operazioniAvanzatePanel() {
         JPanel advOpsPanel = new JPanel();
         advOpsPanel.setPreferredSize(new Dimension(280,115));
@@ -622,6 +582,43 @@ public class MiniCADController extends JPanel {
         return advOpsPanel;
     }
 
+
+    //Utilities
+    private void handleUngroupAction(String gid) {
+        String ungroupInput = "ungrp "+ gid;
+        try {
+            UndoableCmdExprIF ungroupCommand = (UndoableCmdExprIF) commandParser.parseCommand(ungroupInput);
+            cmdHandler.handle(ungroupCommand);
+            showMessage(gid + " is ungrouped.");
+        } catch (ParseException | IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private void handleGroupAction(String[] ids) {
+        String idList = transformInput(ids);
+        String groupInput = "grp "+ idList;
+        System.out.println(groupInput);
+        try {
+            UndoableCmdExprIF groupCommand = (UndoableCmdExprIF) commandParser.parseCommand(groupInput);
+            cmdHandler.handle(groupCommand);
+            showMessage("New group element is created.");
+        } catch (ParseException | IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private String transformInput(String[] ids) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ids.length; i++) {
+            sb.append(ids[i]);
+            if (i < ids.length - 1) {
+                sb.append(", ");
+            }
+        }
+        return sb.toString();
+    }
+
     private JLabel setLabel(String s) {
         JLabel label = new JLabel(s);
         label.setForeground(Color.GRAY);
@@ -650,7 +647,6 @@ public class MiniCADController extends JPanel {
         }
     }
 
-
     private JTextArea propertiesViewer() {
         propertiesArea = new JTextArea();
         propertiesArea.setBackground(Color.WHITE);
@@ -659,9 +655,11 @@ public class MiniCADController extends JPanel {
         return propertiesArea;
     }
 
-
     private void clearPropertiesViewer() {
         propertiesArea.setText("");
+    }
+    private static void setNumericFilter(JTextField textField){
+        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new NumericDocumentFilter());
     }
 
 

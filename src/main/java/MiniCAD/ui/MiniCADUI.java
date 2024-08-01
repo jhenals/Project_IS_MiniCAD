@@ -28,23 +28,22 @@ public class MiniCADUI {
         JToolBar toolbar = new JToolBar();
 
         JButton undoButt = new JButton("Undo");
-        JButton redoButt = new JButton("Redo");
         undoButt.addActionListener(evt -> handler.handle(MiniCadHistoryCmdHandler.NonExecutableCommands.UNDO));
-        redoButt.addActionListener(evt -> handler.handle(MiniCadHistoryCmdHandler.NonExecutableCommands.REDO));
         toolbar.add(undoButt);
-        toolbar.add(redoButt);
 
         gpanel.setPreferredSize(new Dimension(500, 500));
         gpanel.installView(RectangleObject.class, new RectangleObjectView());
         gpanel.installView(CircleObject.class, new CircleObjectView());
         gpanel.installView(ImageObject.class, new ImageObjectView());
 
-        AbstractGraphicObject go = new RectangleObject(new Point(0, 0), 20, 50);
+        AbstractGraphicObject go = new RectangleObject(new Point(240, 290), 20, 50);
 
+
+        toolbar.add(new JLabel("SHAPES:"));
         toolbar.add(createObjectButton("Rectangle", go, gpanel, handler, context, parser));
-        toolbar.add(createObjectButton("Circle", new CircleObject(new Point(200, 100), 10), gpanel, handler, context, parser));
+        toolbar.add(createObjectButton("Circle", new CircleObject(new Point(240, 290), 10), gpanel, handler, context, parser));
         toolbar.add(createObjectButton("Image",new ImageObject(new ImageIcon(Objects.requireNonNull(MiniCADUI.class.getResource("NyaNya.gif"))),
-                (new Point(200, 100))), gpanel, handler, context, parser));
+                (new Point(240, 290))), gpanel, handler, context, parser));
 
 
         final MiniCADController goc = new MiniCADController(handler,context);
