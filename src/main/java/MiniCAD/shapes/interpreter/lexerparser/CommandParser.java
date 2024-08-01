@@ -15,7 +15,6 @@ public class CommandParser {
     private Token tokenCorrente;
 
 
-
     public CommandExprIF parseCommand(String cmdInput) throws ParseException, IOException {
         CommandExprIF cmd;
         CommandLexer cLexer = new CommandLexer(new StringReader(cmdInput));

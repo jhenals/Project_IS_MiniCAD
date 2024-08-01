@@ -64,7 +64,7 @@ public class CreateCommand implements UndoableCmdExprIF {
     @Override
     public boolean undo(Context context) {
         context.removeObjectById (objId);
-        System.out.println("Rimosso oggetto con id=" + objId);
+        //System.out.println("Rimosso oggetto con id=" + objId);
         return true;
     }
 }

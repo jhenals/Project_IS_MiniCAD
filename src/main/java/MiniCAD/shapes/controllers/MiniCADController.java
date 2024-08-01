@@ -308,12 +308,20 @@ public class MiniCADController extends JPanel {
         GridBagConstraints c= new GridBagConstraints();
 
         //Buttons
-        JButton deleteButton = new JButton("Delete"); //TODO
+        JButton deleteButton = new JButton("Delete");
         JButton areaButton = new JButton("Area");
         JButton perimButton = new JButton("Perimeter");
         JButton viewProperty = new JButton("View Property");
-        JButton groupButton = new JButton("Group"); //TODO
-        JButton ungroupButton = new JButton("Ungroup"); //TODO
+
+        JPanel groupPanel = manageGroupFeaturePanel();
+
+        deleteButton.addActionListener(e -> {
+            try{
+                updatePropertiesViewer("del", objId);
+            } catch (IOException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         areaButton.addActionListener(e -> {
             try{
@@ -339,7 +347,6 @@ public class MiniCADController extends JPanel {
             }
         });
 
-
         //constraints
         c.gridx=0;
         c.gridy=0;
@@ -364,14 +371,106 @@ public class MiniCADController extends JPanel {
 
         c.gridx = 0;
         c.gridy = 3;
-        c.gridwidth = 1;
-        cmdButtonsPanel.add(groupButton, c);
-
-        c.gridx = 1;
-        c.gridy = 3;
-        cmdButtonsPanel.add(ungroupButton, c);
+        //c.gridwidth= 3;
+        c.fill= GridBagConstraints.HORIZONTAL;
+        cmdButtonsPanel.add(groupPanel, c);
 
         return cmdButtonsPanel;
+    }
+
+    private JPanel manageGroupFeaturePanel() {
+        JPanel panel = new JPanel((new GridBagLayout()));
+        GridBagConstraints c= new GridBagConstraints();
+
+        JTextField  idsField = new JTextField("Insert ids to group or group id to ungroup");
+        idsField.setForeground(Color.GRAY);
+
+        JButton groupButton = new JButton("Group");
+        JButton ungroupButton = new JButton("Ungroup");
+
+        groupButton.addActionListener( e -> {
+            clearPropertiesViewer();
+            String input = idsField.getText().trim();
+            if (!input.isEmpty()) {
+                String[] ids = input.split("\\s+");
+                if (ids.length > 1) {
+                    handleGroupAction(ids);
+                    idsField.setText("");
+                } else {
+                    showMessage("Please enter multiple IDs separated by spaces for grouping.");
+                }
+            } else {
+                showMessage("Please enter IDs to group.");
+            }
+        });
+
+        ungroupButton.addActionListener( e -> {
+            clearPropertiesViewer();
+            String input = idsField.getText().trim();
+            if (!input.isEmpty()) {
+                String[] ids = input.split("\\s+");
+                if (ids.length == 1) {
+                    handleUngroupAction(ids[0]);
+                    idsField.setText("");
+                } else {
+                    showMessage("Please enter a single group ID to ungroup.");
+                }
+            } else {
+                showMessage("Please enter a group ID to ungroup.");
+            }
+        });
+        c.fill= GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 2;
+        panel.add(idsField, c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        panel.add(groupButton,c);
+
+        c.gridx = 1;
+        c.gridy = 1;
+        panel.add(ungroupButton,c);
+        return panel;
+    }
+
+    //TODO
+    private void handleUngroupAction(String gid) {
+        String ungroupInput = "ungrp "+ gid;
+        try {
+            UndoableCmdExprIF ungroupCommand = (UndoableCmdExprIF) commandParser.parseCommand(ungroupInput);
+            cmdHandler.handle(ungroupCommand);
+            showMessage(gid + " is ungrouped.");
+        } catch (ParseException | IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    //TODO
+    private void handleGroupAction(String[] ids) {
+        String idList = transformInput(ids);
+        String groupInput = "grp "+ idList;
+        System.out.println(groupInput);
+        try {
+            UndoableCmdExprIF groupCommand = (UndoableCmdExprIF) commandParser.parseCommand(groupInput);
+            cmdHandler.handle(groupCommand);
+            showMessage("New group element is created.");
+        } catch (ParseException | IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private String transformInput(String[] ids) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ids.length; i++) {
+            sb.append(ids[i]);
+            if (i < ids.length - 1) {
+                sb.append(", ");
+            }
+        }
+        return sb.toString();
     }
 
 
@@ -524,6 +623,10 @@ public class MiniCADController extends JPanel {
         if(subject != null ){
             propertiesArea.setText(getPropertiesAsString(cmd, param));
         }
+    }
+
+    private void showMessage(String msg)  {
+        propertiesArea.setText(msg);
     }
 
     private String getPropertiesAsString(String cmd, String param) {

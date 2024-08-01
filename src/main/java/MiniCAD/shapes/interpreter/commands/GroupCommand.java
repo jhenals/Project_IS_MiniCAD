@@ -19,7 +19,6 @@ public class GroupCommand implements UndoableCmdExprIF {
         List<String> idList = ids.interpreta(context);
         GroupObject groupObject = context.createGroup(idList);
         gid = groupObject.getGroupId();
-        System.out.println(gid);
         return groupObject.getGroupId();
     }
 
