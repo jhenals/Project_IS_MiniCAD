@@ -3,7 +3,7 @@ MiniCAD è un'applicazione che consente la creazione, manipolazione e gestione d
 
 ----------------------------------------------------------------------------
 ## TABLE OF CONTENTS
-- [Servizi] (#servizi)
+- [Servizi](#servizi)
 - MiniCAD UI
 - MiniCAD CLI
 - Requisiti
