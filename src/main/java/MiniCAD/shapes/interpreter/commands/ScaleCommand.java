@@ -1,8 +1,7 @@
-package MiniCAD.interpreter.commands;
+package MiniCAD.shapes.interpreter.commands;
 
-import MiniCAD.exceptions.ParseException;
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.utilExpr.Token;
+import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.utilExpr.Token;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
@@ -10,7 +9,7 @@ public class ScaleCommand implements UndoableCmdExprIF {
     private Token objectId;
     private Token scaleFactor; //POS_FLOAT
 
-    public ScaleCommand(Token objectId, Token scaleFactor) throws ParseException {
+    public ScaleCommand(Token objectId, Token scaleFactor) {
         this.objectId = objectId;
         this.scaleFactor = scaleFactor;
     }
@@ -51,6 +50,8 @@ public class ScaleCommand implements UndoableCmdExprIF {
 
     @Override
     public boolean undo(Context context) {
-        return false; //TODO
+        String id = objectId.interpreta(context);
+        context.undoScale(id, scaleFactor.interpreta(context));
+        return true;
     }
 }
