@@ -1,7 +1,7 @@
 package MiniCAD.command;
 
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.commands.UndoableCmdExprIF;
+import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.commands.UndoableCmdExprIF;
 
 import java.util.LinkedList;
 

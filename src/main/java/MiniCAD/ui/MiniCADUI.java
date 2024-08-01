@@ -2,11 +2,10 @@ package MiniCAD.ui;
 
 import MiniCAD.command.MiniCadCommandHandler;
 import MiniCAD.command.MiniCadHistoryCmdHandler;
-import MiniCAD.controllers.MiniCADController;
-import MiniCAD.exceptions.ParseException;
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.lexerparser.CommandParser;
-import MiniCAD.view.CreateObjectActionMiniCad;
+import MiniCAD.shapes.controllers.MiniCADController;
+import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.lexerparser.CommandParser;
+import MiniCAD.shapes.view.CreateObjectActionMiniCad;
 import ObserverCommandFlyweight.is.shapes.model.*;
 import ObserverCommandFlyweight.is.shapes.view.*;
 
@@ -14,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.Objects;
 
 public class MiniCADUI {

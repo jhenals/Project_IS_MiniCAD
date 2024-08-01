@@ -1,4 +1,4 @@
-package MiniCAD.interpreter;
+package MiniCAD.shapes.interpreter;
 
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObjectListener;

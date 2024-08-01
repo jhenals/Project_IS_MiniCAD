@@ -1,8 +1,8 @@
-package MiniCAD.interpreter.lexerparser;
+package MiniCAD.shapes.interpreter.lexerparser;
 
 import MiniCAD.exceptions.ParseException;
-import MiniCAD.interpreter.commands.*;
-import MiniCAD.interpreter.utilExpr.*;
+import MiniCAD.shapes.interpreter.commands.*;
+import MiniCAD.shapes.interpreter.utilExpr.*;
 
 import java.io.IOException;
 import java.io.StringReader;

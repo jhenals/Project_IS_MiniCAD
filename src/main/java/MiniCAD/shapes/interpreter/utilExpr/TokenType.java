@@ -1,4 +1,4 @@
-package MiniCAD.interpreter.utilExpr;
+package MiniCAD.shapes.interpreter.utilExpr;
 
 public enum TokenType {
 

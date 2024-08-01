@@ -1,6 +1,6 @@
-package MiniCAD.interpreter.commands;
+package MiniCAD.shapes.interpreter.commands;
 
-import MiniCAD.interpreter.Context;
+import MiniCAD.shapes.interpreter.Context;
 
 public interface UndoableCmdExprIF extends CommandExprIF{
 

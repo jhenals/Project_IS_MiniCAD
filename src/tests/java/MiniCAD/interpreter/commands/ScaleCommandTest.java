@@ -1,9 +1,10 @@
 package MiniCAD.interpreter.commands;
 
 import MiniCAD.exceptions.ParseException;
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.GroupObject;
-import MiniCAD.interpreter.lexerparser.CommandParser;
+import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.GroupObject;
+import MiniCAD.shapes.interpreter.commands.CommandExprIF;
+import MiniCAD.shapes.interpreter.lexerparser.CommandParser;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.ImageObject;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,7 @@
-package MiniCAD.interpreter.commands;
+package MiniCAD.shapes.interpreter.commands;
 
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.utilExpr.Token;
+import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.utilExpr.Token;
 
 public class RemoveCommand implements UndoableCmdExprIF {
     private Token id;

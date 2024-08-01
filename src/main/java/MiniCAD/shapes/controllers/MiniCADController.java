@@ -1,10 +1,10 @@
-package MiniCAD.controllers;
+package MiniCAD.shapes.controllers;
 
 import MiniCAD.command.MiniCadCommandHandler;
 import MiniCAD.exceptions.ParseException;
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.commands.UndoableCmdExprIF;
-import MiniCAD.interpreter.lexerparser.CommandParser;
+import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.commands.UndoableCmdExprIF;
+import MiniCAD.shapes.interpreter.lexerparser.CommandParser;
 import MiniCAD.util.NumericDocumentFilter;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 

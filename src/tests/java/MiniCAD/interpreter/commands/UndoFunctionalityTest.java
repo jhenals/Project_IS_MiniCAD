@@ -1,14 +1,14 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.exceptions.ParseException;
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.utilExpr.*;
+import MiniCAD.shapes.interpreter.Context;
 import MiniCAD.command.InterpreterCommandAdapter;
+import MiniCAD.shapes.interpreter.commands.CreateCommand;
+import MiniCAD.shapes.interpreter.commands.UndoableCmdExprIF;
+import MiniCAD.shapes.interpreter.utilExpr.PosizioneExpr;
+import MiniCAD.shapes.interpreter.utilExpr.TypeConstructorExpr;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

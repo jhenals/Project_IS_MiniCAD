@@ -1,4 +1,4 @@
-package MiniCAD.interpreter;
+package MiniCAD.shapes.interpreter;
 
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.specificcommand.NewObjectCmd;
@@ -14,7 +14,6 @@ public class Context {
     private final Map<String, List<String>> groups ;
     private GraphicObjectPanel panel;
     private int nextId = 0;
-
 
     public Context(GraphicObjectPanel gpanel){
         objects = new HashMap<>();
@@ -149,5 +148,16 @@ public class Context {
                 return entry.getKey();
         }
         return null;
+    }
+
+    public void undoScale(String id, String zFactor) {
+        GraphicObject go = objects.get(id) ;
+        go.scale(1.0 / Double.parseDouble(zFactor));
+    }
+
+    public void undoMove(String id) {
+        GraphicObject go = objects.get(id) ;
+        Point2D oldPos = go.getPosition();
+        go.moveTo(oldPos);
     }
 }

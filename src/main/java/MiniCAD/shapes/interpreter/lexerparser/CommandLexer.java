@@ -1,7 +1,7 @@
-package MiniCAD.interpreter.lexerparser;
+package MiniCAD.shapes.interpreter.lexerparser;
 
-import MiniCAD.interpreter.utilExpr.Token;
-import MiniCAD.interpreter.utilExpr.TokenType;
+import MiniCAD.shapes.interpreter.utilExpr.Token;
+import MiniCAD.shapes.interpreter.utilExpr.TokenType;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;

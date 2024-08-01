@@ -1,6 +1,6 @@
 package MiniCAD.command;
 
-import MiniCAD.interpreter.commands.UndoableCmdExprIF;
+import MiniCAD.shapes.interpreter.commands.UndoableCmdExprIF;
 
 
 public interface MiniCadCommandHandler {

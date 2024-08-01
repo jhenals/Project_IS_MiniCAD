@@ -1,8 +1,8 @@
 package MiniCAD.ui;
 
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.commands.CommandExprIF;
-import MiniCAD.interpreter.commands.UndoableCmdExprIF;
+import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.commands.CommandExprIF;
+import MiniCAD.shapes.interpreter.commands.UndoableCmdExprIF;
 import MiniCAD.command.InterpreterCommandAdapter;
 import ObserverCommandFlyweight.is.command.HistoryCommandHandler;
 import ObserverCommandFlyweight.is.shapes.view.GraphicObjectPanel;

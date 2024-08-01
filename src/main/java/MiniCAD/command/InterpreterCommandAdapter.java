@@ -1,8 +1,8 @@
 package MiniCAD.command;
 
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.commands.CommandExprIF;
-import MiniCAD.interpreter.commands.UndoableCmdExprIF;
+import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.commands.CommandExprIF;
+import MiniCAD.shapes.interpreter.commands.UndoableCmdExprIF;
 import ObserverCommandFlyweight.is.command.Command;
 public class InterpreterCommandAdapter<T> implements Command {
 

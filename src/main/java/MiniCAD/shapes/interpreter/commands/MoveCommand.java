@@ -1,8 +1,8 @@
-package MiniCAD.interpreter.commands;
+package MiniCAD.shapes.interpreter.commands;
 
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.utilExpr.Token;
-import MiniCAD.interpreter.utilExpr.PosizioneExpr;
+import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.utilExpr.Token;
+import MiniCAD.shapes.interpreter.utilExpr.PosizioneExpr;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 import java.awt.geom.Point2D;
@@ -63,6 +63,8 @@ public class MoveCommand implements UndoableCmdExprIF {
 
     @Override
     public boolean undo(Context context) {
-        return false; //TODO
+        String id = objectId.interpreta(context);
+        context.undoMove(id);
+        return true;
     }
 }

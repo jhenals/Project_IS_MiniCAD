@@ -1,7 +1,8 @@
-package MiniCAD.interpreter.commands;
+package MiniCAD.shapes.interpreter.commands;
 
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.utilExpr.*;
+import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.utilExpr.PosizioneExpr;
+import MiniCAD.shapes.interpreter.utilExpr.TypeConstructorExpr;
 import MiniCAD.ui.MiniCADUI;
 import ObserverCommandFlyweight.is.shapes.model.*;
 

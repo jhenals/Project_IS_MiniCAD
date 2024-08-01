@@ -1,9 +1,9 @@
-package MiniCAD.interpreter.commands;
+package MiniCAD.shapes.interpreter.commands;
 
-import MiniCAD.interpreter.Context;
-import MiniCAD.interpreter.utilExpr.TipoExpr;
-import MiniCAD.interpreter.utilExpr.Token;
-import MiniCAD.interpreter.utilExpr.TokenType;
+import MiniCAD.shapes.interpreter.Context;
+import MiniCAD.shapes.interpreter.utilExpr.TipoExpr;
+import MiniCAD.shapes.interpreter.utilExpr.Token;
+import MiniCAD.shapes.interpreter.utilExpr.TokenType;
 import MiniCAD.util.Util;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
