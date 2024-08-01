@@ -3,15 +3,15 @@ MiniCAD è un'applicazione che consente la creazione, manipolazione e gestione d
 
 ----------------------------------------------------------------------------
 ## TABLE OF CONTENTS
-- [Servizi] (#servizi)
-- MiniCAD UI
-- MiniCAD CLI
-- Requisiti
-- Architettura
-- Grammatica
-- Design Pattern Utilizzati
-- Struttura del Codice
-- Testing
+- [Servizi](#servizi)
+- [MiniCAD UI](#minicad-ui)
+- [MiniCAD CLI](#minicad-cli)
+- [Requisiti](#requisiti)
+- [Architettura](#architetttura)
+- [Grammatica](#grammatica)
+- [Design Pattern Utilizzati](#design-pattern-utilizzati)
+- [Struttura del Codice](#struttura-del-codice)
+- [Testing](#testing)
 
 -------------------------------------------------------------------------------------
 ## Servizi
