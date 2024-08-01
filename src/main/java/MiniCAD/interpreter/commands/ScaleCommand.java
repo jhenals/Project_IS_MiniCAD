@@ -1,5 +1,6 @@
 package MiniCAD.interpreter.commands;
 
+import MiniCAD.exceptions.ParseException;
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.utilExpr.Token;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
@@ -9,7 +10,7 @@ public class ScaleCommand implements UndoableCmdExprIF {
     private Token objectId;
     private Token scaleFactor; //POS_FLOAT
 
-    public ScaleCommand(Token objectId, Token scaleFactor) {
+    public ScaleCommand(Token objectId, Token scaleFactor) throws ParseException {
         this.objectId = objectId;
         this.scaleFactor = scaleFactor;
     }

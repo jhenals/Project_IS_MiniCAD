@@ -4,7 +4,6 @@ import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.utilExpr.TipoExpr;
 import MiniCAD.interpreter.utilExpr.Token;
 import MiniCAD.interpreter.utilExpr.TokenType;
-import MiniCAD.util.Util;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
@@ -29,6 +28,10 @@ public class PerimeterCommand implements CommandExprIF {
                 }
                 case RECTANGLE -> {
                     double perim= calcolaPerimDiTuttiRettangoli(context);
+                    res =String.valueOf(perim);
+                }
+                case IMG -> {
+                    double perim= calcolaPerimDiTuttiImmagini(context);
                     res =String.valueOf(perim);
                 }
                 default -> throw new IllegalArgumentException("Tipo di oggetto sconosciuto");
@@ -73,6 +76,14 @@ public class PerimeterCommand implements CommandExprIF {
         }
         return perim;
     }
+    private double calcolaPerimDiTuttiImmagini(Context context) {
+        double perim = 0D;
+        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Image");
+        for (String id : cerchiMap.keySet() ){
+            perim += calcolaPerimDellOggetto(context, id);
+        }
+        return perim;
+    }
 
     private Double calcolaPerimDiTuttiRettangoli(Context context) {
         double perim = 0D;
@@ -99,6 +110,10 @@ public class PerimeterCommand implements CommandExprIF {
             double r = ((CircleObject) object).getRadius();
             perim = 2 * Math.PI * r;
         } else if (object.getType().equals("Rectangle")) {
+            double l = object.getDimension().getHeight();
+            double w = object.getDimension().getWidth();
+            perim = 2 * l + 2 * w;
+        }else if (object.getType().equals("Image")) {
             double l = object.getDimension().getHeight();
             double w = object.getDimension().getWidth();
             perim = 2 * l + 2 * w;
