@@ -15,6 +15,7 @@ public class Context {
     private GraphicObjectPanel panel;
     private int nextId = 0;
 
+
     public Context(GraphicObjectPanel gpanel){
         objects = new HashMap<>();
         groups = new HashMap<>();

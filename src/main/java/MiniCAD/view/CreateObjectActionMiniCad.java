@@ -7,7 +7,6 @@ import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.commands.UndoableCmdExprIF;
 import MiniCAD.interpreter.lexerparser.CommandParser;
 import ObserverCommandFlyweight.is.shapes.model.AbstractGraphicObject;
-import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.view.GraphicObjectPanel;
 
 import javax.swing.*;
@@ -38,13 +37,13 @@ public class CreateObjectActionMiniCad extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GraphicObject go = prototype.clone();
         try {
             ch.handle((UndoableCmdExprIF) commandParser.parseCommand(input));
         } catch (ParseException | IOException ex) {
             throw new RuntimeException(ex);
         }
 
+        //GraphicObject go = prototype.clone();
        //ch.handle(new NewObjectCmd(panel, go));
     }
 }

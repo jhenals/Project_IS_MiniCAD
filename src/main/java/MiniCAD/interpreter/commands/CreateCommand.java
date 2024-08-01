@@ -2,13 +2,13 @@ package MiniCAD.interpreter.commands;
 
 import MiniCAD.interpreter.Context;
 import MiniCAD.interpreter.utilExpr.*;
-import ObserverCommandFlyweight.is.shapes.model.CircleObject;
-import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
-import ObserverCommandFlyweight.is.shapes.model.ImageObject;
-import ObserverCommandFlyweight.is.shapes.model.RectangleObject;
+import MiniCAD.ui.MiniCADUI;
+import ObserverCommandFlyweight.is.shapes.model.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.Objects;
 
 public class CreateCommand implements UndoableCmdExprIF {
     protected TypeConstructorExpr typeConstructor;
@@ -29,9 +29,14 @@ public class CreateCommand implements UndoableCmdExprIF {
 
     @Override
     public String interpreta(Context context) {
-        GraphicObject object = getGraphicObject(typeConstructor, context);
+        AbstractGraphicObject object = (AbstractGraphicObject) getGraphicObject(typeConstructor, context);
         String objectId = context.generaId();
-        context.addObject(objectId, object);
+        if( object instanceof ImageObject){
+            object = new ImageObject(new ImageIcon(Objects.requireNonNull(MiniCADUI.class.getResource("NyaNya.gif"))),
+                    (new Point(200, 100)));
+        }
+        GraphicObject go = object.clone();
+        context.addObject(objectId, go);
         objId  =  objectId;
         System.out.println(objId);
         return objId;
