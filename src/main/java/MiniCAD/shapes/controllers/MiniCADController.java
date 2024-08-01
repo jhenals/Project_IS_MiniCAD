@@ -69,8 +69,10 @@ public class MiniCADController extends JPanel {
         add(commandPanel);
         add(propViewerPanel);
         add(howToPanel());
-    }
+    } //Costruttore
 
+
+    //Panels
     private JPanel zoomMovePanel(){
         JPanel zoomMovePanel = new JPanel();
         JPanel grid = new JPanel(new GridLayout(3, 3));
@@ -680,5 +682,4 @@ public class MiniCADController extends JPanel {
         return howToPanel;
     }
 
-
-}
+}//MiniCADController
