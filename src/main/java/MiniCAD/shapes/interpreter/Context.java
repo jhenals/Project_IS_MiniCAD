@@ -5,9 +5,7 @@ import ObserverCommandFlyweight.is.shapes.specificcommand.NewObjectCmd;
 import ObserverCommandFlyweight.is.shapes.view.GraphicObjectPanel;
 
 import java.awt.geom.Point2D;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Context {
     private final Map<String, GraphicObject> objects ;
@@ -15,14 +13,17 @@ public class Context {
     private GraphicObjectPanel panel;
     private int nextId = 0;
 
+    private final Map<String, Stack<Point2D>> oldPositions;
     public Context(GraphicObjectPanel gpanel){
         objects = new HashMap<>();
         groups = new HashMap<>();
+        oldPositions = new HashMap<>();
         panel = gpanel;
     }
     public Context(){
         objects = new HashMap<>();
         groups = new HashMap<>();
+        oldPositions = new HashMap<>();
     }
 
     public String generaId(){
@@ -38,6 +39,7 @@ public class Context {
         GraphicObject go = objects.get(id) ;
         new NewObjectCmd(panel, go).undoIt();
         objects.remove(id);
+        oldPositions.remove(id);
     }
 
     public GraphicObject getObjectbyId(String id) {
@@ -133,6 +135,7 @@ public class Context {
 
     public void moveObject(String idStr, Point2D pos) {
         GraphicObject go = objects.get(idStr);
+        oldPositions.computeIfAbsent(idStr, k -> new Stack<>()).push(go.getPosition());
         go.moveTo(pos);
     }
 
@@ -156,8 +159,11 @@ public class Context {
     }
 
     public void undoMove(String id) {
-        GraphicObject go = objects.get(id) ;
-        Point2D oldPos = go.getPosition();
-        go.moveTo(oldPos);
+        GraphicObject go = objects.get(id);
+        Stack<Point2D> positions = oldPositions.get(id);
+        if (positions != null && !positions.isEmpty()) {
+            Point2D p = positions.pop();
+            go.moveTo(p);
+        }
     }
 }

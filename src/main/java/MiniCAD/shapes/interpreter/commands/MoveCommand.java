@@ -9,12 +9,12 @@ import java.awt.geom.Point2D;
 
 public class MoveCommand implements UndoableCmdExprIF {
     private Token objectId;
-    private PosizioneExpr posizione;
+    private PosizioneExpr newPos;
     private boolean offset;
 
     public MoveCommand(Token objectId, PosizioneExpr posizione, boolean offset){
         this.objectId= objectId;
-        this.posizione = posizione;
+        this.newPos = posizione;
         this.offset = offset;
     }
 
@@ -24,8 +24,8 @@ public class MoveCommand implements UndoableCmdExprIF {
 
 
     public Point2D parsePosizioneToPoint2D(){
-        double x = Double.parseDouble(Float.toString(posizione.getParam1()));
-        double y = Double.parseDouble(Float.toString(posizione.getParam2()));
+        double x = Double.parseDouble(Float.toString(newPos.getParam1()));
+        double y = Double.parseDouble(Float.toString(newPos.getParam2()));
         return new Point2D.Double(x, y);
     }
     @Override
@@ -33,7 +33,7 @@ public class MoveCommand implements UndoableCmdExprIF {
         String res;
         GraphicObject object = context.getObjectbyId(objectId.interpreta(context));
         String idStr = objectId.interpreta(context);
-        PosizioneExpr pos= posizione.interpreta(context);
+        PosizioneExpr pos= newPos.interpreta(context);
 
         if( object != null ){
             if(offset){
@@ -57,7 +57,7 @@ public class MoveCommand implements UndoableCmdExprIF {
     public String toString() {
         return "MoveCommand{" +
                 "objectId=" + objectId +
-                ", posizione=" + posizione +
+                ", posizione=" + newPos +
                 '}';
     }
 
