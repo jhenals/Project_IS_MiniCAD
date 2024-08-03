@@ -7,9 +7,6 @@ MiniCAD è un'applicazione che consente la creazione, manipolazione e gestione d
 - [MiniCAD UI](#minicad-ui)
 - [MiniCAD CLI](#minicad-cli)
 - [Requisiti](#requisiti)
-- [Architettura](#architetttura)
-- [Grammatica](#grammatica)
-- [Design Pattern Utilizzati](#design-pattern-utilizzati)
 - [Struttura del Codice](#struttura-del-codice)
 - [Testing](#testing)
 
@@ -70,36 +67,7 @@ L'interfaccia a riga di comando permette agli utenti di interagire con il sistem
 - Librerie esterne : nessuna
 
 
-## Architetttura
-### Grammatica
-```
-<cmd> ::= <create> | <remove> | <move> | <scale> | <list> | <group> | <ungroup> | <area> | <perimeter>
-<create> ::= new <typeconstr> <pos>
-<remove> ::= del <objID>
-<move> ::= mv <objID> <pos> | mvoff <objID> <pos>
-<scale> ::= scale <objID> <posfloat>
-<list> ::= ls <objID> | ls <type> | ls all | ls groups
-<group> ::= grp <listID>
-<ungroup> ::= ungrp <objID>
-<area> ::= area <objID> | area <type> | area all
-<perimeter> ::= perimeter <objID> | perimeter <type> | perimeter all
-<pos> ::= ( <posfloat> <posfloat> )
-<typeconstr> ::= circle (<posfloat>) | rectangle <pos> | img (<path>)
-<type> ::= circle | rectangle | img
-<listID> ::= <objID> { <objID> }
-```
-
-### Design Pattern Utilizzati
-* Interpreter - Analizza e interpreta i comandi di creazione degli oggetti grafici 
-* Composite - Utilizzato per la creazione e gestione dei group object. 
-
-Design Pattern utilizzati nell'applicazione dove viene integrato il sistema:
-* Observer -Per permettere agli oggetti di osservare e reagire agli eventi.
-* Command - Per incapsulare richieste come oggetti, consentendo di parametrizzare gli oggetti con operazioni.
-* Flyweight -  Per minimizzare l'uso della memoria condividendo quanti più dati possibili con oggetti simili
-* Memento - per implementare l'_Undo_
-
-### Struttura del Codice
+## Struttura del Codice
 * **MiniCAD/ui/MiniCADUI.java** - contiene la classe principale MiniCADUI che avvia l'applicazione e gestisce l'interfaccia utente.
 * **MiniCAD/shapes/interpreter/commands** - contiene i comandi implementati con Interpreter Pattern.
 * **MiniCAD/shapes/interpreter/lexerparser** - contiene le classi Lexer e Parser 
