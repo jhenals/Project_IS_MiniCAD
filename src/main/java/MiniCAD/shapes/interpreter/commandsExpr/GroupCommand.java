@@ -1,7 +1,7 @@
-package MiniCAD.shapes.interpreter.commands;
+package MiniCAD.shapes.interpreter.commandsExpr;
 
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.GroupObject;
+import MiniCAD.shapes.model.GroupObject;
 import MiniCAD.shapes.interpreter.utilExpr.ListIdExpr;
 
 import java.util.List;

@@ -1,18 +1,18 @@
-package MiniCAD.shapes.interpreter.commands;
+package MiniCAD.shapes.interpreter.commandsExpr;
 
 
 import MiniCAD.shapes.interpreter.Context;
 
 public class Command<T> implements CommandExprIF, UndoableCmdExprIF {
-    CommandExprIF cmd;
+    CommandExprIF<T> cmd;
 
-    public Command( CommandExprIF cmd){
+    public Command( CommandExprIF<T> cmd){
         this.cmd = cmd;
     }
 
     @Override
     public T interpreta(Context context) {
-        return (T) cmd.interpreta(context);
+        return  cmd.interpreta(context);
     }
 
     @Override

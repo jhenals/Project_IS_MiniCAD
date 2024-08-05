@@ -2,7 +2,7 @@ package MiniCAD.interpreter.commands;
 
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.commands.CommandExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.CommandExprIF;
 import MiniCAD.shapes.interpreter.lexerparser.CommandParser;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;

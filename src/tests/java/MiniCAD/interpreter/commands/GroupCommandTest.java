@@ -2,8 +2,8 @@ package MiniCAD.interpreter.commands;
 
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.GroupObject;
-import MiniCAD.shapes.interpreter.commands.CommandExprIF;
+import MiniCAD.shapes.model.GroupObject;
+import MiniCAD.shapes.interpreter.commandsExpr.CommandExprIF;
 import MiniCAD.shapes.interpreter.lexerparser.CommandParser;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
@@ -23,7 +23,6 @@ class GroupCommandTest {
 
     private Context context;
     private CommandParser parser;
-    private CommandExprIF command;
 
     @BeforeEach
     void setUp() {
@@ -47,7 +46,7 @@ class GroupCommandTest {
     @Test
     void interpreta() throws ParseException, IOException {
         String input = "grp id0, id1, id2";
-        command = parser.parseCommand(input);
+        CommandExprIF command = parser.parseCommand(input);
         String res = (String) command.interpreta(context);
 
         GraphicObject go = context.getObjectbyId(res);

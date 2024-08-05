@@ -2,8 +2,8 @@ package MiniCAD.interpreter.commands;
 
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.GroupObject;
-import MiniCAD.shapes.interpreter.commands.CommandExprIF;
+import MiniCAD.shapes.model.GroupObject;
+import MiniCAD.shapes.interpreter.commandsExpr.CommandExprIF;
 import MiniCAD.shapes.interpreter.lexerparser.CommandParser;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
@@ -21,7 +21,6 @@ class PerimeterCommandTest {
     private Context context;
     private CommandParser parser;
     private CommandExprIF command;
-    private String gid;
 
     @BeforeEach
     void setUp() {
@@ -83,9 +82,9 @@ class PerimeterCommandTest {
         context.addObject("id2", circleObject2);
 
         GroupObject groupObject = context.createGroup(List.of("id1", "id2"));
-        gid = groupObject.getGroupId();
+        String gid = groupObject.getGroupId();
 
-        String input = "perimeter "+gid;
+        String input = "perimeter "+ gid;
         command = parser.parseCommand(input);
         String perim = (String) command.interpreta(context);
 

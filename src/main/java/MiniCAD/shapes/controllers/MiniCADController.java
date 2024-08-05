@@ -3,8 +3,8 @@ package MiniCAD.shapes.controllers;
 import MiniCAD.command.MiniCadCommandHandler;
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.commands.CommandExprIF;
-import MiniCAD.shapes.interpreter.commands.UndoableCmdExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.CommandExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.UndoableCmdExprIF;
 import MiniCAD.shapes.interpreter.lexerparser.CommandParser;
 import MiniCAD.util.NumericDocumentFilter;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
@@ -244,7 +244,7 @@ public class MiniCADController extends JPanel {
     }
     private JPanel grpManagerPanel() {
         JPanel panel = new JPanel();
-        JLabel label = setLabel("Insert group id to zoom or move:");
+        JLabel label = setLabel("Insert group id:");
         JTextField grpIdTextField = new JTextField("", 5);
         JButton okBtn = new JButton("GO");
         okBtn.addActionListener(e -> {
@@ -312,7 +312,7 @@ public class MiniCADController extends JPanel {
 
         deleteButton.addActionListener(e -> {
             try{
-                updatePropertiesViewer("del", objId);
+                updatePropertiesViewer("del", currentId);
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -320,7 +320,7 @@ public class MiniCADController extends JPanel {
 
         areaButton.addActionListener(e -> {
             try{
-                updatePropertiesViewer("area", objId);
+                updatePropertiesViewer("area", currentId);
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -328,7 +328,7 @@ public class MiniCADController extends JPanel {
 
         perimButton.addActionListener(e -> {
             try{
-                updatePropertiesViewer("perimeter" , objId);
+                updatePropertiesViewer("perimeter" , currentId);
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -336,7 +336,7 @@ public class MiniCADController extends JPanel {
 
         viewProperty.addActionListener(e -> {
             try {
-                updatePropertiesViewer("ls", objId);
+                updatePropertiesViewer("ls", currentId);
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }

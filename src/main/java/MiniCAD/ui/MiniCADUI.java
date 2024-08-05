@@ -39,7 +39,7 @@ public class MiniCADUI {
         AbstractGraphicObject go = new RectangleObject(new Point(240, 290), 20, 50);
 
 
-        toolbar.add(new JLabel("SHAPES:"));
+        toolbar.add(new JLabel("SHAPES"));
         toolbar.add(createObjectButton("Rectangle", go, gpanel, handler, context, parser));
         toolbar.add(createObjectButton("Circle", new CircleObject(new Point(240, 290), 10), gpanel, handler, context, parser));
         toolbar.add(createObjectButton("Image",new ImageObject(new ImageIcon(Objects.requireNonNull(MiniCADUI.class.getResource("NyaNya.gif"))),

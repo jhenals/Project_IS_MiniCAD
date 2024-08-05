@@ -1,7 +1,7 @@
 package MiniCAD.shapes.interpreter.utilExpr;
 
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.commands.CommandExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.CommandExprIF;
 
 public abstract class TypeConstructorExpr<T> implements CommandExprIF {
     public abstract T interpreta(Context context);

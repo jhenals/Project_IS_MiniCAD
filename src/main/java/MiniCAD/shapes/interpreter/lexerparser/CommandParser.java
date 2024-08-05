@@ -1,7 +1,7 @@
 package MiniCAD.shapes.interpreter.lexerparser;
 
 import MiniCAD.exceptions.ParseException;
-import MiniCAD.shapes.interpreter.commands.*;
+import MiniCAD.shapes.interpreter.commandsExpr.*;
 import MiniCAD.shapes.interpreter.utilExpr.*;
 
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class CommandParser {
                 PerimeterCommand perimeterCmd = parsePerimeter();
                 cmd = new Command(perimeterCmd);
             }
-            default -> throw new IllegalArgumentException("TipoExpr del comando sconosciuto: " + tokenCorrente.getValore());
+            default -> throw new IllegalArgumentException("Tipo del comando sconosciuto: " + tokenCorrente.getValore());
         }
         return cmd;
     } //parseCommand

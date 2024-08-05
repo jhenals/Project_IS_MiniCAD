@@ -1,16 +1,16 @@
 package MiniCAD.command;
 
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.commands.CommandExprIF;
-import MiniCAD.shapes.interpreter.commands.UndoableCmdExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.CommandExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.UndoableCmdExprIF;
 import ObserverCommandFlyweight.is.command.Command;
 public class InterpreterCommandAdapter<T> implements Command {
 
     private UndoableCmdExprIF miniCadCommand;
-    private Context context;
+    private final Context context;
     private T res ;
 
-    public InterpreterCommandAdapter(CommandExprIF miniCadCommand, Context context) {
+    public InterpreterCommandAdapter(CommandExprIF<T> miniCadCommand, Context context) {
         if(miniCadCommand instanceof UndoableCmdExprIF){
             this.miniCadCommand =(UndoableCmdExprIF) miniCadCommand;
         }

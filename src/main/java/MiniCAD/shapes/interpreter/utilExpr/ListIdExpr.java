@@ -1,7 +1,7 @@
 package MiniCAD.shapes.interpreter.utilExpr;
 
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.commands.CommandExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.CommandExprIF;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class ListIdExpr implements CommandExprIF {
             return null;
         }else{
             for(Token id : ids ){
-                if(!idList.contains(id)){
+                if(!(idList.contains(id))){
                     idList.add(id.interpreta(context));
                 }
             }

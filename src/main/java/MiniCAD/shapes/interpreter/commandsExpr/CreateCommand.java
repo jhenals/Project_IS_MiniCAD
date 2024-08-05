@@ -1,4 +1,4 @@
-package MiniCAD.shapes.interpreter.commands;
+package MiniCAD.shapes.interpreter.commandsExpr;
 
 import MiniCAD.shapes.interpreter.Context;
 import MiniCAD.shapes.interpreter.utilExpr.PosizioneExpr;
@@ -16,7 +16,7 @@ public class CreateCommand implements UndoableCmdExprIF {
     protected PosizioneExpr posizione;
     private String objId;
 
-    public CreateCommand(TypeConstructorExpr tc, PosizioneExpr pos) {
+    public <T> CreateCommand(TypeConstructorExpr<T> tc, PosizioneExpr pos) {
         typeConstructor = tc;
         posizione = pos;
     }

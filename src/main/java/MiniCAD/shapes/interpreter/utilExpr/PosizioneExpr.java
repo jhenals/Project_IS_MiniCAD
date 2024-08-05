@@ -1,7 +1,7 @@
 package MiniCAD.shapes.interpreter.utilExpr;
 
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.commands.CommandExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.CommandExprIF;
 
 public class PosizioneExpr implements CommandExprIF {
     private float param1;

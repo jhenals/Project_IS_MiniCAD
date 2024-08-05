@@ -1,4 +1,4 @@
-package MiniCAD.shapes.interpreter.commands;
+package MiniCAD.shapes.interpreter.commandsExpr;
 
 import MiniCAD.shapes.interpreter.Context;
 import MiniCAD.shapes.interpreter.utilExpr.TipoExpr;
@@ -9,7 +9,7 @@ import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 import java.util.Map;
 
-public class AreaCommand implements CommandExprIF {
+public class AreaCommand implements CommandExprIF{
     private CommandExprIF param;
 
     public AreaCommand(CommandExprIF param) {

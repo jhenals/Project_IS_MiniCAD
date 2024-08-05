@@ -1,5 +1,6 @@
 package MiniCAD.shapes.interpreter;
 
+import MiniCAD.shapes.model.GroupObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.specificcommand.NewObjectCmd;
 import ObserverCommandFlyweight.is.shapes.view.GraphicObjectPanel;

@@ -1,4 +1,4 @@
-package MiniCAD.shapes.interpreter.commands;
+package MiniCAD.shapes.interpreter.commandsExpr;
 
 import MiniCAD.shapes.interpreter.Context;
 import MiniCAD.shapes.interpreter.utilExpr.Token;
@@ -6,7 +6,7 @@ import MiniCAD.shapes.interpreter.utilExpr.Token;
 import java.util.List;
 
 public class UngroupCommand implements UndoableCmdExprIF {
-    private Token groupId;
+    private final Token groupId;
     private List<String> idList;
 
     public UngroupCommand(Token groupId) {

@@ -2,8 +2,8 @@ package MiniCAD.ui;
 
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.commands.CommandExprIF;
-import MiniCAD.shapes.interpreter.commands.UndoableCmdExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.CommandExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.UndoableCmdExprIF;
 import MiniCAD.shapes.interpreter.lexerparser.CommandParser;
 import ObserverCommandFlyweight.is.shapes.view.GraphicObjectPanel;
 
@@ -31,8 +31,6 @@ public class MiniCadCLI {
             try {
                 if (input.equalsIgnoreCase("undo")) {
                     sistemaMiniCAD.undo();
-                } else if (input.equalsIgnoreCase("redo")) {
-                    sistemaMiniCAD.redo();
                 } else{
                     CommandExprIF command = commandParser.parseCommand(input);
                     if (command instanceof UndoableCmdExprIF)

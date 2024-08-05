@@ -1,13 +1,13 @@
 package MiniCAD.shapes.interpreter.utilExpr;
 
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.commands.CommandExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.CommandExprIF;
 
-public class Token<T> implements CommandExprIF {
+public class Token implements CommandExprIF {
     private TokenType tipo;
-    private T valore;
+    private Object valore;
 
-    public Token( TokenType tipo, T valore){
+    public Token( TokenType tipo, Object valore){
         this.tipo = tipo;
         this.valore = valore;
     }

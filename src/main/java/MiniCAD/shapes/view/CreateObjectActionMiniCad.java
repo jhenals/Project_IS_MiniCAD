@@ -4,7 +4,7 @@ package MiniCAD.shapes.view;
 import MiniCAD.command.MiniCadCommandHandler;
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.commands.UndoableCmdExprIF;
+import MiniCAD.shapes.interpreter.commandsExpr.UndoableCmdExprIF;
 import MiniCAD.shapes.interpreter.lexerparser.CommandParser;
 import ObserverCommandFlyweight.is.shapes.model.AbstractGraphicObject;
 import ObserverCommandFlyweight.is.shapes.view.GraphicObjectPanel;
