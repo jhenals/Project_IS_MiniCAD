@@ -21,10 +21,10 @@ MiniCAD è un'applicazione che consente la creazione, manipolazione e gestione d
 7. Rimozione di gruppi di oggetti
 8. Calcolo di area e perimetro
 
-## MiniCAD UI
+## MiniCAD GUI
 L'interfaccia utente permette agli utenti di interagire con il sistema MiniCAD tramite pulsanti e una visualizzazione grafica degli oggetti.
 ![img.png](img.png)
-### Utilizzo MiniCAD UI
+### Utilizzo MiniCAD GUI
 1. Avviare la classe _MiniCAD/ui/MiniCADUI.java_.
 2. All'avvio dell'applicazione, verrà visualizzataa una finestra con una toolbar, un'area di disegno e il panello per i comandi.
 3. Utilizza i pulsanti sulla toolbar per crrare nuovi oggetti grafici.
@@ -36,7 +36,7 @@ L'interfaccia utente permette agli utenti di interagire con il sistema MiniCAD t
 ## MiniCAD CLI
 L'interfaccia a riga di comando permette agli utenti di interagire con il sistema MiniCAD tramite comandi testuali.
 ![img_1.png](img_1.png)
-### Utilizzo MiniCAD UI
+### Utilizzo MiniCAD CLI
 1. Avviare la classe _MiniCAD/ui/MiniCadCLI.java_.
 2. Esempi di comandi da inserire:
     ```

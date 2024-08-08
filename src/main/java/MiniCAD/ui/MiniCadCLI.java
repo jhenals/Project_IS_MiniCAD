@@ -1,10 +1,10 @@
 package MiniCAD.ui;
 
 import MiniCAD.exceptions.ParseException;
-import MiniCAD.shapes.interpreter.Context;
-import MiniCAD.shapes.interpreter.commandsExpr.CommandExprIF;
-import MiniCAD.shapes.interpreter.commandsExpr.UndoableCmdExprIF;
-import MiniCAD.shapes.interpreter.lexerparser.CommandParser;
+import MiniCAD.mvc.specificCmds.Context;
+import MiniCAD.mvc.specificCmds.commandsExpr.CommandExprIF;
+import MiniCAD.mvc.specificCmds.commandsExpr.UndoableCmdExprIF;
+import MiniCAD.mvc.specificCmds.lexerparser.CommandParser;
 import ObserverCommandFlyweight.is.shapes.view.GraphicObjectPanel;
 
 import java.io.IOException;
