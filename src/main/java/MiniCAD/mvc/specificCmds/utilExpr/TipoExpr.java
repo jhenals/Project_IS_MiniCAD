@@ -3,7 +3,7 @@ package MiniCAD.mvc.specificCmds.utilExpr;
 import MiniCAD.mvc.specificCmds.Context;
 import MiniCAD.mvc.specificCmds.commandsExpr.CommandExprIF;
 
-public class TipoExpr implements CommandExprIF {
+public class TipoExpr implements CommandExprIF<TokenType> {
     private Token param;
 
     public TipoExpr(Token param) {

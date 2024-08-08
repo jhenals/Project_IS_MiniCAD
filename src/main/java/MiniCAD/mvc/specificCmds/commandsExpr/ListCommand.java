@@ -11,7 +11,7 @@ import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import java.util.List;
 import java.util.Map;
 
-public class ListCommand implements CommandExprIF {
+public class ListCommand implements CommandExprIF<String> {
     private CommandExprIF param;
 
     public ListCommand(CommandExprIF param) {

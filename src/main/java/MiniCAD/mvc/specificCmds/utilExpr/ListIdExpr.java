@@ -6,7 +6,7 @@ import MiniCAD.mvc.specificCmds.commandsExpr.CommandExprIF;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ListIdExpr implements CommandExprIF {
+public class ListIdExpr implements CommandExprIF<List<String>> {
     private List<Token> ids;
 
     public ListIdExpr(List<Token> ids) {

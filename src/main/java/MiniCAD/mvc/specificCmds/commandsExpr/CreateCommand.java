@@ -16,7 +16,7 @@ public class CreateCommand implements UndoableCmdExprIF {
     protected PosizioneExpr posizione;
     private String objId;
 
-    public <T> CreateCommand(TypeConstructorExpr<T> tc, PosizioneExpr pos) {
+    public CreateCommand(TypeConstructorExpr tc, PosizioneExpr pos) {
         typeConstructor = tc;
         posizione = pos;
     }

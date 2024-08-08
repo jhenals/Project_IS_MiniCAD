@@ -3,7 +3,7 @@ package MiniCAD.mvc.specificCmds.utilExpr;
 import MiniCAD.mvc.specificCmds.Context;
 import MiniCAD.mvc.specificCmds.commandsExpr.CommandExprIF;
 
-public class PosizioneExpr implements CommandExprIF {
+public class PosizioneExpr implements CommandExprIF<PosizioneExpr> {
     private float param1;
     private float param2;
 

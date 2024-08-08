@@ -9,7 +9,7 @@ import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 import java.util.Map;
 
-public class AreaCommand implements CommandExprIF{
+public class AreaCommand implements CommandExprIF<String>{
     private CommandExprIF param;
 
     public AreaCommand(CommandExprIF param) {
