@@ -126,6 +126,7 @@ public class Context {
     public void moveOffObject(String idStr, Point2D offset) {
         GraphicObject go = objects.get(idStr);
         Point2D currentPosition = go.getPosition();
+        oldPositions.computeIfAbsent(idStr, k -> new Stack<>()).push(go.getPosition());
 
         double newX = currentPosition.getX() + offset.getX();
         double newY = currentPosition.getY() + offset.getY();
@@ -157,6 +158,7 @@ public class Context {
         GraphicObject go = objects.get(id) ;
         go.scale(1.0 / Double.parseDouble(zFactor));
     }
+
 
     public void undoMove(String id) {
         GraphicObject go = objects.get(id);
