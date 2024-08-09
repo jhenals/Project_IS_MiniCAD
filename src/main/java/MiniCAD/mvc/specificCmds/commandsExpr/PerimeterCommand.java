@@ -7,12 +7,13 @@ import MiniCAD.mvc.specificCmds.utilExpr.TokenType;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class PerimeterCommand implements CommandExprIF<String> {
-    private CommandExprIF param;
+    private CommandExprIF<?> param;
 
-    public PerimeterCommand(CommandExprIF param) {
+    public PerimeterCommand(CommandExprIF<?> param) {
         this.param = param;
     }
 
@@ -23,15 +24,15 @@ public class PerimeterCommand implements CommandExprIF<String> {
             TokenType tokenType = ((TipoExpr) param).interpreta(context);
             switch (tokenType){
                 case CIRCLE -> {
-                    double perim= calcolaPerimDiTuttiCerchi(context);
+                    double perim= calcolaPerimDiTipi("Circle",context);
                     res =  String.valueOf(perim);
                 }
                 case RECTANGLE -> {
-                    double perim= calcolaPerimDiTuttiRettangoli(context);
+                    double perim= calcolaPerimDiTipi("Rectangle",context);
                     res =String.valueOf(perim);
                 }
                 case IMG -> {
-                    double perim= calcolaPerimDiTuttiImmagini(context);
+                    double perim= calcolaPerimDiTipi("Image",context);
                     res =String.valueOf(perim);
                 }
                 default -> throw new IllegalArgumentException("Tipo di oggetto sconosciuto");
@@ -63,8 +64,9 @@ public class PerimeterCommand implements CommandExprIF<String> {
 
     private Double calcolaPerimTotaleDiTuttiOggetti(Context context) {
         double perim =0D;
-        perim += calcolaPerimDiTuttiRettangoli(context);
-        perim += calcolaPerimDiTuttiCerchi(context);
+        perim += calcolaPerimDiTipi("Rectangle",context);
+        perim += calcolaPerimDiTipi("Image",context);
+        perim += calcolaPerimDiTipi("Circle",context);
         return perim;
     }
 
@@ -76,28 +78,19 @@ public class PerimeterCommand implements CommandExprIF<String> {
         }
         return perim;
     }
-    private double calcolaPerimDiTuttiImmagini(Context context) {
-        double perim = 0D;
-        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Image");
-        for (String id : cerchiMap.keySet() ){
-            perim += calcolaPerimDellOggetto(context, id);
-        }
-        return perim;
-    }
 
-    private Double calcolaPerimDiTuttiRettangoli(Context context) {
+    private double calcolaPerimDiTipi( String tipo ,Context context) {
         double perim = 0D;
-        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Rectangle");
-        for (String id : cerchiMap.keySet() ){
-            perim += calcolaPerimDellOggetto(context, id);
+        Map<String, GraphicObject> map = new HashMap<>();
+        switch (tipo){
+            case "Image" ->
+                    map = context.getObjectsByType("Image");
+            case "Circle" ->
+                    map = context.getObjectsByType("Circle");
+            case "Rectangle" ->
+                    map = context.getObjectsByType("Rectangle");
         }
-        return perim;
-    }
-
-    private Double calcolaPerimDiTuttiCerchi(Context context) {
-        double perim = 0D;
-        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Circle");
-        for (String id : cerchiMap.keySet() ){
+        for (String id : map.keySet() ){
             perim += calcolaPerimDellOggetto(context, id);
         }
         return perim;
