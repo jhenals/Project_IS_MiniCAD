@@ -95,7 +95,7 @@ public class PerimeterCommand implements CommandExprIF<String> {
         return perim;
     }
 
-    private Double calcolaPerimDellOggetto(Context context, String id) {
+    private double calcolaPerimDellOggetto(Context context, String id) {
         double perim = 0D;
         GraphicObject object = context.getObjectbyId(id);
         if (object.getType().equals("Circle")) {
@@ -104,11 +104,11 @@ public class PerimeterCommand implements CommandExprIF<String> {
         } else if (object.getType().equals("Rectangle")) {
             double l = object.getDimension().getHeight();
             double w = object.getDimension().getWidth();
-            perim = 2 * l + 2 * w;
+            perim = (2 * l) + (2 * w);
         }else if (object.getType().equals("Image")) {
             double l = object.getDimension().getHeight();
             double w = object.getDimension().getWidth();
-            perim = 2 * l + 2 * w;
+            perim = (2 * l) + (2 * w);
         }
         return perim;
     }

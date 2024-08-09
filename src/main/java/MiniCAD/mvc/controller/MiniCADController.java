@@ -24,7 +24,6 @@ public class MiniCADController extends JPanel {
     private final MiniCadCommandHandler cmdHandler;
     static final int offset = 10;
     static final double zoom_factor= 0.1;
-    private String objId= null;
     private String grpId = null;
     private String currentId = null;
     private GraphicObject subject;
@@ -34,7 +33,6 @@ public class MiniCADController extends JPanel {
 
     public void setControlledObject(GraphicObject go, String id) {
         subject = go;
-        objId = id;
         currentId = id;
         propertiesArea.setText(id);
     }
@@ -503,10 +501,11 @@ public class MiniCADController extends JPanel {
 
         //Area
         JMenuBar areaMenuBar = new JMenuBar();
-        JMenu calculateAreasMenu = new JMenu("Calculate Areas");
-        JMenuItem areaRectItem = new JMenuItem("Areas of all rectangles");
-        JMenuItem areaCircleItem = new JMenuItem("Areas of all circles");
-        JMenuItem areaAllItem = new JMenuItem("Total Areas");
+        JMenu calculateAreasMenu = new JMenu("Calculate Area");
+        JMenuItem areaRectItem = new JMenuItem("Area of all rectangles");
+        JMenuItem areaCircleItem = new JMenuItem("Area of all circles");
+        JMenuItem areaImgItem = new JMenuItem("Area of all images");
+        JMenuItem areaAllItem = new JMenuItem("Total Area");
 
         areaRectItem.addActionListener(e -> {
             try{
@@ -524,6 +523,14 @@ public class MiniCADController extends JPanel {
             }
         });
 
+        areaImgItem.addActionListener(e -> {
+            try{
+                updatePropertiesViewer("area" , "img");
+            } catch (IOException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         areaAllItem.addActionListener(e -> {
             try{
                 updatePropertiesViewer("area" , "all");
@@ -534,14 +541,16 @@ public class MiniCADController extends JPanel {
 
         calculateAreasMenu.add(areaRectItem);
         calculateAreasMenu.add(areaCircleItem);
+        calculateAreasMenu.add(areaImgItem);
         calculateAreasMenu.add(areaAllItem);
 
         //Perimetro
         JMenuBar perimMenuBar = new JMenuBar();
         JMenu calculatePerimsMenu = new JMenu("Calculate Perimeters");
-        JMenuItem perimRectItem = new JMenuItem("Perimeters of all rectangles");
-        JMenuItem perimCircleItem = new JMenuItem("Perimeters of all circles");
-        JMenuItem perimAllItem = new JMenuItem("Total Perimeters");
+        JMenuItem perimRectItem = new JMenuItem("Perimeter of all rectangles");
+        JMenuItem perimCircleItem = new JMenuItem("Perimeter of all circles");
+        JMenuItem perimImgItem = new JMenuItem("Perimeter of all images");
+        JMenuItem perimAllItem = new JMenuItem("Total Perimeter");
 
         perimRectItem.addActionListener(e -> {
             try{
@@ -559,6 +568,14 @@ public class MiniCADController extends JPanel {
             }
         });
 
+        perimImgItem.addActionListener(e -> {
+            try{
+                updatePropertiesViewer("perimeter" , "img");
+            } catch (IOException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         perimAllItem.addActionListener(e -> {
             try{
                 updatePropertiesViewer("perimeter" , "all");
@@ -570,6 +587,7 @@ public class MiniCADController extends JPanel {
 
         calculatePerimsMenu.add(perimRectItem);
         calculatePerimsMenu.add(perimCircleItem);
+        calculatePerimsMenu.add(perimImgItem);
         calculatePerimsMenu.add(perimAllItem);
 
         advViewPropMenuBar.add(advancePropertyViewMenu);
@@ -582,6 +600,7 @@ public class MiniCADController extends JPanel {
 
         return advOpsPanel;
     }
+
 
 
     //Utilities
@@ -629,7 +648,7 @@ public class MiniCADController extends JPanel {
 
     private void updatePropertiesViewer(String cmd, String param) throws ParseException, IOException {
         if(subject != null ){
-            propertiesArea.setText(getPropertiesAsString(cmd, param));
+            propertiesArea.setText(showMessage(cmd, param));
         }
     }
 
@@ -637,11 +656,11 @@ public class MiniCADController extends JPanel {
         propertiesArea.setText(msg);
     }
 
-    private String getPropertiesAsString(String cmd, String param) {
+    private String showMessage(String cmd, String param) {
         String commandInput = cmd + " " + param;
 
         try {
-            CommandExprIF command = commandParser.parseCommand(commandInput);
+            CommandExprIF<?> command = commandParser.parseCommand(commandInput);
             return command.interpreta(context).toString();
         } catch (ParseException | IOException e) {
             throw new RuntimeException(e);

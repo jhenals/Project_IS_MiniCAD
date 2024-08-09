@@ -93,10 +93,10 @@ public class ListCommand implements CommandExprIF<String> {
         switch (tokenType){
             case CIRCLE -> {
                 Map<String, GraphicObject> circles= context.getObjectsByType("Circle");
+                sb.append("Objects of type CIRCLE:\n");
                 if(circles.isEmpty()){
                     sb.append(" EMPTY");
                 }else {
-                    sb.append("Objects of type CIRCLE:\n");
                     for (String id: circles.keySet()) {
                         sb.append(" ").append(id).append(" in position:").append(reformatPosizione(circles.get(id))).append("\n");
                     }
