@@ -4,7 +4,7 @@ package MiniCAD.mvc.specificCmds.commandsExpr;
 import MiniCAD.mvc.specificCmds.Context;
 
 public class Command<T> implements CommandExprIF, UndoableCmdExprIF {
-    CommandExprIF<T> cmd;
+    private CommandExprIF<T> cmd;
 
     public Command( CommandExprIF<T> cmd){
         this.cmd = cmd;
