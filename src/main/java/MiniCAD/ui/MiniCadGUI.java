@@ -53,7 +53,7 @@ public class MiniCadGUI {
             public void mouseClicked(MouseEvent e) {
                 GraphicObject go = gpanel.getGraphicObjectAt(e.getPoint());
                 if( go != null ){
-                    String id = context.getIdByClickedObject(go);
+                    String id = context.getIdOfClickedObject(go);
                     System.out.println(id);
                     goc.setControlledObject(go, id);
                 }

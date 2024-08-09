@@ -7,7 +7,7 @@ public abstract class TypeConstructorExpr<T> implements CommandExprIF<T> {
     public abstract T interpreta(Context context);
 
     public static class CircleConstructor extends TypeConstructorExpr<CircleConstructor> {
-        private float raggio;
+        private final float raggio;
 
         public CircleConstructor(float r) {
                 raggio = r;
@@ -24,23 +24,27 @@ public abstract class TypeConstructorExpr<T> implements CommandExprIF<T> {
     }
 
     public static class RectangleConstructor extends TypeConstructorExpr<RectangleConstructor> {
-        private PosizioneExpr param; // (base, altezza)
+        private final PosizioneExpr param; // (base, altezza)
+        private float base;
+        private float altezza;
 
         public RectangleConstructor(PosizioneExpr p) {
             this.param = p;
         }
 
-        public float getBase(){ return param.getParam1(); }
-        public float getAltezza(){ return param.getParam2(); }
+        public float getBase(){ return base; }
+        public float getAltezza(){ return altezza; }
 
         @Override
         public RectangleConstructor interpreta(Context context) {
+            base = param.interpreta(context).getParam1();
+            altezza = param.interpreta(context).getParam2();
             return this;
         }
     }
 
     public static class ImageConstructor extends TypeConstructorExpr<ImageConstructor> {
-        private String path;
+        private final String path;
 
         public ImageConstructor(String path) {
             this.path = path;

@@ -12,9 +12,8 @@ public class Context {
     private final Map<String, GraphicObject> objects ;
     private final Map<String, List<String>> groups ;
     private GraphicObjectPanel panel;
-    private int nextId = 0;
-
     private final Map<String, Stack<Point2D>> oldPositions;
+    private int nextId = 0;
     public Context(GraphicObjectPanel gpanel){
         objects = new HashMap<>();
         groups = new HashMap<>();
@@ -145,7 +144,7 @@ public class Context {
         go.scale(Double.parseDouble(scaleFactor));
     }
 
-    public String getIdByClickedObject(GraphicObject go) {
+    public String getIdOfClickedObject(GraphicObject go) {
         for( Map.Entry<String, GraphicObject> entry : objects.entrySet()){
             if( entry.getValue().getType().equals(go.getType()) &&
                     entry.getValue().contains(go.getPosition()) )

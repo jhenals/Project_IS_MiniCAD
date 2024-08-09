@@ -4,7 +4,7 @@ import MiniCAD.mvc.specificCmds.Context;
 import MiniCAD.mvc.specificCmds.utilExpr.Token;
 
 public class RemoveCommand implements UndoableCmdExprIF {
-    private Token id;
+    private CommandExprIF<?> id;
     public RemoveCommand(Token id) {
         this.id = id;
     }
@@ -12,7 +12,7 @@ public class RemoveCommand implements UndoableCmdExprIF {
     @Override
     public String interpreta(Context context) {
         String res ;
-        String idStr = id.interpreta(context);
+        String idStr = (String) id.interpreta(context);
         if (context.getObjectTypeById(idStr).equals( "Group")){
             for( String objId : context.getObjectIDsOfGroup(idStr)){
                 context.removeObjectById(objId);
@@ -20,12 +20,11 @@ public class RemoveCommand implements UndoableCmdExprIF {
             context.unGroup(idStr);
             context.removeObjectById(idStr);
 
-            res ="Rimosso: "+ idStr;
+            res ="Removed: "+ idStr;
         }else{
             context.removeObjectById(idStr);
-            res = "Rimosso: "+ idStr;
+            res = "Removed: "+ idStr;
         }
-        System.out.println(res);
         return res;
     }
 

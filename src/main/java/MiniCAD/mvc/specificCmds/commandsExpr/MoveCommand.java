@@ -7,7 +7,7 @@ import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
 import java.awt.geom.Point2D;
 
-public class MoveCommand<T> implements UndoableCmdExprIF {
+public class MoveCommand implements UndoableCmdExprIF {
     private Token objectId;
     private PosizioneExpr newPos;
     private boolean offset;
@@ -39,14 +39,13 @@ public class MoveCommand<T> implements UndoableCmdExprIF {
             if(offset){
                 context.moveOffObject(idStr, parsePosizioneToPoint2D());
                 Point2D newPos = object.getPosition();
-                res = "Nuova posizione: (" + newPos.getX() + ","+ newPos.getY() + ")";
+                res = "New position: (" + newPos.getX() + ","+ newPos.getY() + ")";
             }else{
                 context.moveObject(idStr, parsePosizioneToPoint2D());
-                res = "Oggetto con id= " + getObjectId().getValore() + " viene spostato " +
-                        "alla posizione " + pos ;
+                res = "Object with ID= " + getObjectId().getValore() + " is moved in position " + pos ;
             }
         } else {
-            res= "Oggetto con ID "+ objectId.getValore().toString() + " non trovato";
+            res= "Object with ID= "+ objectId.getValore().toString() + " is not found";
         }
         System.out.println(res);
         return res;

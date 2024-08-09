@@ -25,7 +25,7 @@ public class ScaleCommand implements UndoableCmdExprIF {
 
         if( object != null ){
             context.ridimensiona(idStr, sfStr);
-            res = "Nuova dimensione= ";
+            res = "New dimension= ";
             if( object instanceof CircleObject){
                 newDim = ((CircleObject) object).getRadius();
                 res = res + newDim;
@@ -34,9 +34,8 @@ public class ScaleCommand implements UndoableCmdExprIF {
                 double newDimY = object.getDimension().getHeight();
                 res = res + "("+ newDimX +","+ newDimY +")";            }
         }else{
-            res = "Oggetto con id="+idStr+" non trovato.";
+            res = "Object with ID="+idStr+" is not found.";
         }
-        System.out.println(res);
         return res;
     }
 

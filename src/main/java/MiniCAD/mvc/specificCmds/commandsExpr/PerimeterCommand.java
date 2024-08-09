@@ -35,7 +35,7 @@ public class PerimeterCommand implements CommandExprIF<String> {
                     double perim= calcolaPerimDiTipi("Image",context);
                     res =String.valueOf(perim);
                 }
-                default -> throw new IllegalArgumentException("Tipo di oggetto sconosciuto");
+                default -> throw new IllegalArgumentException("Uknown type");
             }
         }else{
             Token token = (Token) param;
@@ -55,10 +55,9 @@ public class PerimeterCommand implements CommandExprIF<String> {
                     double perim= calcolaPerimTotaleDiTuttiOggetti(context);
                     res = String.valueOf(perim);
                 }
-                default -> throw new IllegalArgumentException("Token sconosciuto");
+                default -> throw new IllegalArgumentException("Unknown Token");
             }
         }
-        System.out.println(res);
         return res;
     }
 

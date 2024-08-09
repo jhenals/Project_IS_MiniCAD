@@ -18,17 +18,16 @@ public class UngroupCommand implements UndoableCmdExprIF {
         String res;
         String gid = groupId.interpreta(context);
         if( !context.getObjectTypeById(gid).equals("Group")){
-            throw new IllegalArgumentException("Id non è di tipo Gruppo.");
+            throw new IllegalArgumentException("Object with ID="+ gid + " is not of type GROUP.");
         }
         if( context.getAllGroups().containsKey(gid) ){
             idList = context.getObjectIDsOfGroup(gid);
             context.unGroup(gid);
             context.removeObjectById(gid);
-            res = "Gruppo con id=" + gid + " è stato rimosso.";
+            res = "Group with ID=" + gid + " is removed.";
         }else{
-            res = "Gruppo con id=" + gid + " è inesistente.";
+            res = "Group with ID=" + gid + " doesn't exist.";
         }
-        System.out.println(res);
         return res;
     }
 

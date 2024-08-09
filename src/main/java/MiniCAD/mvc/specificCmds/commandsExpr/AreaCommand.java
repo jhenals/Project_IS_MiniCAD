@@ -25,15 +25,15 @@ public class AreaCommand implements CommandExprIF<String>{
             TokenType tokenType = ((TipoExpr) param).interpreta(context);
             switch (tokenType){
                 case CIRCLE -> {
-                    Double area= calcolaAreaDiTipo("Circle", context);
+                    double area= calcolaAreaDiTipo("Circle", context);
                     res = String.valueOf(area);
                 }
                 case RECTANGLE -> {
-                    Double area= calcolaAreaDiTipo("Rectangle", context);
+                    double area= calcolaAreaDiTipo("Rectangle", context);
                     res = String.valueOf(area);
                 }
                 case IMG -> {
-                    Double area= calcolaAreaDiTipo("Image", context);
+                    double area= calcolaAreaDiTipo("Image", context);
                     res = String.valueOf(area);
                 }
                 default -> throw new IllegalArgumentException("Tipo di oggetto sconosciuto");
@@ -44,22 +44,21 @@ public class AreaCommand implements CommandExprIF<String>{
             switch (token.getTipo()){
                 case OBJ_ID -> {
                     if(context.getObjectTypeById(idStr).equals("Group")){
-                        Double area = calcolaAreaDelGruppo(context, idStr);
+                        double area = calcolaAreaDelGruppo(context, idStr);
                         res =  String.valueOf(area);
                     }else {
-                        Double area = calcolaAreaDellOggetto(context, idStr);
+                        double area = calcolaAreaDellOggetto(context, idStr);
                         res =String.valueOf(area);
                     }
                 }
 
                 case ALL -> {
-                    Double area= calcolaAreaTotaleDiTuttiOggetti(context);
+                    double area= calcolaAreaTotaleDiTuttiOggetti(context);
                     res = String.valueOf(area);
                 }
                 default -> throw new IllegalArgumentException("Token sconosciuto");
             }
         }
-        System.out.println(res);
         return res;
     }
 

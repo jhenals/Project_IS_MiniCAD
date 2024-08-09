@@ -12,116 +12,117 @@ import java.util.List;
 import java.util.Map;
 
 public class ListCommand implements CommandExprIF<String> {
-    private CommandExprIF param;
+    private CommandExprIF<?> param;
 
-    public ListCommand(CommandExprIF param) {
+    public ListCommand(CommandExprIF<?> param) {
         this.param = param;
     }
 
     @Override
     public String interpreta(Context context) {
         String res ;
-        StringBuilder sb = new StringBuilder();
-
         if( param instanceof TipoExpr){
             TokenType tokenType = (TokenType) param.interpreta(context);
-            res = manageTipoExpr(tokenType, context);
+            res = gestisceParamTipoExpr(tokenType, context);
         } else{
             Token token = (Token) param;
-            String t= token.interpreta(context);
-            switch( token.getTipo() ){
-                case OBJ_ID -> {
-                    if (context.getObjectbyId(t) == null) {
-                        res = "Oggetto non esiste";
-                    } else if (context.getObjectTypeById(t).equals("Group" )) {
-                        if (context.getObjectbyId(t) == null) {
-                            res = "Gruppo non esiste";
-                        } else {
-                            GraphicObject object = context.getObjectbyId(t);
-                            sb.append("Proprietà del gruppo con id=" + token.interpreta(context) +"\n");
-                            sb.append(" Tipo: " + object.getType()+"\n");
-                            sb.append(" Posizione corrente del gruppo: " + stampaPosizione(object)+  "\n");
-                            sb.append(" Oggetti:" + context.getObjectIDsOfGroup(token.interpreta(context)));
-                        }
-                    }else{
-                        GraphicObject object = context.getObjectbyId(t);
-                        sb.append("Elenco di proprietà dell'oggetto con id=" + t +"\n");
-                        sb.append(" Tipo: " + object.getType()+"\n");
-                        if( object.getType().equals("Circle")){
-                            sb.append(" Raggio: " + ((CircleObject)object).getRadius() +"\n");
-                        }else{
-                            sb.append(" Dimensione: base=" + Util.formatDouble(object.getDimension().getWidth())+" altezza="+ Util.formatDouble(object.getDimension().getHeight())+"\n");
-                        }
-                        sb.append(" Posizione corrente: "+ stampaPosizione(object));
-                    }
-                }
-
-                case ALL -> {
-                    Map<String, GraphicObject> allObjects= context.getAllObjects();
-                    sb.append("Elenco di tutti gli oggetti:\n");
-                    if(allObjects.isEmpty()){
-                        sb.append(" VUOTO");
-                    }else {
-                        for (String id : allObjects.keySet()) {
-                            sb.append(" " + id + " di tipo " + allObjects.get(id).getType() + " in posizione:" + stampaPosizione(allObjects.get(id)) + "\n");
-                        }
-                    }
-                }
-
-                case GROUPS -> {
-                    sb.append("Elenco di tutti i gruppi:\n");
-                    Map<String, List<String>> allObjects= context.getAllGroups();
-                    if( allObjects.isEmpty()){
-                        System.out.println(" EMPTY");
-                    }else{
-                        for( String id : allObjects.keySet() ){
-                            sb.append(" "+id+": " + allObjects.get(id));
-                        }
-                    }
-                }
-            }
-            res = sb.toString();
-
+            res = gestisceParamToken(token, context);
         }
-        System.out.println(res);
         return res;
     }
 
-    private String manageTipoExpr(TokenType tokenType, Context context) {
+    private String gestisceParamToken(Token token, Context context) {
+        StringBuilder sb = new StringBuilder();
+        String t = token.interpreta(context);
+        switch( token.getTipo() ) {
+            case OBJ_ID -> {
+                if (context.getObjectbyId(t) == null) {
+                    return "Object doesn't exist";
+                } else if (context.getObjectTypeById(t).equals("Group")) {
+                    if (context.getObjectbyId(t) == null) {
+                        return "Group doesn't exist";
+                    } else {
+                        GraphicObject object = context.getObjectbyId(t);
+                        sb.append("Properties of group with id=").append(token.interpreta(context)).append("\n");
+                        sb.append(" Type: ").append(object.getType()).append("\n");
+                        sb.append(" Current Position: ").append(reformatPosizione(object)).append("\n");
+                        sb.append(" Members:").append(context.getObjectIDsOfGroup(token.interpreta(context)));
+                    }
+                } else {
+                    GraphicObject object = context.getObjectbyId(t);
+                    sb.append("Properties of object with id=").append(t).append("\n");
+                    sb.append(" Type: ").append(object.getType()).append("\n");
+                    if (object.getType().equals("Circle")) {
+                        sb.append(" Radius: ").append(((CircleObject) object).getRadius()).append("\n");
+                    } else {
+                        sb.append(" Dimension: base=").append(Util.formatDouble(object.getDimension().getWidth())).append(" height=").append(Util.formatDouble(object.getDimension().getHeight())).append("\n");
+                    }
+                    sb.append(" Current Position: ").append(reformatPosizione(object));
+                }
+            }
+
+            case ALL -> {
+                Map<String, GraphicObject> allObjects = context.getAllObjects();
+                sb.append("List of all objects:\n");
+                if (allObjects.isEmpty()) {
+                    sb.append(" EMPTY");
+                } else {
+                    for (String id : allObjects.keySet()) {
+                        sb.append(" ").append(id).append(" type ").append(allObjects.get(id).getType()).append(" in position:").append(reformatPosizione(allObjects.get(id))).append("\n");
+                    }
+                }
+            }
+
+            case GROUPS -> {
+                sb.append("List of all groups:\n");
+                Map<String, List<String>> allObjects = context.getAllGroups();
+                if (allObjects.isEmpty()) {
+                    sb.append(" EMPTY");
+                } else {
+                    for (String id : allObjects.keySet()) {
+                        sb.append(" ").append(id).append(": ").append(allObjects.get(id));
+                    }
+                }
+            }
+        } //switch
+        return sb.toString();
+    }//gestisceToken
+
+    private String gestisceParamTipoExpr(TokenType tokenType, Context context) {
         StringBuilder sb = new StringBuilder();
         switch (tokenType){
             case CIRCLE -> {
                 Map<String, GraphicObject> circles= context.getObjectsByType("Circle");
                 if(circles.isEmpty()){
-                    sb.append(" VUOTO");
+                    sb.append(" EMPTY");
                 }else {
-                    sb.append("Oggetti di tipo CERCHIO:\n");
+                    sb.append("Objects of type CIRCLE:\n");
                     for (String id: circles.keySet()) {
-                        sb.append(" " + id + " in posizione:" + stampaPosizione(circles.get(id)) + "\n");
+                        sb.append(" ").append(id).append(" in position:").append(reformatPosizione(circles.get(id))).append("\n");
                     }
                 }
             }
 
             case RECTANGLE -> {
                 Map<String, GraphicObject> rectangles= context.getObjectsByType("Rectangle");
-                sb.append("Oggetti di tipo RETTANGOLO:\n");
+                sb.append("Objects of type RECTANGLE:\n");
                 if(rectangles.isEmpty()){
-                    sb.append(" VUOTO");
+                    sb.append(" EMPTY");
                 }else {
                     for( String id : rectangles.keySet()  ){
-                        sb.append(" " + id + " in posizione:" + stampaPosizione(rectangles.get(id)) + "\n");
+                        sb.append(" ").append(id).append(" in position:").append(reformatPosizione(rectangles.get(id))).append("\n");
                     }
                 }
             }
 
             case IMG -> {
                 Map<String, GraphicObject> images= context.getObjectsByType("Image");
-                sb.append("Oggetti di tipo IMMAGINE:\n");
+                sb.append("Objects of type IMAGE:\n");
                 if(images.isEmpty()){
-                    sb.append(" VUOTO");
+                    sb.append(" EMPTY");
                 }else {
                     for( String id : images.keySet()  ){
-                        sb.append(" " + id + " in posizione:" + stampaPosizione(images.get(id)) + "\n");
+                        sb.append(" ").append(id).append(" in position:").append(reformatPosizione(images.get(id))).append("\n");
                     }
                 }
             }
@@ -129,11 +130,10 @@ public class ListCommand implements CommandExprIF<String> {
         return sb.toString();
     }
 
-    private String stampaPosizione(GraphicObject go) {
+    private String reformatPosizione(GraphicObject go) {
         return "(" + String.format("%.2f",go.getPosition().getX()) + ";" + String.format("%.2f",go.getPosition().getY())
                 + ")";
     }
-
 
     @Override
     public String toString() {
