@@ -7,12 +7,13 @@ import MiniCAD.mvc.specificCmds.utilExpr.TokenType;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class AreaCommand implements CommandExprIF<String>{
-    private CommandExprIF param;
+    private CommandExprIF<?> param;
 
-    public AreaCommand(CommandExprIF param) {
+    public AreaCommand(CommandExprIF<?> param) {
         this.param = param;
     }
 
@@ -24,15 +25,15 @@ public class AreaCommand implements CommandExprIF<String>{
             TokenType tokenType = ((TipoExpr) param).interpreta(context);
             switch (tokenType){
                 case CIRCLE -> {
-                    Double area= calcolaAreaDiTuttiCerchi(context);
+                    Double area= calcolaAreaDiTipo("Circle", context);
                     res = String.valueOf(area);
                 }
                 case RECTANGLE -> {
-                    Double area= calcolaAreaDiTuttiRettangoli(context);
+                    Double area= calcolaAreaDiTipo("Rectangle", context);
                     res = String.valueOf(area);
                 }
                 case IMG -> {
-                    Double area= calcolaAreaDiTuttiImmagini(context);
+                    Double area= calcolaAreaDiTipo("Image", context);
                     res = String.valueOf(area);
                 }
                 default -> throw new IllegalArgumentException("Tipo di oggetto sconosciuto");
@@ -64,15 +65,16 @@ public class AreaCommand implements CommandExprIF<String>{
 
 
 
-    private Double calcolaAreaTotaleDiTuttiOggetti(Context context) {
-        Double area =0D;
-        area += calcolaAreaDiTuttiRettangoli(context);
-        area += calcolaAreaDiTuttiCerchi(context);
+    private double calcolaAreaTotaleDiTuttiOggetti(Context context) {
+        double area =0D;
+        area += calcolaAreaDiTipo("Rectangle", context);
+        area += calcolaAreaDiTipo("Circle", context);
+        area += calcolaAreaDiTipo("Image", context);
         return area;
     }
 
-    private Double calcolaAreaDelGruppo(Context context, String gid) {
-        Double area = 0D;
+    private double calcolaAreaDelGruppo(Context context, String gid) {
+        double area = 0D;
         Map<String, GraphicObject> graphicObjectList = context.getObjectsOfGroup(gid);
         for( String id: graphicObjectList.keySet() ){
             area += calcolaAreaDellOggetto(context, id);
@@ -80,34 +82,24 @@ public class AreaCommand implements CommandExprIF<String>{
         return area;
     }
 
-    private Double calcolaAreaDiTuttiImmagini(Context context) {
-        Double area = 0D;
-        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Image");
-        for (String id : cerchiMap.keySet() ){
+    private double calcolaAreaDiTipo(String tipo, Context context) {
+        double area = 0D;
+        Map<String, GraphicObject> map = new HashMap<>();
+        switch (tipo){
+            case "Image" ->
+                 map = context.getObjectsByType("Image");
+            case "Circle" ->
+                map = context.getObjectsByType("Circle");
+            case "Rectangle" ->
+                map = context.getObjectsByType("Rectangle");
+        }
+        for (String id : map.keySet() ){
             area += calcolaAreaDellOggetto(context, id);
         }
         return area;
     }
 
-    private Double calcolaAreaDiTuttiRettangoli(Context context) {
-        Double area = 0D;
-        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Rectangle");
-        for (String id : cerchiMap.keySet() ){
-            area += calcolaAreaDellOggetto(context, id);
-        }
-        return area;
-    }
-
-    private Double calcolaAreaDiTuttiCerchi(Context context) {
-        Double area = 0D;
-        Map<String, GraphicObject> cerchiMap = context.getObjectsByType("Circle");
-        for (String id : cerchiMap.keySet() ){
-            area += calcolaAreaDellOggetto(context, id);
-        }
-        return area;
-    }
-
-    private Double calcolaAreaDellOggetto(Context context, String id) {
+    private double calcolaAreaDellOggetto(Context context, String id) {
         double a = 0D;
         GraphicObject object = context.getObjectbyId(id);
         if(object.getType().equals("Circle")){
@@ -117,6 +109,10 @@ public class AreaCommand implements CommandExprIF<String>{
             Double l = object.getDimension().getHeight();
             Double w = object.getDimension().getWidth();
             a = l*w;
+        } else if (object.getType().equals("Image")) {
+            Double l = object.getDimension().getHeight();
+            Double w = object.getDimension().getWidth();
+            a = l * w;
         }
         return a;
     }
