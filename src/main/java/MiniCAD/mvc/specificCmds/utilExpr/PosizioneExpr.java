@@ -13,23 +13,7 @@ public class PosizioneExpr implements CommandExprIF<PosizioneExpr> {
         p1 = param1;
         p2 = param2;
     }
-        /*
-        if( param1 >=0 && param2 >=0 ){
-            this.param1 = param1;
-            this.param2 = param2;
-        }else{
-            throw new IllegalArgumentException("Parametri devono essere positivi.");
-        }
 
-
-    }
-
-    public PosizioneExpr(String param1, String param2){
-        this.param1 = Float.parseFloat(param1);
-        this.param2 = Float.parseFloat(param2);
-    }
-
-         */
     @Override
     public String toString(){
         return "("+ param1 + ", "+ param2+ ")";
