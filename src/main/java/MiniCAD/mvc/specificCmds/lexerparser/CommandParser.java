@@ -90,10 +90,12 @@ public class CommandParser {
                 tc= new CircleConstructor(raggio);
             }
             case RECTANGLE -> {
-                float width = Float.parseFloat(tokenCorrente.getValore().toString());
+                //float width = Float.parseFloat(tokenCorrente.getValore().toString());
+                Token width = tokenCorrente;
                 avanza();
                 expect(TokenType.VIRGOLA);
-                float height = Float.parseFloat(tokenCorrente.getValore().toString());
+                Token height = tokenCorrente;
+                //float height = Float.parseFloat(tokenCorrente.getValore().toString());
                 PosizioneExpr p = new PosizioneExpr(width, height); // (base, altezza)
                 tc= new TypeConstructorExpr.RectangleConstructor(p);
             }
@@ -199,10 +201,10 @@ public class CommandParser {
     private PosizioneExpr parsePosition() throws ParseException {
         //PosizioneExpr : <pos>::=( <posfloat> , <posfloat> )
         expect(TokenType.TONDA_APERTA);
-        String x = tokenCorrente.getValore().toString();
+        Token x = tokenCorrente;
         avanza();
         expect(TokenType.VIRGOLA);
-        String y = tokenCorrente.getValore().toString();
+        Token y = tokenCorrente;
         avanza();
         expect(TokenType.TONDA_CHIUSA);
         return new PosizioneExpr(x,y);

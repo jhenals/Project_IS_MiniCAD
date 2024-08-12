@@ -27,7 +27,6 @@ public class CreateCommand implements UndoableCmdExprIF {
         return new Point2D.Double(x,y);
     }
 
-
     @Override
     public String interpreta(Context context) {
         String objectId = context.generaId();

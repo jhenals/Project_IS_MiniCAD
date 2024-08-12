@@ -28,7 +28,9 @@ public class UndoFunctionalityTest {
     void testUndo() {
         Token raggio = new Token(TokenType.POS_FLOAT, 5.0f);
         TypeConstructorExpr.CircleConstructor circleConstructor = new TypeConstructorExpr.CircleConstructor(raggio);
-        PosizioneExpr posizione = new PosizioneExpr(3.1f, 4.5f);
+        Token p1 = new Token(TokenType.POS_FLOAT, 3.1f);
+        Token p2 = new Token(TokenType.POS_FLOAT, 4.5f);
+        PosizioneExpr posizione = new PosizioneExpr(p1, p2);
         UndoableCmdExprIF createCommand = new CreateCommand(circleConstructor, posizione);
         InterpreterCommandAdapter adapter = new InterpreterCommandAdapter(createCommand, context);
 
