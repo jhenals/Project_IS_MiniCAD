@@ -5,6 +5,8 @@ import MiniCAD.mvc.controller.undoMngr.InterpreterCommandAdapter;
 import MiniCAD.mvc.specificCmds.commandsExpr.CreateCommand;
 import MiniCAD.mvc.specificCmds.commandsExpr.UndoableCmdExprIF;
 import MiniCAD.mvc.specificCmds.utilExpr.PosizioneExpr;
+import MiniCAD.mvc.specificCmds.utilExpr.Token;
+import MiniCAD.mvc.specificCmds.utilExpr.TokenType;
 import MiniCAD.mvc.specificCmds.utilExpr.TypeConstructorExpr;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +26,8 @@ public class UndoFunctionalityTest {
     @DisplayName("Undo functionality test successful")
     @Test
     void testUndo() {
-        TypeConstructorExpr.CircleConstructor circleConstructor = new TypeConstructorExpr.CircleConstructor(5.0f);
+        Token raggio = new Token(TokenType.POS_FLOAT, 5.0f);
+        TypeConstructorExpr.CircleConstructor circleConstructor = new TypeConstructorExpr.CircleConstructor(raggio);
         PosizioneExpr posizione = new PosizioneExpr(3.1f, 4.5f);
         UndoableCmdExprIF createCommand = new CreateCommand(circleConstructor, posizione);
         InterpreterCommandAdapter adapter = new InterpreterCommandAdapter(createCommand, context);

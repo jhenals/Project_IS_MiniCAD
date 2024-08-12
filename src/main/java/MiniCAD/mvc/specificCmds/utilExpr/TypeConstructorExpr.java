@@ -7,19 +7,21 @@ public abstract class TypeConstructorExpr<T> implements CommandExprIF<T> {
     public abstract T interpreta(Context context);
 
     public static class CircleConstructor extends TypeConstructorExpr<CircleConstructor> {
-        private final float raggio;
+        private  Token raggio;
+        private float r;
 
-        public CircleConstructor(float r) {
-                raggio = r;
-            }
-
-            public float getRaggio() {
-                return raggio;
+        public CircleConstructor(Token raggio) {
+                this.raggio = raggio;
             }
 
             @Override
             public CircleConstructor interpreta(Context context) {
+                r = Float.parseFloat(raggio.interpreta(context));
                 return this;
+            }
+
+            public float getRaggio( ) {
+                return r;
             }
     }
 
@@ -44,20 +46,23 @@ public abstract class TypeConstructorExpr<T> implements CommandExprIF<T> {
     }
 
     public static class ImageConstructor extends TypeConstructorExpr<ImageConstructor> {
-        private final String path;
+        private CommandExprIF<String> path;
+        private String pathStr;
 
-        public ImageConstructor(String path) {
+        public ImageConstructor(CommandExprIF<String>  path) {
             this.path = path;
+        }
+        @Override
+        public ImageConstructor interpreta(Context context) {
+            pathStr = path.interpreta(context);
+            return this;
         }
 
         public String getPath() {
-            return path;
+            return pathStr;
         }
 
-        @Override
-        public ImageConstructor interpreta(Context context) {
-            return this;
-        }
+
     }
 
 }

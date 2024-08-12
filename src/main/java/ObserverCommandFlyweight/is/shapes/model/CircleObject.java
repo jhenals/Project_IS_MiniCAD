@@ -27,7 +27,6 @@ public class CircleObject extends AbstractGraphicObject {
 
 	@Override
 	public Point2D getPosition() {
-
 		return new Point2D.Double(position.getX(), position.getY());
 	}
 

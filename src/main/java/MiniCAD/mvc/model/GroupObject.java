@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 public class GroupObject extends AbstractGraphicObject {
-    private String groupId ;
+    private final String groupId ;
     private Map<String, GraphicObject> objects;
+    private Point2D position;
 
     public GroupObject(String gid){
         groupId= gid;
@@ -161,4 +162,10 @@ public class GroupObject extends AbstractGraphicObject {
         return "Group";
     }
 
+    @Override
+    public GroupObject clone() {
+        GroupObject cloned = (GroupObject) super.clone();
+        cloned.position = (Point2D) position.clone();
+        return cloned;
+    }
 }

@@ -3,6 +3,7 @@ package MiniCAD.mvc.specificCmds.lexerparser;
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.mvc.specificCmds.commandsExpr.*;
 import MiniCAD.mvc.specificCmds.utilExpr.*;
+import MiniCAD.mvc.specificCmds.utilExpr.TypeConstructorExpr.CircleConstructor;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -15,8 +16,9 @@ public class CommandParser {
     private Token tokenCorrente;
 
 
-    public CommandExprIF parseCommand(String cmdInput) throws ParseException, IOException {
-        CommandExprIF cmd;
+    @SuppressWarnings("unchecked")
+    public CommandExprIF<?> parseCommand(String cmdInput) throws ParseException, IOException {
+        CommandExprIF<?> cmd;
         CommandLexer cLexer = new CommandLexer(new StringReader(cmdInput));
         List<Token> listaToken = cLexer.tokenizzare();
         this.tokens = listaToken.iterator();
@@ -29,39 +31,39 @@ public class CommandParser {
         switch (commando) {
             case NEW ->{
                 CreateCommand createCmd = parseCreate();
-                cmd = new Command(createCmd);
+                cmd = new Command<String>(createCmd);
             }
             case DEL -> {
                 RemoveCommand removeCmd = parseRemove();
-                cmd = new Command(removeCmd);
+                cmd = new Command<String>(removeCmd);
             }
             case MV, MVOFF ->{
                 MoveCommand moveCmd = parseMove();
-                cmd = new Command(moveCmd);
+                cmd = new Command<String>(moveCmd);
             }
             case SCALE ->{
                 ScaleCommand scaleCmd = parseScale();
-                cmd = new Command( scaleCmd);
+                cmd = new Command<String>( scaleCmd);
             }
             case LS ->{
                ListCommand listCmd = parseList();
-               cmd = new Command(listCmd);
+               cmd = new Command<String>(listCmd);
             }
             case GRP ->{
                 GroupCommand groupCmd = parseGroup();
-                cmd = new Command(groupCmd);
+                cmd = new Command<String>(groupCmd);
             }
             case UNGRP ->{
                 UngroupCommand ungroupCmd = parseUngroup();
-                cmd = new Command(ungroupCmd);
+                cmd = new Command<String>(ungroupCmd);
             }
             case AREA ->{
                 AreaCommand areaCmd = parseArea();
-                cmd = new Command(areaCmd);
+                cmd = new Command<String>(areaCmd);
             }
             case PERIMETER ->{
                 PerimeterCommand perimeterCmd = parsePerimeter();
-                cmd = new Command(perimeterCmd);
+                cmd = new Command<String>(perimeterCmd);
             }
             default -> throw new IllegalArgumentException("Tipo del comando sconosciuto: " + tokenCorrente.getValore());
         }
@@ -73,19 +75,19 @@ public class CommandParser {
         expect(TokenType.NEW);
         Token tipo = tokenCorrente;
         avanza();
-        TypeConstructorExpr typeConstructor = parseTypeConstructor(tipo);
+        TypeConstructorExpr<?> typeConstructor = parseTypeConstructor(tipo);
         PosizioneExpr p = parsePosition();
         return new CreateCommand(typeConstructor, p);
     }
 
-    private TypeConstructorExpr parseTypeConstructor(Token tipo) throws ParseException {
-        TypeConstructorExpr tc ;
+    private TypeConstructorExpr<?> parseTypeConstructor(Token tipo) throws ParseException {
+        TypeConstructorExpr<?> tc ;
         expect(TokenType.TONDA_APERTA);
 
         switch (tipo.getTipo()) {
             case CIRCLE ->{
-                float raggio = Float.parseFloat(tokenCorrente.getValore().toString()); //Pos_float per raggio
-                tc= new TypeConstructorExpr.CircleConstructor(raggio);
+                Token raggio = tokenCorrente;
+                tc= new CircleConstructor(raggio);
             }
             case RECTANGLE -> {
                 float width = Float.parseFloat(tokenCorrente.getValore().toString());
@@ -96,7 +98,7 @@ public class CommandParser {
                 tc= new TypeConstructorExpr.RectangleConstructor(p);
             }
             case IMG ->{
-                String path = (String) tokenCorrente.getValore();
+                Token path = tokenCorrente;
                 tc = new TypeConstructorExpr.ImageConstructor(path);
             }
             default -> throw  new ParseException("TipoExpr sconosciuto: "+ tipo.getTipo().toString());
