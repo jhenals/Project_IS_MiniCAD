@@ -31,7 +31,7 @@ class CreateCommandTest {
     @DisplayName("Create circle test successful")
     @Test
     void testInterpretaCircleConstructor() throws ParseException, IOException {
-        String input = "create circle (5.0) (3.1,4.5)";
+        String input = "create circle (5.0) (10.0,10.0)";
         command = parser.parseCommand(input);
         String objId = (String) command.interpreta(context);
 
@@ -43,9 +43,9 @@ class CreateCommandTest {
         CircleObject circle = (CircleObject) go;
         assertEquals(5.0F, circle.getRadius());
 
-        Point2D.Double expected = new Point2D.Double(3.1, 4.5);
+        Point2D.Double expected = new Point2D.Double(10, 10);
         Point2D.Double actual = (Point2D.Double) circle.getPosition();
-        double delta = 1e-7;  // Tolerance level for floating-point comparison
+        double delta = 1e-7;
         assertEquals(expected.getX(), actual.getX(), delta);
         assertEquals(expected.getY(), actual.getY(), delta);
     }
@@ -53,7 +53,7 @@ class CreateCommandTest {
     @DisplayName("Create rectangle test successful")
     @Test
     void testInterpretaRectangleConstructor() throws ParseException, IOException {
-        String input = "create rectangle (2.0, 3.0) (3.1,4.5)";
+        String input = "create rectangle (2.0, 3.0) (10.0,10.0)";
         command = parser.parseCommand(input);
         String objId = (String) command.interpreta(context);
 
@@ -66,7 +66,7 @@ class CreateCommandTest {
         assertEquals(2.0F, rect.getDimension().getWidth());
         assertEquals(3.0F, rect.getDimension().getHeight());
 
-        Point2D.Double expected = new Point2D.Double(3.1, 4.5);
+        Point2D.Double expected = new Point2D.Double(10.0, 10.0);
         Point2D.Double actual = (Point2D.Double) rect.getPosition();
         double delta = 1e-7;  // Tolerance level for floating-point comparison
         assertEquals(expected.getX(), actual.getX(), delta);
@@ -76,7 +76,7 @@ class CreateCommandTest {
     @DisplayName("Create image test successful")
     @Test
     void testInterpretaImageConstructor() throws ParseException, IOException {
-        String input = "create img (\"./pippo.png\") (3.1,4.5)";
+        String input = "create img (\"./pippo.png\") (10.0,10.0)";
         command = parser.parseCommand(input);
         String objId = (String) command.interpreta(context);
 
@@ -86,7 +86,7 @@ class CreateCommandTest {
         assertTrue(go instanceof ImageObject);
         ImageObject img = (ImageObject) go;
 
-        Point2D.Double expected = new Point2D.Double(3.1, 4.5);
+        Point2D.Double expected = new Point2D.Double(10.0, 10.0);
         Point2D.Double actual = (Point2D.Double) img.getPosition();
         double delta = 1e-7;  // Tolerance level for floating-point comparison
         assertEquals(expected.getX(), actual.getX(), delta);

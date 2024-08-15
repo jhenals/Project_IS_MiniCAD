@@ -36,14 +36,14 @@ public class MiniCadGUI {
         gpanel.installView(CircleObject.class, new CircleObjectView());
         gpanel.installView(ImageObject.class, new ImageObjectView());
 
-        AbstractGraphicObject go = new RectangleObject(new Point(240, 290), 20, 50);
+        AbstractGraphicObject go = new RectangleObject(new Point(0, 0), 20, 50);
 
 
         toolbar.add(new JLabel("SHAPES"));
         toolbar.add(createObjectButton("Rectangle", go, gpanel, handler, context, parser));
-        toolbar.add(createObjectButton("Circle", new CircleObject(new Point(240, 290), 10), gpanel, handler, context, parser));
+        toolbar.add(createObjectButton("Circle", new CircleObject(new Point(0, 0), 10), gpanel, handler, context, parser));
         toolbar.add(createObjectButton("Image",new ImageObject(new ImageIcon(Objects.requireNonNull(MiniCadGUI.class.getResource("NyaNya.gif"))),
-                (new Point(240, 290))), gpanel, handler, context, parser));
+                (new Point(0, 0))), gpanel, handler, context, parser));
 
 
         final MiniCADController goc = new MiniCADController(handler,context);

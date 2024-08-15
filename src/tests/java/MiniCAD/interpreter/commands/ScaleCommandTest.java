@@ -50,7 +50,7 @@ class ScaleCommandTest {
         command = parser.parseCommand(input);
         String res = (String) command.interpreta(context);
 
-        assertEquals(res, "Nuova dimensione= "+5*2D);
+        assertEquals(res, "New dimension= "+5*2D);
     }
 
     @DisplayName("Scale test of group object successful")
@@ -64,7 +64,7 @@ class ScaleCommandTest {
         Dimension2D dim = groupObject.getDimension();
         double dimX = dim.getWidth();
         double dimY = dim.getHeight();
-        assertEquals(res, "Nuova dimensione= ("+ dimX+ ","+ dimY+ ")" );
+        assertEquals(res, "New dimension= ("+ dimX+ ","+ dimY+ ")" );
     }
 
 

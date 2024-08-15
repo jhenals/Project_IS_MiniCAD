@@ -24,6 +24,7 @@ public class Context {
         objects = new HashMap<>();
         groups = new HashMap<>();
         oldPositions = new HashMap<>();
+        panel = new GraphicObjectPanel();
     }
 
     public String generaId(){

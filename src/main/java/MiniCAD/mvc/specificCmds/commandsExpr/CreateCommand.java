@@ -34,7 +34,7 @@ public class CreateCommand implements UndoableCmdExprIF {
         AbstractGraphicObject object = (AbstractGraphicObject) getGraphicObject(typeConstructor, context);
         if( object instanceof ImageObject){
             object = new ImageObject(new ImageIcon(Objects.requireNonNull(MiniCadGUI.class.getResource("NyaNya.gif"))),
-                    (new Point(240, 290)));
+                    (new Point(0, 0)));
         }
 
         GraphicObject go = object.clone();

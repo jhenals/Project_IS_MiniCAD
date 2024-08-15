@@ -54,7 +54,7 @@ class MoveCommandTest {
         command = parser.parseCommand(inputMove);
         String res = (String) command.interpreta(context);
 
-        assertEquals("Oggetto con id= id0 viene spostato alla posizione (5.9, 8.2)", res);
+        assertEquals("Object with ID= id0 is moved in position (5.9, 8.2)", res);
     }
 
     @DisplayName("MoveOff single object test successful")
@@ -67,7 +67,7 @@ class MoveCommandTest {
         GraphicObject go = context.getObjectbyId("id0");
         double nuovoX = go.getPosition().getX();
         double nuovoY = go.getPosition().getY() ;
-        assertEquals("Nuova posizione: ("+nuovoX+","+nuovoY+")", res);
+        assertEquals("New position: ("+nuovoX+","+nuovoY+")", res);
     }
 
     @DisplayName("Move group object test successful")
@@ -77,6 +77,6 @@ class MoveCommandTest {
         command = parser.parseCommand(inputMoveGrp);
         String res = (String) command.interpreta(context);
 
-        assertEquals("Oggetto con id= "+gid+" viene spostato alla posizione (5.9, 8.2)", res);
+        assertEquals("Object with ID= "+gid+" is moved in position (5.9, 8.2)", res);
     }
 }

@@ -53,7 +53,7 @@ class RemoveCommandTest {
         command = parser.parseCommand(input);
         String res = (String) command.interpreta(context);
 
-        assertEquals("Rimosso: id0", res);
+        assertEquals("Removed: id0", res);
     }
 
     @DisplayName("Remove group test successful")
@@ -63,6 +63,6 @@ class RemoveCommandTest {
         command = parser.parseCommand(input);
         String res = (String) command.interpreta(context);
 
-        assertEquals("Rimosso: "+gid, res);
+        assertEquals("Removed: "+gid, res);
     }
 }
