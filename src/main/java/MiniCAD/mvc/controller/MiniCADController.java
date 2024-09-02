@@ -277,7 +277,7 @@ public class MiniCADController extends JPanel {
             try {
                 UndoableCmdExprIF mvoffCommand = (UndoableCmdExprIF) commandParser.parseCommand(mvoffInput);
                 cmdHandler.handle(mvoffCommand);
-                updatePropertiesViewer("ls", currentId);
+                executeCommandToView("ls", currentId);
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -310,7 +310,7 @@ public class MiniCADController extends JPanel {
 
         deleteButton.addActionListener(e -> {
             try{
-                updatePropertiesViewer("del", currentId);
+                executeCommandToView("del", currentId);
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -318,7 +318,7 @@ public class MiniCADController extends JPanel {
 
         areaButton.addActionListener(e -> {
             try{
-                updatePropertiesViewer("area", currentId);
+                executeCommandToView("area", currentId);
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -326,7 +326,7 @@ public class MiniCADController extends JPanel {
 
         perimButton.addActionListener(e -> {
             try{
-                updatePropertiesViewer("perimeter" , currentId);
+                executeCommandToView("perimeter" , currentId);
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -334,7 +334,7 @@ public class MiniCADController extends JPanel {
 
         viewProperty.addActionListener(e -> {
             try {
-                updatePropertiesViewer("ls", currentId);
+                executeCommandToView("ls", currentId);
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -455,7 +455,7 @@ public class MiniCADController extends JPanel {
 
         imgItem.addActionListener(e -> {
             try {
-                updatePropertiesViewer("ls", "img");
+                executeCommandToView("ls", "img");
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -463,7 +463,7 @@ public class MiniCADController extends JPanel {
 
         rectItem.addActionListener(e -> {
             try {
-                updatePropertiesViewer("ls", "rectangle");
+                executeCommandToView("ls", "rectangle");
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -471,7 +471,7 @@ public class MiniCADController extends JPanel {
 
         circleItem.addActionListener(e -> {
             try {
-                updatePropertiesViewer("ls", "circle");
+                executeCommandToView("ls", "circle");
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -479,7 +479,7 @@ public class MiniCADController extends JPanel {
 
         groupItem.addActionListener(e -> {
             try {
-                updatePropertiesViewer("ls", "groups");
+                executeCommandToView("ls", "groups");
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -487,7 +487,7 @@ public class MiniCADController extends JPanel {
 
         allItem.addActionListener(e -> {
             try {
-                updatePropertiesViewer("ls", "all");
+                executeCommandToView("ls", "all");
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -509,7 +509,7 @@ public class MiniCADController extends JPanel {
 
         areaRectItem.addActionListener(e -> {
             try{
-                updatePropertiesViewer("area" , "rectangle");
+                executeCommandToView("area" , "rectangle");
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -517,7 +517,7 @@ public class MiniCADController extends JPanel {
 
         areaCircleItem.addActionListener(e -> {
             try{
-                updatePropertiesViewer("area" , "circle");
+                executeCommandToView("area" , "circle");
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -525,7 +525,7 @@ public class MiniCADController extends JPanel {
 
         areaImgItem.addActionListener(e -> {
             try{
-                updatePropertiesViewer("area" , "img");
+                executeCommandToView("area" , "img");
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -533,7 +533,7 @@ public class MiniCADController extends JPanel {
 
         areaAllItem.addActionListener(e -> {
             try{
-                updatePropertiesViewer("area" , "all");
+                executeCommandToView("area" , "all");
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -554,7 +554,7 @@ public class MiniCADController extends JPanel {
 
         perimRectItem.addActionListener(e -> {
             try{
-                updatePropertiesViewer("perimeter" , "rectangle");
+                executeCommandToView("perimeter" , "rectangle");
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -562,7 +562,7 @@ public class MiniCADController extends JPanel {
 
         perimCircleItem.addActionListener(e -> {
             try{
-                updatePropertiesViewer("perimeter" , "circle");
+                executeCommandToView("perimeter" , "circle");
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -570,7 +570,7 @@ public class MiniCADController extends JPanel {
 
         perimImgItem.addActionListener(e -> {
             try{
-                updatePropertiesViewer("perimeter" , "img");
+                executeCommandToView("perimeter" , "img");
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -578,7 +578,7 @@ public class MiniCADController extends JPanel {
 
         perimAllItem.addActionListener(e -> {
             try{
-                updatePropertiesViewer("perimeter" , "all");
+                executeCommandToView("perimeter" , "all");
             } catch (IOException | ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -646,17 +646,13 @@ public class MiniCADController extends JPanel {
         return label;
     }
 
-    private void updatePropertiesViewer(String cmd, String param) throws ParseException, IOException {
+    private void executeCommandToView(String cmd, String param) throws ParseException, IOException {
         if(subject != null ){
-            propertiesArea.setText(showMessage(cmd, param));
+            propertiesArea.setText(executeCmd(cmd, param));
         }
     }
 
-    private void showMessage(String msg)  {
-        propertiesArea.setText(msg);
-    }
-
-    private String showMessage(String cmd, String param) {
+    private String executeCmd(String cmd, String param) {
         String commandInput = cmd + " " + param;
 
         try {
@@ -666,6 +662,12 @@ public class MiniCADController extends JPanel {
             throw new RuntimeException(e);
         }
     }
+
+
+    private void showMessage(String msg)  {
+        propertiesArea.setText(msg);
+    }
+
 
     private JTextArea propertiesViewer() {
         propertiesArea = new JTextArea("\"Hello User! Welcome to MiniCAD App\"");
