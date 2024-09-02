@@ -4,8 +4,7 @@ MiniCAD è un'applicazione che consente la creazione, manipolazione e gestione d
 ----------------------------------------------------------------------------
 ## TABLE OF CONTENTS
 - [Servizi](#servizi)
-- [MiniCAD UI](#minicad-ui)
-- [MiniCAD CLI](#minicad-cli)
+- [MiniCAD GUI](#minicad-gui)
 - [Requisiti](#requisiti)
 - [Struttura del Codice](#struttura-del-codice)
 - [Testing](#testing)
@@ -31,35 +30,6 @@ L'interfaccia utente permette agli utenti di interagire con il sistema MiniCAD t
 4. Clicca sugli oggetti nell'area di disegno per selezionarli e poter utilizzare i pulsanti di comandi.
 5. Per i group object, bisogna inserire l'id del gruppo nel textfield per i gruppi e clicca il pulsante GO.
 6. Usa il pulsante "Undo" sulla toolbar per annullare l'ultima operazione.
-
-
-## MiniCAD CLI
-L'interfaccia a riga di comando permette agli utenti di interagire con il sistema MiniCAD tramite comandi testuali.
-![img_1.png](img_1.png)
-### Utilizzo MiniCAD CLI
-1. Avviare la classe _MiniCAD/ui/MiniCadCLI.java_.
-2. Esempi di comandi da inserire:
-    ```
-   create circle (5.0) (3.1, 4.5)
-   create rectangle (3.0, 2.0) (3.1, 4.5)
-   create img ("./pippo.png") (6.1, 4.6)
-   del id3
-   mv id0 (5.9, 8.2)
-   mvoff id0 (5.9, 8.2)
-   scale id1 2.0
-   ls id1
-   ls circle
-   ls all
-   ls groups
-   grp id0, id1
-   ungrp id2
-   area id0
-   perimeter rectangle
-   area all
-
-    ```
-3. Inserire _undo_ per fare l'annullamnento dell'ultima operazione.
-4. Scrivi _exit_ per uscire.
 
 
 ## Requisiti
