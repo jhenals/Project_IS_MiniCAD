@@ -1,11 +1,11 @@
 package MiniCAD.ui;
 
-import MiniCAD.mvc.controller.undoMngr.MiniCadCommandHandler;
-import MiniCAD.mvc.controller.undoMngr.MiniCadHistoryCmdHandler;
-import MiniCAD.mvc.controller.MiniCADController;
-import MiniCAD.mvc.specificCmds.Context;
-import MiniCAD.mvc.specificCmds.lexerparser.CommandParser;
-import MiniCAD.mvc.view.CreateObjectActionMiniCad;
+import MiniCAD.miniinterpreter.controller.undoMngr.MiniCadCommandHandler;
+import MiniCAD.miniinterpreter.controller.undoMngr.MiniCadHistoryCmdHandler;
+import MiniCAD.miniinterpreter.controller.MiniCADController;
+import MiniCAD.miniinterpreter.specificCmds.Context;
+import MiniCAD.miniinterpreter.specificCmds.lexerparser.CommandParser;
+import MiniCAD.miniinterpreter.view.CreateObjectActionMiniCad;
 import ObserverCommandFlyweight.is.shapes.model.*;
 import ObserverCommandFlyweight.is.shapes.view.*;
 

@@ -1,9 +1,9 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.mvc.specificCmds.Context;
-import MiniCAD.mvc.specificCmds.commandsExpr.RemoveCommand;
-import MiniCAD.mvc.specificCmds.utilExpr.Token;
-import MiniCAD.mvc.specificCmds.utilExpr.TokenType;
+import MiniCAD.miniinterpreter.specificCmds.Context;
+import MiniCAD.miniinterpreter.specificCmds.commandsExpr.RemoveCommand;
+import MiniCAD.miniinterpreter.specificCmds.utilExpr.Token;
+import MiniCAD.miniinterpreter.specificCmds.utilExpr.TokenType;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.view.GraphicObjectPanel;

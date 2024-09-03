@@ -1,13 +1,13 @@
 package MiniCAD.interpreter.commands;
 
-import MiniCAD.mvc.specificCmds.Context;
-import MiniCAD.mvc.controller.undoMngr.InterpreterCommandAdapter;
-import MiniCAD.mvc.specificCmds.commandsExpr.CreateCommand;
-import MiniCAD.mvc.specificCmds.commandsExpr.UndoableCmdExprIF;
-import MiniCAD.mvc.specificCmds.utilExpr.PosizioneExpr;
-import MiniCAD.mvc.specificCmds.utilExpr.Token;
-import MiniCAD.mvc.specificCmds.utilExpr.TokenType;
-import MiniCAD.mvc.specificCmds.utilExpr.TypeConstructorExpr;
+import MiniCAD.miniinterpreter.specificCmds.Context;
+import MiniCAD.miniinterpreter.controller.undoMngr.InterpreterCommandAdapter;
+import MiniCAD.miniinterpreter.specificCmds.commandsExpr.CreateCommand;
+import MiniCAD.miniinterpreter.specificCmds.commandsExpr.UndoableCmdExprIF;
+import MiniCAD.miniinterpreter.specificCmds.utilExpr.PosizioneExpr;
+import MiniCAD.miniinterpreter.specificCmds.utilExpr.Token;
+import MiniCAD.miniinterpreter.specificCmds.utilExpr.TokenType;
+import MiniCAD.miniinterpreter.specificCmds.utilExpr.TypeConstructorExpr;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
