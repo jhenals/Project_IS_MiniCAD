@@ -654,7 +654,6 @@ public class MiniCADController extends JPanel {
 
     private String executeCmd(String cmd, String param) {
         String commandInput = cmd + " " + param;
-
         try {
             CommandExprIF<?> command = commandParser.parseCommand(commandInput);
             return command.interpreta(context).toString();

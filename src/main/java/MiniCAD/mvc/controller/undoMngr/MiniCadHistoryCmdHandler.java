@@ -77,6 +77,4 @@ public class MiniCadHistoryCmdHandler implements MiniCadCommandHandler {
         }
 
     }
-
-
 }
