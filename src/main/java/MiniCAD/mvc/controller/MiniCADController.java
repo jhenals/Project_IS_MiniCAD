@@ -309,9 +309,11 @@ public class MiniCADController extends JPanel {
         JPanel groupPanel = manageGroupFeaturePanel();
 
         deleteButton.addActionListener(e -> {
+            String delInput = "del "+ currentId;
             try{
-                executeCommandToView("del", currentId);
-            } catch (IOException | ParseException ex) {
+                UndoableCmdExprIF delCmd = (UndoableCmdExprIF) commandParser.parseCommand(delInput);
+                cmdHandler.handle(delCmd);
+            }catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
