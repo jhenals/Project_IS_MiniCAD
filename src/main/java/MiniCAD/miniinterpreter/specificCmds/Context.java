@@ -155,11 +155,6 @@ public class Context {
         return null;
     }
 
-    public void undoScale(String id, String zFactor) {
-        GraphicObject go = objects.get(id) ;
-        go.scale(1.0 / Double.parseDouble(zFactor));
-    }
-
 
     public void undoMove(String id) {
         GraphicObject go = objects.get(id);

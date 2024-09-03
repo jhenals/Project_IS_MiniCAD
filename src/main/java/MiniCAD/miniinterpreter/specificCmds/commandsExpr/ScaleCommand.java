@@ -9,6 +9,9 @@ public class ScaleCommand implements UndoableCmdExprIF {
     private Token objectId;
     private Token scaleFactor; //POS_FLOAT
 
+    private Double previousScaleFactor;
+    private GraphicObject object;
+
     public ScaleCommand(Token objectId, Token scaleFactor) {
         this.objectId = objectId;
         this.scaleFactor = scaleFactor;
@@ -20,7 +23,9 @@ public class ScaleCommand implements UndoableCmdExprIF {
         String idStr = objectId.interpreta(context);
         String sfStr = scaleFactor.interpreta(context);
 
-        GraphicObject object = context.getObjectbyId(idStr);
+        object = context.getObjectbyId(idStr);
+        previousScaleFactor = Double.parseDouble(sfStr);
+
         double newDim;
 
         if( object != null ){
@@ -49,8 +54,7 @@ public class ScaleCommand implements UndoableCmdExprIF {
 
     @Override
     public boolean undo(Context context) {
-        String id = objectId.interpreta(context);
-        context.undoScale(id, scaleFactor.interpreta(context));
+        object.scale(1.0 / previousScaleFactor);
         return true;
     }
 }
