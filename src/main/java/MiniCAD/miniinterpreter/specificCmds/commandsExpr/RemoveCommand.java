@@ -8,7 +8,7 @@ import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.model.ImageObject;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -43,24 +43,30 @@ public class RemoveCommand implements UndoableCmdExprIF {
             removedObjects.put(idStr,previousGraphicObjectOfId);
             context.removeObjectById(idStr);
         }
-        return idStr;
+        return idStr + " is removed.";
     }
 
 
     @Override
     public boolean undo(Context context) {
-        for( Map.Entry<String, AbstractGraphicObject> entry: removedObjects.entrySet() ){
+        for (Map.Entry<String, AbstractGraphicObject> entry : removedObjects.entrySet()) {
+            String objectId = entry.getKey();
+            AbstractGraphicObject graphicObject = entry.getValue();
 
-            if( entry.getValue() instanceof ImageObject){
-                newObject = new ImageObject(new ImageIcon(Objects.requireNonNull(MiniCadGUI.class.getResource("NyaNya.gif"))),
-                        (new Point(0, 0)));
+            if (graphicObject instanceof ImageObject) {    // Special handling for ImageObject
+                ImageObject restoredImage = new ImageObject(new ImageIcon(Objects.requireNonNull(
+                        MiniCadGUI.class.getResource("NyaNya.gif"))),
+                        new Point2D.Double(graphicObject.getPosition().getX(), graphicObject.getPosition().getY()));
+                context.addObject(objectId, restoredImage.clone());
+            } else {
+                context.addObject(objectId, graphicObject.clone());
             }
-            context.addObject(entry.getKey(), newObject);
         }
-        if (context.getObjectTypeById(idStr).equals("Group")) {
+
+        if (newObject.getType().equals("Group")) {
             context.createGroup(removedObjects.keySet().stream().toList());
         }
-        System.out.println(idStr);
+
         return true;
     }
 }

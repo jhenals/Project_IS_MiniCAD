@@ -17,6 +17,7 @@ public class GroupObject extends AbstractGraphicObject {
 
     public GroupObject(String gid){
         groupId= gid;
+        position = new Point2D.Double(); /*new Point2D.Double(pos.getX(), pos.getY()); */
         objects = new HashMap<>();
     }
 
