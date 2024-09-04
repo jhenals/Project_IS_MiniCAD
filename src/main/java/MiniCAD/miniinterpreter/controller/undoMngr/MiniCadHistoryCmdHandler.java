@@ -26,8 +26,6 @@ public class MiniCadHistoryCmdHandler implements MiniCadCommandHandler {
 
     private LinkedList<UndoableCmdExprIF> history = new LinkedList<>();
 
-    private LinkedList<UndoableCmdExprIF> redoList = new LinkedList<>();
-
     public MiniCadHistoryCmdHandler(Context c){
         super();
         this.context = c;
@@ -38,27 +36,10 @@ public class MiniCadHistoryCmdHandler implements MiniCadCommandHandler {
             undo();
             return;
         }
-        if (cmd == NonExecutableCommands.REDO) {
-            redo();
-            return;
-        }
         if (cmd.interpreta(context) != null ) {
-            // restituisce true: può essere annullato
             addToHistory(cmd);
         } else {
-            // restituisce false: non può essere annullato
             history.clear();
-        }
-        if (redoList.size() > 0)
-            redoList.clear();
-    }
-
-    private void redo() {
-        if (redoList.size() > 0) {
-            UndoableCmdExprIF redoCmd = redoList.removeFirst();
-            redoCmd.interpreta(context);
-            history.addFirst(redoCmd);
-
         }
     }
 
@@ -66,7 +47,6 @@ public class MiniCadHistoryCmdHandler implements MiniCadCommandHandler {
         if (history.size() > 0) {
             UndoableCmdExprIF undoCmd = history.removeFirst();
             undoCmd.undo(context);
-            redoList.addFirst(undoCmd);
         }
     }
 
