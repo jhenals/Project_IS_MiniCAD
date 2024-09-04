@@ -101,7 +101,7 @@ class CreateCommandTest {
 
     @DisplayName("Undo create circle command")
     @Test
-    void testUndoCreateCircleCommand()  {
+    void testUndoCreateCircleCommand() {
         TypeConstructorExpr.CircleConstructor circleConstructor = new TypeConstructorExpr.CircleConstructor(new Token(TokenType.POS_FLOAT, 5f));
         PosizioneExpr pos = new PosizioneExpr(new Token(TokenType.POS_FLOAT, 10f), new Token(TokenType.POS_FLOAT, 10f));
         CreateCommand createCommand = new CreateCommand(circleConstructor, pos);
