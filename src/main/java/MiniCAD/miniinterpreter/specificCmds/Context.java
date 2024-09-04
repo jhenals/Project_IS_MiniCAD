@@ -141,6 +141,15 @@ public class Context {
         go.moveTo(pos);
     }
 
+    public void undoMove(String id) {
+        GraphicObject go = objects.get(id);
+        Stack<Point2D> positions = oldPositions.get(id);
+        if (positions != null && !positions.isEmpty()) {
+            Point2D p = positions.pop();
+            go.moveTo(p);
+        }
+    }
+
     public void ridimensiona(String idStr, String scaleFactor) {
         GraphicObject go = objects.get(idStr);
         go.scale(Double.parseDouble(scaleFactor));
@@ -156,12 +165,5 @@ public class Context {
     }
 
 
-    public void undoMove(String id) {
-        GraphicObject go = objects.get(id);
-        Stack<Point2D> positions = oldPositions.get(id);
-        if (positions != null && !positions.isEmpty()) {
-            Point2D p = positions.pop();
-            go.moveTo(p);
-        }
-    }
+
 }

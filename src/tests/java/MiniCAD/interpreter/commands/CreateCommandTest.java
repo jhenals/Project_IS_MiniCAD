@@ -3,7 +3,12 @@ package MiniCAD.interpreter.commands;
 import MiniCAD.exceptions.ParseException;
 import MiniCAD.miniinterpreter.specificCmds.Context;
 import MiniCAD.miniinterpreter.specificCmds.commandsExpr.CommandExprIF;
+import MiniCAD.miniinterpreter.specificCmds.commandsExpr.CreateCommand;
 import MiniCAD.miniinterpreter.specificCmds.lexerparser.CommandParser;
+import MiniCAD.miniinterpreter.specificCmds.utilExpr.PosizioneExpr;
+import MiniCAD.miniinterpreter.specificCmds.utilExpr.Token;
+import MiniCAD.miniinterpreter.specificCmds.utilExpr.TokenType;
+import MiniCAD.miniinterpreter.specificCmds.utilExpr.TypeConstructorExpr;
 import ObserverCommandFlyweight.is.shapes.model.CircleObject;
 import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.model.ImageObject;
@@ -91,6 +96,25 @@ class CreateCommandTest {
         double delta = 1e-7;  // Tolerance level for floating-point comparison
         assertEquals(expected.getX(), actual.getX(), delta);
         assertEquals(expected.getY(), actual.getY(), delta);
+    }
+
+
+    @DisplayName("Undo create circle command")
+    @Test
+    void testUndoCreateCircleCommand()  {
+        TypeConstructorExpr.CircleConstructor circleConstructor = new TypeConstructorExpr.CircleConstructor(new Token(TokenType.POS_FLOAT, 5f));
+        PosizioneExpr pos = new PosizioneExpr(new Token(TokenType.POS_FLOAT, 10f), new Token(TokenType.POS_FLOAT, 10f));
+        CreateCommand createCommand = new CreateCommand(circleConstructor, pos);
+        String objId = createCommand.interpreta(context);
+
+        GraphicObject go = context.getObjectbyId(objId);
+        assertNotNull(go);
+        assertTrue(go instanceof CircleObject);
+
+        createCommand.undo(context);
+
+        GraphicObject removedGo = context.getObjectbyId(objId);
+        assertNull(removedGo);
     }
 
 
