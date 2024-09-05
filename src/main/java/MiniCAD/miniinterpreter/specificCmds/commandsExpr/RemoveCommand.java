@@ -4,7 +4,6 @@ import MiniCAD.miniinterpreter.specificCmds.Context;
 import MiniCAD.miniinterpreter.specificCmds.utilExpr.Token;
 import MiniCAD.ui.MiniCadGUI;
 import ObserverCommandFlyweight.is.shapes.model.AbstractGraphicObject;
-import ObserverCommandFlyweight.is.shapes.model.GraphicObject;
 import ObserverCommandFlyweight.is.shapes.model.ImageObject;
 
 import javax.swing.*;
@@ -15,9 +14,8 @@ import java.util.Objects;
 
 public class RemoveCommand implements UndoableCmdExprIF {
     private CommandExprIF<?> id;
-    private AbstractGraphicObject previousGraphicObjectOfId;
-    private GraphicObject newObject;
     private Map<String, AbstractGraphicObject> removedObjects;
+    private AbstractGraphicObject currentGraphicObject;
     private String idStr;
 
     public RemoveCommand(Token id) {
@@ -29,8 +27,7 @@ public class RemoveCommand implements UndoableCmdExprIF {
     public String interpreta(Context context) {
         idStr = (String) id.interpreta(context);
 
-        previousGraphicObjectOfId = (AbstractGraphicObject)context.getObjectbyId(idStr);
-        newObject = previousGraphicObjectOfId.clone();
+        currentGraphicObject = (AbstractGraphicObject)context.getObjectbyId(idStr);
 
         if (context.getObjectTypeById(idStr).equals( "Group")){
             for( String objId : context.getObjectIDsOfGroup(idStr)){
@@ -40,7 +37,7 @@ public class RemoveCommand implements UndoableCmdExprIF {
             context.unGroup(idStr);
             context.removeObjectById(idStr);
         }else{
-            removedObjects.put(idStr,previousGraphicObjectOfId);
+            removedObjects.put(idStr, currentGraphicObject);
             context.removeObjectById(idStr);
         }
         return idStr + " is removed.";
@@ -63,7 +60,7 @@ public class RemoveCommand implements UndoableCmdExprIF {
             }
         }
 
-        if (newObject.getType().equals("Group")) {
+        if (currentGraphicObject.getType().equals("Group")) {
             context.createGroup(removedObjects.keySet().stream().toList());
         }
 
