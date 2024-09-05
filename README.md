@@ -1,15 +1,31 @@
 # MiniCAD
+
+## Descrizione
 MiniCAD è un'applicazione che consente la creazione, manipolazione e gestione di oggetti grafici bidimensionali. Questo progetto include un interprete di comandi che permette di interagire con l'applicazione tramite comandi testuali.
 
 ----------------------------------------------------------------------------
 ## TABLE OF CONTENTS
+- [Requisiti](#requisiti)
+- [Installazione](#installazione)
 - [Servizi](#servizi)
 - [MiniCAD GUI](#minicad-gui)
-- [Requisiti](#requisiti)
 - [Struttura del Codice](#struttura-del-codice)
 - [Testing](#testing)
 
 -------------------------------------------------------------------------------------
+
+## Requisiti
+- JAVA21
+- Librerie esterne : nessuna
+
+## Installazione
+1. Verifica di avere installato Java 21.
+2. Clone the repository : https://github.com/jhenals/Project_IS_MiniCAD.git
+3. Navigate into project directory 
+    cd .../Project_IS_MiniCAD/
+4. Run main
+5. 
+
 ## Servizi
 1. Creazione 
 2. Rimozione 
@@ -23,7 +39,8 @@ MiniCAD è un'applicazione che consente la creazione, manipolazione e gestione d
 ## MiniCAD GUI
 L'interfaccia utente permette agli utenti di interagire con il sistema MiniCAD tramite pulsanti e una visualizzazione grafica degli oggetti.
 ![img.png](img.png)
-### Utilizzo MiniCAD GUI
+
+### Utilizzo dell'UI
 1. Avviare la classe _MiniCAD/ui/MiniCADUI.java_.
 2. All'avvio dell'applicazione, verrà visualizzataa una finestra con una toolbar, un'area di disegno e il panello per i comandi.
 3. Utilizza i pulsanti sulla toolbar per crrare nuovi oggetti grafici.
@@ -31,20 +48,16 @@ L'interfaccia utente permette agli utenti di interagire con il sistema MiniCAD t
 5. Per i group object, bisogna inserire l'id del gruppo nel textfield per i gruppi e clicca il pulsante GO.
 6. Usa il pulsante "Undo" sulla toolbar per annullare l'ultima operazione.
 
-
-## Requisiti
-- JAVA21
-- Librerie esterne : nessuna
-
-
 ## Struttura del Codice
-* **MiniCAD/ui/MiniCADUI.java** - contiene la classe principale MiniCADUI che avvia l'applicazione e gestisce l'interfaccia utente.
-* **MiniCAD/shapes/interpreter/commands** - contiene i comandi implementati con Interpreter Pattern.
-* **MiniCAD/shapes/interpreter/lexerparser** - contiene le classi Lexer e Parser 
-* **MiniCAD/shapes/interpreter/GroupObject.java** - classe per gestire i gruppi
-* **MiniCAD/shapes/interpreter/Context.java** - classe context
-* **MiniCAD/shapes/controllers/MiniCADController.java** - controller che gestiscono l'interazione tra l'interfaccia utente e il modello.
-* **MiniCAD/shapes/view/CreateObjectActionMiniCad.java** - utilizzata per creare e gestire l'azione di creazione di oggetti grafici nell'applicazione MiniCAD
+* **MiniCAD/ui/MiniCadGUI.java** - contiene la classe principale MiniCADUI che avvia l'applicazione e gestisce l'interfaccia utente.
+* **MiniCAD/miniinterpeter/specificCmds/commandsExpr** - contiene le espressioni Non Terminale per i comandi.
+* **MiniCAD/miniinterpeter/specificCmds/lexerparser** - contiene le classi Lexer e Parser 
+* **MiniCAD/miniinterpeter/specificCmds/utilExpr** - contiene le espressioni Non Terminale per le classi utilizzati dai comandi nonché l'espressione Terminale Token dell'Interpreter Pattern.
+* **MiniCAD/miniinterpeter/specificCmds/Context.java** - classe context
+* **MiniCAD/miniinterpeter/model/GroupObject.java** - classe per gestire i gruppi
+* **MiniCAD/miniinterpeter/controller/undoMngr/** - contiene le classi per la funzionalità di Undo..
+* **MiniCAD/miniinterpeter/controller/MiniCADController.java** - controller che gestiscono l'interazione tra l'interfaccia utente e il modello.
+* **MiniCAD/miniinterpeter/view/CreateObjectActionMiniCad.java** - utilizzata per creare e gestire l'azione di creazione di oggetti grafici nell'applicazione MiniCAD
 
 ## Testing
 Il progetto utilizza JUnit per il testing. 
