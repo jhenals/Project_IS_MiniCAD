@@ -24,7 +24,6 @@ MiniCAD è un'applicazione che consente la creazione, manipolazione e gestione d
 4. Eseguire il main main : src/main/java/MiniCAD/ui/MiniCadGUI.java
 
 ## MiniCAD GUI
-L'interfaccia utente permette agli utenti di interagire con il sistema MiniCAD tramite pulsanti e una visualizzazione grafica degli oggetti.
 ![img_2.png](img_2.png)
 
 ## Struttura del Codice
