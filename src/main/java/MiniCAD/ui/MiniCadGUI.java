@@ -36,7 +36,7 @@ public class MiniCadGUI {
         gpanel.installView(CircleObject.class, new CircleObjectView());
         gpanel.installView(ImageObject.class, new ImageObjectView());
 
-        AbstractGraphicObject go = new RectangleObject(new Point(0, 0), 20, 50);
+        AbstractGraphicObject go = new RectangleObject(new Point(10, 10), 20, 50);
 
 
         toolbar.add(new JLabel("SHAPES"));
@@ -76,7 +76,8 @@ public class MiniCadGUI {
     private static JButton createObjectButton(String type, AbstractGraphicObject go, GraphicObjectPanel gpanel, MiniCadCommandHandler handler, Context context, CommandParser parser) {
         String cmdInput = "";
         switch (go.getType()){
-            case "Rectangle" -> cmdInput = "create rectangle ("+ go.getDimension().getHeight()+","+go.getDimension().getWidth()+") ("+ go.getPosition().getX()+","+go.getPosition().getY()+")";
+            case "Rectangle" -> cmdInput = "create rectangle ("+ go.getDimension().getHeight()+","+go.getDimension().getWidth()+") ("+
+                    go.getPosition().getX()+","+go.getPosition().getY()+")";
             case "Circle" -> {
                 CircleObject circ = (CircleObject) go;
                 cmdInput = "create circle (" + circ.getRadius() + ") (" + circ.getPosition().getX() + "," + circ.getPosition().getY() + ")";

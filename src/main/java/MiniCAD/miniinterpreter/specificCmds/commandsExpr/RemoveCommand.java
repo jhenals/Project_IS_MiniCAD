@@ -63,7 +63,6 @@ public class RemoveCommand implements UndoableCmdExprIF {
         if (currentGraphicObject.getType().equals("Group")) {
             context.createGroup(removedObjects.keySet().stream().toList());
         }
-
         return true;
     }
 }

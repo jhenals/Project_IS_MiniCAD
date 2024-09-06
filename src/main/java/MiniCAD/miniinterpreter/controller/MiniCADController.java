@@ -151,7 +151,6 @@ public class MiniCADController extends JPanel {
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
-            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY() - offset)));
 
         });
 
@@ -168,7 +167,6 @@ public class MiniCADController extends JPanel {
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
-            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() - offset, p.getY())));
         });
 
         grid.add(w);
@@ -186,7 +184,6 @@ public class MiniCADController extends JPanel {
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
-            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY())));
         });
 
         grid.add(e);
@@ -203,7 +200,6 @@ public class MiniCADController extends JPanel {
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
-            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() - offset, p.getY() + offset)));
         });
         grid.add(sw);
 
@@ -218,7 +214,6 @@ public class MiniCADController extends JPanel {
             }catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
-            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX(), p.getY() + offset)));
         });
 
         grid.add(s);
@@ -234,7 +229,6 @@ public class MiniCADController extends JPanel {
             } catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
-            //cmdHandler.handle(new MoveCommand(subject, new Point2D.Double(p.getX() + offset, p.getY() + offset)));
         });
         grid.add(se);
         zoomMovePanel.add(grid);
@@ -313,6 +307,7 @@ public class MiniCADController extends JPanel {
             try{
                 UndoableCmdExprIF delCmd = (UndoableCmdExprIF) commandParser.parseCommand(delInput);
                 cmdHandler.handle(delCmd);
+                clearPropertiesViewer();
             }catch (ParseException | IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -444,11 +439,11 @@ public class MiniCADController extends JPanel {
         advOpsPanel.setPreferredSize(new Dimension(280,115));
         advOpsPanel.setLayout(new BoxLayout(advOpsPanel, BoxLayout.PAGE_AXIS));
 
-        advOpsPanel.setBorder(BorderFactory.createTitledBorder("Advance Operations"));
+        advOpsPanel.setBorder(BorderFactory.createTitledBorder("Advanced Operations"));
 
         //Visualizza Proprietà
         JMenuBar advViewPropMenuBar = new JMenuBar();
-        JMenu advancePropertyViewMenu = new JMenu("Advance View");
+        JMenu advancePropertyViewMenu = new JMenu("Advanced View");
         JMenuItem imgItem = new JMenuItem("View all images");
         JMenuItem rectItem = new JMenuItem("View all rectangles");
         JMenuItem circleItem = new JMenuItem("View all circles");
