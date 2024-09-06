@@ -1,8 +1,9 @@
 # MiniCAD
 
 ## Descrizione
+Scopo del progetto è la realizzazione di un mini interprete di comandi da integrare nell'applicazione per la manipolazione di oggetti grafici bidimensionali vista a lezione. Ai fini del progetto, si assume che esistono solo i tre tipi di oggetti grafici già realizzati: rettangoli, cerchi ed immagini.
 
-MiniCAD è un sistema di disegno assistito da computer progettato per essere semplice, leggero e immediato. Questo progetto fornisce uno strumento CAD per la manipolazione di oggetti grafici bidimensionali, basato su un interprete di comandi facile da usare.
+
 
 ----------------------------------------------------------------------------
 ## TABLE OF CONTENTS
