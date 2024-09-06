@@ -1,7 +1,8 @@
 # MiniCAD
 
 ## Descrizione
-MiniCAD è un'applicazione che consente la creazione, manipolazione e gestione di oggetti grafici bidimensionali. Questo progetto include un interprete di comandi che permette di interagire con l'applicazione tramite comandi testuali.
+
+MiniCAD è un sistema di disegno assistito da computer progettato per essere semplice, leggero e immediato. Questo progetto fornisce uno strumento CAD per la manipolazione di oggetti grafici bidimensionali, basato su un interprete di comandi facile da usare.
 
 ----------------------------------------------------------------------------
 ## TABLE OF CONTENTS
