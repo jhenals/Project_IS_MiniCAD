@@ -21,15 +21,9 @@ public class CreateCommand implements UndoableCmdExprIF {
         posizione = pos;
     }
 
-    private Point2D getPosInPoint2D(){
-        float x= posizione.getParam1();
-        float y= posizione.getParam2();
-        return new Point2D.Double(x,y);
-    }
-
     @Override
     public String interpreta(Context context) {
-        String objectId = context.generaId();
+        objId = context.generaId();
 
         AbstractGraphicObject object = (AbstractGraphicObject) getGraphicObject(typeConstructor, context);
         if( object instanceof ImageObject){
@@ -38,9 +32,14 @@ public class CreateCommand implements UndoableCmdExprIF {
         }
 
         GraphicObject go = object.clone();
-        context.addObject(objectId, go);
-        objId  =  objectId;
+        context.addObject(objId, go);
         return objId;
+    }
+
+    private Point2D getPosInPoint2D(){
+        float x= posizione.getParam1();
+        float y= posizione.getParam2();
+        return new Point2D.Double(x,y);
     }
 
     private GraphicObject getGraphicObject(TypeConstructorExpr<?> tc, Context context) {
