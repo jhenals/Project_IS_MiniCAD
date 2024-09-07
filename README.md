@@ -21,9 +21,9 @@ Scopo del progetto è la realizzazione di un mini interprete di comandi da integ
 ## Installazione
 1. Verificare di avere installato Java 21.
 2. Clonare il repository : https://github.com/jhenals/Project_IS_MiniCAD.git
-3. Navigare nella directory del progetto: 
-    cd .../Project_IS_MiniCAD
-4. Eseguire il main main : src/main/java/MiniCAD/ui/MiniCadGUI.java
+3. Navigare nella directory del progetto:
+   ```d .../Project_IS_MiniCAD```
+4. Eseguire il main : ```src/main/java/MiniCAD/ui/MiniCadGUI.java```
 
 ## MiniCAD GUI
 ![img_2.png](img_2.png)
