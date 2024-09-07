@@ -23,10 +23,8 @@ public class CommandLexer {
         List<Token> tokens = new ArrayList<>();
         int tipoToken;
         while( (tipoToken = tokenizer.nextToken()) != StreamTokenizer.TT_EOF ) {
-            //Token token;
             switch (tipoToken) {
                 case StreamTokenizer.TT_WORD -> {
-                    //Parole riservate
                     if (tokenizer.sval.startsWith("id")) {
                         token = new Token(TokenType.OBJ_ID, tokenizer.sval);
                    }else if (tokenizer.sval.equalsIgnoreCase("new")) {
@@ -92,7 +90,7 @@ public class CommandLexer {
         tokenizer.ordinaryChar(')');
         tokenizer.wordChars('.' , '.');
         tokenizer.wordChars('/', '/');
-        tokenizer.wordChars('_', '_'); // Allow underscore in words
-        tokenizer.quoteChar('"'); // Treat quotes as special characters
+        tokenizer.wordChars('_', '_');
+        tokenizer.quoteChar('"');
     }
 }

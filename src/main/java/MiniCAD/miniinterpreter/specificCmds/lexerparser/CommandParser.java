@@ -90,12 +90,10 @@ public class CommandParser {
                 tc= new CircleConstructor(raggio);
             }
             case RECTANGLE -> {
-                //float width = Float.parseFloat(tokenCorrente.getValore().toString());
                 Token width = tokenCorrente;
                 avanza();
                 expect(TokenType.VIRGOLA);
                 Token height = tokenCorrente;
-                //float height = Float.parseFloat(tokenCorrente.getValore().toString());
                 PosizioneExpr p = new PosizioneExpr(width, height); // (base, altezza)
                 tc= new TypeConstructorExpr.RectangleConstructor(p);
             }
