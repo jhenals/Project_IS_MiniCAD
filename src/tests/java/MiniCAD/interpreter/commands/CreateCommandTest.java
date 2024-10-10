@@ -93,7 +93,7 @@ class CreateCommandTest {
 
         Point2D.Double expected = new Point2D.Double(10.0, 10.0);
         Point2D.Double actual = (Point2D.Double) img.getPosition();
-        double delta = 1e-7;  // Tolerance level for floating-point comparison
+        double delta = 1e-7;
         assertEquals(expected.getX(), actual.getX(), delta);
         assertEquals(expected.getY(), actual.getY(), delta);
     }
