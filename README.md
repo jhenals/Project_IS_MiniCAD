@@ -12,6 +12,7 @@ Scopo del progetto è la realizzazione di un mini interprete di comandi da integ
 - [MiniCAD GUI](#minicad-gui)
 - [Struttura del Codice](#struttura-del-codice)
 - [Testing](#testing)
+- [Project Report](#relazione-del-progetto)
 
 -------------------------------------------------------------------------------------
 
@@ -41,3 +42,6 @@ Scopo del progetto è la realizzazione di un mini interprete di comandi da integ
 
 ## Testing
 Il progetto utilizza JUnit per il testing. 
+
+## Relazione del Progetto
+Relazione (Progetto MiniCAD) AA2022-2023.pdf
