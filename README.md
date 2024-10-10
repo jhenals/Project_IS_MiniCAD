@@ -1,7 +1,7 @@
 # MiniCAD
 
 ## Descrizione
-Scopo del progetto è la realizzazione di un mini interprete di comandi da integrare nell'applicazione per la manipolazione di oggetti grafici bidimensionali vista a lezione. Ai fini del progetto, si assume che esistono solo i tre tipi di oggetti grafici già realizzati: rettangoli, cerchi ed immagini.
+Scopo del progetto è la realizzazione di un mini interprete di comandi da integrare nell'applicazione per la manipolazione di oggetti grafici bidimensionali già esistente. Ai fini del progetto, si assume che esistono solo i tre tipi di oggetti grafici già realizzati: rettangoli, cerchi ed immagini.
 
 
 
