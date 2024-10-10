@@ -44,4 +44,4 @@ Scopo del progetto è la realizzazione di un mini interprete di comandi da integ
 Il progetto utilizza JUnit per il testing. 
 
 ## Relazione del Progetto
-Relazione (Progetto MiniCAD) AA2022-2023.pdf
+[Relazione (Progetto MiniCAD) AA2022-2023.pdf](https://github.com/jhenals/Project_IS_MiniCAD/blob/main/Relazione%20(Progetto%20MiniCAD)%20AA2022-2023.pdf)
